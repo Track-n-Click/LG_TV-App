@@ -1,0 +1,10 @@
+{
+    "vendor": "Ayozat",
+    "largeIcon": "largeIcon.png",
+    "icon": "images/ayozat_icon.png",
+    "main": "splashpage.html",
+    "id": "com.ayozat.ayozattv",
+    "title": "AyozatTV",
+    "type": "web",
+    "version": "0.0.1"
+}
