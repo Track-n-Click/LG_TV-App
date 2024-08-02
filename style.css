@@ -123,7 +123,7 @@ body {
 }
 
 .movie-list-container {
-  padding: 0 20px;
+  padding: 0 0 0 50px;
 }
 
 .movie-list-wrapper {
@@ -134,22 +134,24 @@ body {
 .movie-list {
   display: flex;
   align-items: center;
-  height: 300px;
+  height: 250px;
   transform: translateX(0);
   transition: all 1s ease-in-out;
 }
 
 .movie-list-title {
   margin: 25px 0;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .movie-list-item {
-  margin-right: 30px;
+  margin-right: 40px;
   position: relative;
 }
 
 .movie-list-item:hover .movie-list-item-img {
-  transform: scale(1.2);
+  transform: scale(1.1);
   margin: 0 30px;
   opacity: 0.5;
 }
@@ -169,13 +171,12 @@ body {
 }
 
 .movie-list-item-title {
-  background-color: #333;
   padding: 0 10px;
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 600;
   position: absolute;
-  top: 10%;
-  left: 50px;
+  bottom: 5%;
+  left: 20px;
   opacity: 0;
   transition: 1s all ease-in-out;
 }
@@ -193,28 +194,86 @@ body {
 }
 
 .movie-list-item-button {
-  padding: 10px;
   background-color: #bf0000;
   color: white;
-  border-radius: 10px;
+  border-radius: 50px;
   outline: none;
   border: none;
   cursor: pointer;
   position: absolute;
-  bottom: 20px;
-  left: 50px;
+  bottom: 50%; /* Adjust this to center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, 50%); /* Center the button precisely */
   opacity: 0;
   transition: 1s all ease-in-out;
+  font-size: 35px;
 }
 
 .arrow {
   font-size: 50px;
   position: absolute;
-  top: 150px;
+  top: 100px;
   right: 0;
-  color: lightgray;
+  color: lightgray !important;
   opacity: 0.5;
   cursor: pointer;
+}
+
+.channel-list-title {
+  margin: 20px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.channel-list-item {
+  margin-right: 40px;
+  position: relative;
+  text-align: center;
+}
+
+.channel-list-item:hover .channel-list-item-img {
+  transform: scale(1.1);
+  margin: 0 40px;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+.channel-list-item:hover .channel-list-item-title,
+.channel-list-item:hover .channel-list-item-desc,
+.channel-list-item:hover .channel-list-item-button {
+  opacity: 1;
+}
+
+.channel-list-item-img {
+  transition: all 1s ease-in-out;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin: 0 20px;
+  margin-bottom: 20px;
+  border-radius: 100px;
+}
+
+.channel-list-item-title {
+  font-size: 15px;
+  font-weight: 500;
+  padding-top: 30px;
+  width: 100px;
+  text-align: center;
+  opacity: 10;
+  transition: 1s all ease-in-out;
+}
+
+.channel-list-item-desc {
+  background-color: #333;
+  padding: 10px;
+  font-size: 14px;
+  position: absolute;
+  top: 30%;
+  left: 50px;
+  width: 230px;
+  opacity: 0;
+  transition: 1s all ease-in-out;
 }
 
 .container.active {
