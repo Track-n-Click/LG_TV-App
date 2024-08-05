@@ -497,6 +497,11 @@ input {
 
 i {
   cursor: pointer;
+  color: var(--text-white);
+
+  &:hover {
+    color: var(--primary-color);
+  }
 }
 
 .login-button {
