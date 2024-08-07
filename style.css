@@ -42,6 +42,15 @@ body {
   flex: 2 1;
 }
 
+.logo-container span {
+  flex: 2 1;
+  position: relative;
+  top: -5px;
+  margin-left: 10px;
+  font-size: 25px;
+  font-weight: 600;
+}
+
 .logo {
   width: 100px;
 }
@@ -228,6 +237,22 @@ body {
   cursor: pointer;
 }
 
+.channel-list {
+  display: flex;
+  align-items: center;
+  height: 250px;
+  transform: translateX(0);
+  transition: all 1s ease-in-out;
+}
+
+.series-list {
+  display: flex;
+  align-items: center;
+  height: 250px;
+  transform: translateX(0);
+  transition: all 1s ease-in-out;
+}
+
 .channel-list-title {
   margin: 20px 0;
   font-size: 20px;
@@ -322,34 +347,34 @@ body {
 
 .swiper {
   width: 100%;
-  height: 80%;
+  height: auto !important;
 }
 
 .swiper-container {
-  width: 100%;
+  /* width: 100%; */
   padding-top: 60px;
-  padding-bottom: 80px;
+  padding-bottom: 60px;
 }
 
-.swiper-slide {
-  background-position: center;
-  background-size: cover;
-  width: 50%;
-  height: 50%;
-  margin: auto;
-  /* 
-  display: flex;
-  justify-content: center;
-  align-items: center; */
+.swiper-wrapper {
+  height: auto !important;
+  width: 100%;
 }
+
+.swiper-hero {
+  height: 70vh !important;
+  width: 100%;
+}
+
 .imgCarousal {
   width: 100%;
-  /* -webkit-box-reflect: below 8px
-    linear-gradient(transparent, transparent, #0005); */
+  height: 70%;
+  object-fit: cover;
   -webkit-box-reflect: below 10px
     linear-gradient(transparent, transparent 90%, rgba(0, 0, 0, 0.8));
   border-radius: 10px;
 }
+
 .id {
   color: #fff;
 }
@@ -371,10 +396,10 @@ body {
 .modal-content {
   background-color: var(--modal-color);
   margin: 8% auto;
-  padding: 20px;
+  padding: 20px 20px;
   border: 1px solid var(--border-color-gray);
   width: 30%;
-  height: 70%;
+  height: auto;
   border-radius: 10px;
   color: var(--text-white);
   overflow: scroll;
@@ -418,7 +443,7 @@ body {
   font-size: small;
   color: #7b9db4;
   font-size: 12px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .modal-form {
@@ -429,7 +454,7 @@ body {
 }
 
 input {
-  width: 100%;
+  /* width: 100%; */
   padding: 15px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -449,6 +474,21 @@ input {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50px;
+}
+
+.modal-footer {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: var(--text-lightblue);
+}
+
+.modal-footer span {
+  font-size: 12px;
+  text-align: center;
+  color: var(--primary-color);
+  cursor: pointer;
 }
 
 .close {
@@ -498,11 +538,11 @@ i {
   background-color: var(--primary-color);
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 8px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 15px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50px;

@@ -25,6 +25,7 @@
       rel="stylesheet"
       href="https://unpkg.com/swiper/swiper-bundle.min.css"
     />
+
     <script
       src="https://kit.fontawesome.com/a076d05399.js"
       crossorigin="anonymous"
@@ -38,7 +39,9 @@
     <div class="navbar">
       <div class="navbar-container">
         <div class="logo-container">
-          <img class="logo" src="./img/logo.png" alt="" />
+          <a href="index.html">
+            <img class="logo" src="./img/logo.png" alt="Logo" />
+          </a>
         </div>
         <div class="menu-container">
           <ul class="menu-list">
@@ -81,7 +84,10 @@
             required
             placeholder="Password"
           />
-          <button type="submit" class="modal-login-button">Login</button>
+          <button type="submit" class="modal-login-button">LOGIN</button>
+          <p class="modal-footer">
+            Scan QR to connect with <span>AyozatTV</span>
+          </p>
         </form>
       </div>
     </div>
@@ -90,22 +96,8 @@
     <div class="swiper-main">
       <div class="swiper">
         <div class="swiper-container">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img class="imgCarousal" src="pic/01.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img class="imgCarousal" src="pic/02.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img class="imgCarousal" src="pic/03.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img class="imgCarousal" src="pic/04.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img class="imgCarousal" src="pic/05.jpg" />
-            </div>
+          <div class="swiper-wrapper swiper-hero">
+            <!-- Swiper items will be dynamically inserted here -->
           </div>
           <!-- Add Pagination -->
           <div class="swiper-pagination"></div>
@@ -129,217 +121,54 @@
     <div class="container">
       <div class="content-container">
         <div class="movie-list-container">
-          <h1 class="movie-list-title">Tv Shows</h1>
-          <div class="movie-list-wrapper">
-            <div class="movie-list">
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/1.jpeg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/2.jpeg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/3.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/4.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/5.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/6.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-            </div>
-            <i class="fas fa-chevron-right arrow"></i>
-          </div>
-        </div>
-
-        <div class="movie-list-container">
           <h1 class="movie-list-title">Channels</h1>
-          <div class="movie-list-wrapper">
-            <div class="movie-list">
-              <div class="channel-list-item">
-                <img class="channel-list-item-img" src="img/1.jpeg" alt="" />
-                <span class="channel-list-item-title">Star Wars</span>
+          <div class="swiper">
+            <div class="channel-list-wrapper swiper-container">
+              <div class="channel-list swiper-wrapper">
+                <!-- Channel items will be dynamically inserted here -->
               </div>
-              <div class="channel-list-item">
-                <img class="channel-list-item-img" src="img/2.jpeg" alt="" />
-                <span class="channel-list-item-title">Star Wars</span>
-              </div>
-              <div class="channel-list-item">
-                <img class="channel-list-item-img" src="img/3.jpg" alt="" />
-                <span class="channel-list-item-title">Star Wars</span>
-              </div>
-              <div class="channel-list-item">
-                <img class="channel-list-item-img" src="img/4.jpg" alt="" />
-                <span class="channel-list-item-title">Star Wars</span>
-              </div>
-              <div class="channel-list-item">
-                <img class="channel-list-item-img" src="img/5.jpg" alt="" />
-                <span class="channel-list-item-title">Star Wars</span>
-              </div>
-              <div class="channel-list-item">
-                <img class="channel-list-item-img" src="img/6.jpg" alt="" />
-                <span class="channel-list-item-title">Star Wars</span>
-              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next id"></div>
+              <div class="swiper-button-prev id"></div>
             </div>
-            <i class="fas fa-chevron-right arrow"></i>
           </div>
         </div>
 
         <div class="movie-list-container">
           <h1 class="movie-list-title">Movies</h1>
-          <div class="movie-list-wrapper">
-            <div class="movie-list">
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/7.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
+          <div class="swiper">
+            <div class="movie-list-wrapper swiper-container">
+              <div class="movie-list swiper-wrapper">
+                <!-- Movies items will be dynamically inserted here -->
               </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/8.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/9.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/10.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/11.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/12.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next id"></div>
+              <div class="swiper-button-prev id"></div>
             </div>
-            <i class="fas fa-chevron-right arrow"></i>
           </div>
         </div>
 
         <div class="movie-list-container">
           <h1 class="movie-list-title">Tv Series</h1>
-          <div class="movie-list-wrapper">
-            <div class="movie-list">
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/13.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
+          <div class="swiper">
+            <div class="series-list-wrapper swiper-container">
+              <div class="series-list swiper-wrapper">
+                <!-- Series items will be dynamically inserted here -->
               </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/14.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/15.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/16.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/17.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
-              <div class="movie-list-item">
-                <img class="movie-list-item-img" src="img/12.jpg" alt="" />
-                <span class="movie-list-item-title">Star Wars</span>
-                <button class="movie-list-item-button">
-                  <i class="fas fa-play-circle"></i>
-                </button>
-              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next id"></div>
+              <div class="swiper-button-prev id"></div>
             </div>
-            <i class="fas fa-chevron-right arrow"></i>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- footer -->
+    <div class="footer-container">
+      <p class="footer-text">Powered by AYOZAT</p>
+    </div>
     <script src="app.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-      var swiper = new Swiper(".swiper-container", {
-        effect: "coverflow",
-        grabCursor: false,
-        centeredSlides: true,
-        slidesPerView: 2,
-        coverflowEffect: {
-          rotate: 10,
-          stretch: 10,
-          depth: 100,
-          modifier: 5,
-          slideShadows: true,
-        },
-        loop: true,
-        autoplay: {
-          delay: 1500,
-          disableOnInteraction: true,
-        },
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      });
-    </script>
   </body>
 </html>
