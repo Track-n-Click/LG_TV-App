@@ -52,7 +52,7 @@ body {
 }
 
 .logo {
-  width: 100px;
+  width: 200px;
 }
 
 .menu-container {
@@ -163,31 +163,52 @@ body {
   position: relative;
 }
 
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, black, transparent);
+  z-index: 1; /* Place the overlay above the image */
+  opacity: 0;
+  transition: all 1s ease-in-out;
+}
+
 .movie-list-item:hover .movie-list-item-img {
   transform: scale(1.1);
-  margin: 0 30px;
-  opacity: 0.5;
+  margin: 0 10px;
+  transition: all 1s ease-in;
+}
+
+.movie-list-item:hover .overlay {
+  transform: scale(1.1);
+  margin: 0 10px;
+  opacity: 1;
+  transition: all 1s ease-in-out;
 }
 
 .movie-list-item:hover .movie-list-item-title,
 .movie-list-item:hover .movie-list-item-desc,
 .movie-list-item:hover .movie-list-item-button {
   opacity: 1;
+  z-index: 10;
 }
 
 .movie-list-item-img {
   transition: all 1s ease-in-out;
-  width: 270px;
-  height: 200px;
+  width: 250px;
+  height: 190px;
   object-fit: cover;
   border-radius: 20px;
 }
 
 .movie-list-item-title {
   padding: 0 10px;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
   position: absolute;
+  width: 70%;
   bottom: 5%;
   left: 20px;
   opacity: 0;
@@ -215,23 +236,36 @@ body {
   cursor: pointer;
   position: absolute;
   bottom: 50%; /* Adjust this to center vertically */
-  left: 50%; /* Center horizontally */
+  left: 130px; /* Center horizontally */
   transform: translate(-50%, 50%); /* Center the button precisely */
   opacity: 0;
   transition: 1s all ease-in-out;
   font-size: 35px;
 }
 
-.arrow {
+.swiper-button-next,
+.swiper-button-prev {
   font-size: 50px;
   position: absolute;
-  top: 100px;
+  top: 50%;
   right: 0;
   color: lightgray !important;
-  opacity: 0.5;
+  opacity: 0.7;
   cursor: pointer;
 }
 
+.swiper-pagination-bullet {
+  background-color: var(--text-lightblue) !important;
+  /* width: 20px !important; */
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--primary-color) !important;
+  width: 20px !important;
+  height: 5px !important;
+  border-radius: 20px !important;
+  opacity: 1 !important;
+}
 .channel-list {
   display: flex;
   align-items: center;
@@ -354,22 +388,83 @@ body {
 
 .swiper-wrapper {
   height: auto !important;
-  width: 100%;
-  /* overflow: scroll; */
 }
 
 .swiper-hero {
   height: 70vh !important;
-  width: 100%;
+}
+
+.swiper-back-dot {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%; /* Adjust size as needed */
+  height: 70%; /* Adjust size as needed */
+  background: radial-gradient(circle, var(--text-white) 0%, transparent 40%);
+  opacity: 0.3; /* Adjust transparency as needed */
+  border-radius: 100%;
+  z-index: -1; /* Position it behind the swiper */
 }
 
 .imgCarousal {
   width: 100%;
   height: 70%;
   object-fit: cover;
-  -webkit-box-reflect: below 10px
-    linear-gradient(transparent, transparent 90%, rgba(0, 0, 0, 0.8));
+  -webkit-box-reflect: below 5px
+    linear-gradient(transparent, transparent 90%, rgba(0, 0, 0, 0.5));
   border-radius: 10px;
+  border: var(--border-color-gray) solid 1px;
+}
+
+.imgCarousal:hover {
+  /* box-shadow: 1px 1px 30px -2px var(--primary-color); */
+  border: var(--text-lightblue) solid 1px;
+  transition: all 0.5s ease-in-out;
+}
+
+.slider-info {
+  position: absolute;
+  bottom: -10px;
+  width: 60%;
+  margin: auto;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  color: white;
+  text-align: center;
+  opacity: 0; /* Start with hidden state */
+  transition: opacity 0.3s ease-in-out;
+}
+
+.slider-info h1 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.slider-info p {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.swiper-slide-active .slider-info {
+  opacity: 1; /* Make it visible when the slide is active */
+}
+
+.slider-button {
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 50px;
 }
 
 .id {
