@@ -44,6 +44,7 @@ function initializeSwiper2() {
     },
   });
 }
+
 function initializeSwiper3() {
   var mySwiper = new Swiper(".swiper-container-movies", {
     grabCursor: true,
@@ -65,6 +66,7 @@ function initializeSwiper3() {
     },
   });
 }
+
 function initializeSwiper4() {
   var mySwiper = new Swiper(".swiper-container-series", {
     grabCursor: true,
