@@ -1,5 +1,5 @@
 function initializeSwiperHero() {
-  var swiper = new Swiper(" .swiper-container", {
+  var swiper = new Swiper(".swiper-container-hero", {
     effect: "coverflow",
     grabCursor: false,
     centeredSlides: true,
@@ -24,18 +24,11 @@ function initializeSwiperHero() {
 }
 
 function initializeSwiper2() {
-  var mySwiper = new Swiper(" .swiper-container", {
-    effect: "coverflow",
-    grabCursor: false,
+  var mySwiper = new Swiper(".swiper-container-channels", {
+    grabCursor: true,
     centeredSlides: true,
-    slidesPerView: 2,
-    coverflowEffect: {
-      rotate: 10,
-      stretch: 10,
-      depth: 100,
-      modifier: 5,
-      slideShadows: true,
-    },
+    slidesPerView: 8, // Adjust this value as needed
+    spaceBetween: 10, // Adjust this value as needed
     loop: true,
     navigation: {
       nextEl: ".swiper-button-next",
@@ -43,7 +36,53 @@ function initializeSwiper2() {
     },
     autoplay: {
       delay: 1500,
-      disableOnInteraction: true,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+  });
+}
+function initializeSwiper3() {
+  var mySwiper = new Swiper(".swiper-container-movies", {
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 6, // Adjust this value as needed
+    spaceBetween: 10, // Adjust this value as needed
+    loop: true,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    autoplay: {
+      delay: 1500,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+  });
+}
+function initializeSwiper4() {
+  var mySwiper = new Swiper(".swiper-container-series", {
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 6, // Adjust this value as needed
+    spaceBetween: 10, // Adjust this value as needed
+    loop: true,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    autoplay: {
+      delay: 1500,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
     },
   });
 }
@@ -167,19 +206,20 @@ async function fetchChannels() {
     const response = await fetch(
       "https://c-1y15z120-t12c.ayozat.com/api/tv-channels/featured"
     );
-
     // Check if the response is OK
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
+    
     const data = await response.json();
-
+    
     // Assuming the channels data is stored in response.data
     const channels = data.data;
 
     // Call the function to create channel cards
     createChannelCards(channels);
+    // Initialize the swiper after images are loaded
+    initializeSwiper2();
   } catch (error) {
     console.error("Error fetching Channels:", error);
   }
@@ -199,9 +239,10 @@ async function fetchMovies() {
 
     // Assuming the movies data is stored in response.data
     const movies = data.data;
-
     // Call the function to create movie cards
     createMovieCards(movies);
+    // Initialize the swiper after images are loaded
+    initializeSwiper3();
   } catch (error) {
     console.error("Error fetching movies:", error);
   }
@@ -225,6 +266,8 @@ async function fetchTvSeries() {
 
     // Call the function to create movie cards
     createSeriesCards(TVseries);
+    // Initialize the swiper after images are loaded
+    initializeSwiper4();
   } catch (error) {
     console.error("Error fetching movies:", error);
   }
@@ -252,7 +295,7 @@ function createChannelCards(channels) {
   // Iterate over the movie data and create movie cards dynamically
   channels.forEach((channel) => {
     const channelItem = document.createElement("div");
-    channelItem.className = "channel-list-item ";
+    channelItem.className = "swiper-slide channel-list-item";
 
     channelItem.innerHTML = `
       <img class="channel-list-item-img" src="${channel.thumbnail}" alt="${channel.name}" />
@@ -277,7 +320,7 @@ function createMovieCards(movies) {
   // Iterate over the movie data and create movie cards dynamically
   movies.forEach((movie) => {
     const movieItem = document.createElement("div");
-    movieItem.className = "movie-list-item";
+    movieItem.className = "swiper-slide movie-list-item";
 
     movieItem.innerHTML = `
       <img class="movie-list-item-img" src="${movie.thumbnail}" alt="${
@@ -310,7 +353,7 @@ function createSeriesCards(TVseries) {
   // Iterate over the series data and create movie cards dynamically
   TVseries.forEach((series) => {
     const seriesItem = document.createElement("div");
-    seriesItem.className = "movie-list-item";
+    seriesItem.className = "swiper-slide movie-list-item";
 
     seriesItem.innerHTML = `
       <img class="movie-list-item-img" src="${series.thumbnail}" alt="${
