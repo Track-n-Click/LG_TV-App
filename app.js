@@ -27,8 +27,8 @@ function initializeSwiper2() {
   var mySwiper = new Swiper(".swiper-container-channels", {
     grabCursor: true,
     centeredSlides: true,
-    slidesPerView: 8, // Adjust this value as needed
-    spaceBetween: 10, // Adjust this value as needed
+    slidesPerView: 8,
+    spaceBetween: 10,
     loop: true,
     navigation: {
       nextEl: ".swiper-button-next",
@@ -48,8 +48,8 @@ function initializeSwiper3() {
   var mySwiper = new Swiper(".swiper-container-movies", {
     grabCursor: true,
     centeredSlides: true,
-    slidesPerView: 6, // Adjust this value as needed
-    spaceBetween: 10, // Adjust this value as needed
+    slidesPerView: 6,
+    spaceBetween: 10,
     loop: true,
     navigation: {
       nextEl: ".swiper-button-next",
@@ -69,8 +69,8 @@ function initializeSwiper4() {
   var mySwiper = new Swiper(".swiper-container-series", {
     grabCursor: true,
     centeredSlides: true,
-    slidesPerView: 6, // Adjust this value as needed
-    spaceBetween: 10, // Adjust this value as needed
+    slidesPerView: 6,
+    spaceBetween: 10,
     loop: true,
     navigation: {
       nextEl: ".swiper-button-next",
