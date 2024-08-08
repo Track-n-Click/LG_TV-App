@@ -23,6 +23,31 @@ function initializeSwiperHero() {
   });
 }
 
+function initializeSwiper2() {
+  var mySwiper = new Swiper(" .swiper-container", {
+    effect: "coverflow",
+    grabCursor: false,
+    centeredSlides: true,
+    slidesPerView: 2,
+    coverflowEffect: {
+      rotate: 10,
+      stretch: 10,
+      depth: 100,
+      modifier: 5,
+      slideShadows: true,
+    },
+    loop: true,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    autoplay: {
+      delay: 1500,
+      disableOnInteraction: true,
+    },
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const profileContainer = document.getElementById("profile-container");
   const submenu = document.createElement("div");

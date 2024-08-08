@@ -144,11 +144,6 @@ body {
   padding: 0 0 0 50px;
 }
 
-.movie-list-wrapper {
-  position: relative;
-  overflow: hidden;
-}
-
 .movie-list {
   display: flex;
   align-items: center;
@@ -351,14 +346,16 @@ body {
 }
 
 .swiper-container {
-  /* width: 100%; */
+  width: 100%;
   padding-top: 60px;
   padding-bottom: 60px;
+  /* overflow: scroll; */
 }
 
 .swiper-wrapper {
   height: auto !important;
   width: 100%;
+  /* overflow: scroll; */
 }
 
 .swiper-hero {
