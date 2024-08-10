@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link href="//vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet" />
+    <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css"
+      rel="stylesheet"
+    />
+    <script src="//vjs.zencdn.net/7.15.4/video.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/6.6.5/videojs.ads.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.min.js"></script>
+    <script src="videojs/vjs-luxmty.js"></script>
+    <link rel="stylesheet" href="videojs/vjs-luxmty.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
+  </head>
+
+  <body style="margin: auto; width: 100%">
+    <video
+      id="my-video"
+      class="video-js vjs-luxmty vjs-16-9"
+      controls
+      preload="auto"
+      width="700"
+      height="800"
+      data-setup="{}"
+    >
+      <source id="video-source" />
+      <!-- <track kind="captions" src="./dist/Day Shift (2022) WEB.vtt" srclang="en" label="English" default /> -->
+    </video>
+  </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      //   const movieTitle = urlParams.get("movieTitle");
+      const movieTitle = "baby-doll";
+
+      if (movieTitle) {
+        fetch(`https://dapi.ayozat.co.uk/api/movies/${movieTitle}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status) {
+              const movie = data.data;
+              const videoUrl = movie.url;
+              const posterUrl = movie.poster_image;
+              const vastTagUrl = movie.vast_tag_url;
+
+              initializePlayer(
+                videoUrl,
+                posterUrl,
+                vastTagUrl,
+                data.vastEnabled,
+                data.vastPreroll,
+                data.vastDuration
+              );
+            } else {
+              console.error("Error fetching movie details:", data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      function initializePlayer(
+        videoUrl,
+        posterUrl,
+        vastTagUrl,
+        vastEnabled,
+        vastPreroll,
+        vastDuration
+      ) {
+        var player = videojs("my-video", {
+          controlBar: {
+            skipButtons: {
+              forward: 5,
+              backward: 10,
+            },
+            liveTracker: {
+              trackingThreshold: 20,
+              liveTolerance: 15,
+            },
+          },
+          textTrackSettings: true,
+          playbackRates: [0.5, 1, 1.5, 2],
+          preload: "metadata",
+          autoplay: false, // set to 'muted' if autoplay needed
+          controls: true,
+          responsive: true,
+          fluid: true,
+          liveui: true,
+          preferFullWindow: true,
+          html5: {
+            nativeTextTracks: false,
+          },
+        });
+
+        if (vastEnabled) {
+          player.poster(posterUrl);
+          player.src({ type: "application/x-mpegURL", src: videoUrl });
+          player.ima({
+            adTagUrl: vastPreroll ? vastTagUrl : "",
+            showControlsForAds: true,
+            debug: false,
+          });
+
+          player.ima.initializeAdDisplayContainer();
+
+          let lastMidrollTime = 0;
+          let midrollRequested = false;
+          let midrollInterval = vastDuration * 60;
+
+          function requestMidrollAd() {
+            midrollRequested = true;
+            player.ima.changeAdTag(vastTagUrl);
+            player.ima.requestAds();
+          }
+
+          player.on("timeupdate", function () {
+            var currentTime = player.currentTime();
+            if (
+              Math.floor(currentTime) !== 0 &&
+              Math.floor(currentTime) % 10 === 0
+            ) {
+              window.parent.postMessage(currentTime, "*");
+            }
+
+            if (
+              currentTime - lastMidrollTime >= midrollInterval &&
+              !midrollRequested
+            ) {
+              lastMidrollTime = currentTime;
+              requestMidrollAd();
+            }
+          });
+
+          player.on("ended", function () {
+            if (vastPreroll) {
+              player.ima.requestAds({
+                adTagUrl: vastTagUrl,
+              });
+            }
+          });
+
+          player.on("adsready", function () {
+            player.play();
+          });
+
+          player.on("aderror", function () {
+            player.play();
+          });
+
+          player.on("adend", function () {
+            if (lastMidrollTime > 0) {
+              midrollRequested = false;
+            }
+            player.play();
+          });
+        } else {
+          player.src({ type: "application/x-mpegURL", src: videoUrl });
+          player.poster(posterUrl);
+          player.play();
+        }
+
+        player.seekButtons({
+          forward: 30,
+          back: 10,
+        });
+
+        player.on("volumechange", () => {
+          var updatedVolume = player.volume();
+          window.parent.postMessage(
+            { type: "volumeChange", updatedVolume: updatedVolume },
+            "*"
+          );
+        });
+      }
+    });
+  </script>
+</html>

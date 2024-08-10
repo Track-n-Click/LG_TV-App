@@ -1,36 +1,23 @@
-<!--
-Copyright (c) 2024 LG Electronics Inc.
-
-SPDX-License-Identifier: Apache-2.0
--->
+<!-- Copyright (c) 2024 LG Electronics Inc.
+SPDX-License-Identifier: Apache-2.0 -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-	<title>new app</title>
-	<style type="text/css">
-		body {
-			width: 100%;
-			height: 100%;
-			background-color: #202020;
-		}
+    <title>AYOZAT Stream</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
-		div {
-			position: absolute;
-			height: 100%;
-			width: 100%;
-			display: table;
-		}
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-		h1 {
-			display: table-cell;
-			vertical-align: middle;
-			text-align: center;
-			color: #FFFFFF;
-		}
-
-	</style>
 </head>
 
 <script src="webOSTVjs-1.2.10/webOSTV.js" charset="utf-8"></script>
@@ -48,11 +35,123 @@ SPDX-License-Identifier: Apache-2.0
 		}
 	});
 </script>
-
 <body>
-	<div>
-		<h1>Hello, World!</h1>
-	</div>
+    <!-- NavBar -->
+    <div class="navbar">
+        <div class="navbar-container">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img class="logo" src="./img/AyozatStreamwhite.png" alt="Logo" />
+                </a>
+            </div>
+            <div class="menu-container">
+                <ul class="menu-list">
+                    <li class="menu-list-item">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </li>
+                    <li class="menu-list-item active">
+                        <i class="fa-solid fa-house"></i>
+                    </li>
+                    <li class="menu-list-item"><i class="fa-solid fa-gear"></i></li>
+                </ul>
+            </div>
+            <div class="profile-container" id="profile-container"></div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <div class="modal-header">
+                <div class="modal-logo-container">
+                    <img src="./img/a_logo.png" alt="" class="modal-logo" />
+                </div>
+                <h2>Welcome back!</h2>
+                <p>Log in and catch up with your favorite things</p>
+            </div>
+            <form id="login-form" class="modal-form">
+                <input type="text" id="email" name="email" required placeholder="Email" />
+                <input type="password" id="password" name="password" required placeholder="Password" />
+                <button type="submit" class="modal-login-button">LOGIN</button>
+                <p class="modal-footer">
+                    Scan QR to connect with <span>AyozatTV</span>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Home Hero Slider -->
+    <div class="swiper-main">
+        <div class="swiper">
+            <div class="swiper-container swiper-container-hero">
+                <div class="swiper-back-dot"></div>
+                <div class="swiper-wrapper swiper-hero">
+                    <!-- Swiper items will be dynamically inserted here -->
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Home Content -->
+    <div class="container">
+        <div class="content-container">
+            <div class="movie-list-container">
+                <h1 class="movie-list-title">Channels</h1>
+                <div class="swiper">
+                    <div class="swiper-container swiper-container-channels">
+                        <div class="channel-list swiper-wrapper">
+                            <!-- Channel items will be dynamically inserted here -->
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next id"></div>
+                        <div class="swiper-button-prev id"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="movie-list-container">
+                <h1 class="movie-list-title">Movies</h1>
+                <div class="swiper">
+                    <div class="swiper-container swiper-container-movies">
+                        <div class="movie-list swiper-wrapper">
+                            <!-- Movies items will be dynamically inserted here -->
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next id"></div>
+                        <div class="swiper-button-prev id"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="movie-list-container">
+                <h1 class="movie-list-title">Tv Series</h1>
+                <div class="swiper">
+                    <div class="swiper-container swiper-container-series">
+                        <div class="series-list swiper-wrapper">
+                            <!-- Series items will be dynamically inserted here -->
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next id"></div>
+                        <div class="swiper-button-prev id"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <div class="footer-container">
+        <p class="footer-text">Powered by AYOZAT</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    
 </body>
 
 </html>

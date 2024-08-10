@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="VideoDetailsStyle.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Video Details Page</title>
+  </head>
+  <body>
+    <!-- NavBar -->
+    <div class="navbar">
+      <div class="navbar-container">
+        <div class="logo-container">
+          <a href="index.html">
+            <img class="logo" src="../img/AyozatStreamwhite.png" alt="Logo" />
+          </a>
+        </div>
+        <div class="menu-container">
+          <ul class="menu-list">
+            <li class="menu-list-item">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </li>
+            <li class="menu-list-item active">
+              <i class="fa-solid fa-house"></i>
+            </li>
+            <li class="menu-list-item"><i class="fa-solid fa-gear"></i></li>
+          </ul>
+        </div>
+        <div class="profile-container" id="profile-container"></div>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <div class="modal-header">
+          <div class="modal-logo-container">
+            <img src="./img/a_logo.png" alt="" class="modal-logo" />
+          </div>
+          <h2>Welcome back!</h2>
+          <p>Log in and catch up with your favorite things</p>
+        </div>
+        <form id="login-form" class="modal-form">
+          <input
+            type="text"
+            id="email"
+            name="email"
+            required
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Password"
+          />
+          <button type="submit" class="modal-login-button">LOGIN</button>
+          <p class="modal-footer">
+            Scan QR to connect with <span>AyozatTV</span>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Hero section -->
+    <div class="hero">
+      <div>
+        <div class="hero-container">
+          <img class="hero-image" src="../img/20.png" alt="" />
+        </div>
+        <div class="details-container">
+          <img class="channel-logo" src="../Channels/4.png" alt="" />
+          <div class="hero-details">
+            <h1 class="hero-title">Captain America</h1>
+            <p class="hero-discription">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis
+            </p>
+          </div>
+          <div class="details-button-container">
+            <div class="details-fav-icon">
+              <i class="fa-regular fa-heart"></i>
+            </div>
+            <button class="details-play-button">Play Series</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- details page content section -->
+    <div class="container">
+      <div class="video-content-container">
+        <!-- episode section -->
+        <div class="episode-list-container">
+          <h1 class="episode-list-title">Episodes</h1>
+          <div class="episode-list-wrapper">
+            <div class="episode-list">
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/12.png" alt="" />
+                <span class="episode-list-item-title">JAWS</span>
+              </div>
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/13.png" alt="" />
+                <span class="episode-list-item-title">ANNETTE</span>
+              </div>
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/14.png" alt="" />
+                <span class="episode-list-item-title">AVATAR</span>
+              </div>
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/15.png" alt="" />
+                <span class="episode-list-item-title">THE GREEN NIGHT</span>
+              </div>
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/21.png" alt="" />
+                <span class="episode-list-item-title">FANTASTIC FOUR</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- related movie section -->
+        <div class="episode-list-container">
+          <h1 class="episode-list-title">Related TV Series</h1>
+          <div class="episode-list-wrapper">
+            <div class="episode-list">
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/16.png" alt="" />
+                <span class="episode-list-item-title">ASSASSIN</span>
+              </div>
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/17.png" alt="" />
+                <span class="episode-list-item-title">ANTABELLUM</span>
+              </div>
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/18.png" alt="" />
+                <span class="episode-list-item-title">ENOLA HOLMES</span>
+              </div>
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/19.png" alt="" />
+                <span class="episode-list-item-title">MAY DAY</span>
+              </div>
+              <div class="episode-list-item">
+                <img class="episode-list-item-img" src="../pic/20.png" alt="" />
+                <span class="episode-list-item-title">FURY</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- footer -->
+        <div class="footer-container">
+          <p class="footer-text">Powered by AYOZAT</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+      var swiper = new Swiper(".swiper-container", {
+        effect: "coverflow",
+        grabCursor: false,
+        centeredSlides: true,
+        slidesPerView: 2,
+        coverflowEffect: {
+          rotate: 10,
+          stretch: 10,
+          depth: 100,
+          modifier: 5,
+          slideShadows: true,
+        },
+        loop: true,
+        autoplay: {
+          delay: 1500,
+          disableOnInteraction: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
+    </script>
+  </body>
+</html>
