@@ -13,10 +13,18 @@
     />
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
     />
     <script
       src="https://kit.fontawesome.com/a076d05399.js"
@@ -84,123 +92,52 @@
 
     <!-- Hero section -->
     <div class="hero">
-      <div>
-        <div class="hero-container">
-          <img class="hero-image" src="../img/20.png" alt="" />
-        </div>
-        <div class="details-container">
-          <img class="channel-logo" src="../Channels/4.png" alt="" />
-          <div class="hero-details">
-            <h1 class="hero-title">Captain America</h1>
-            <p class="hero-discription">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis
-            </p>
-          </div>
-          <div class="details-button-container">
-            <div class="details-fav-icon">
-              <i class="fa-regular fa-heart"></i>
+      <div class="hero-content-container" id="hero-content-container">
+        <!-- Placeholder for dynamically appended hero containers -->
+      </div>
+    </div>
+
+    <!-- Details page content section -->
+    <div class="container">
+      <div class="video-content-container">
+        <!-- Related Movies or Series Section -->
+        <div class="episode-list-container episode-section">
+          <!-- Wrapper for the episode list -->
+          <div class="swiper">
+            <div class="swiper-container swiper-container-episode">
+              <div class="episode-list all-episode swiper-wrapper">
+                <!-- Episodes will be dynamically added here -->
+              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next id"></div>
+              <div class="swiper-button-prev id"></div>
             </div>
-            <button class="details-play-button">Play Series</button>
+          </div>
+        </div>
+
+      <!-- Related movies/series section -->
+      <div class="episode-list-container related-title">
+        <h1 class="episode-list-title">You may also like these</h1>
+        <div class="swiper">
+          <div class="swiper-container swiper-container-related">
+            <div class="episode-list related-section swiper-wrapper">
+              <!-- Placeholder for dynamically appended hero containers -->
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next id"></div>
+            <div class="swiper-button-prev id"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- details page content section -->
-    <div class="container">
-      <div class="video-content-container">
-        <!-- episode section -->
-        <div class="episode-list-container">
-          <h1 class="episode-list-title">Episodes</h1>
-          <div class="episode-list-wrapper">
-            <div class="episode-list">
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/12.png" alt="" />
-                <span class="episode-list-item-title">JAWS</span>
-              </div>
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/13.png" alt="" />
-                <span class="episode-list-item-title">ANNETTE</span>
-              </div>
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/14.png" alt="" />
-                <span class="episode-list-item-title">AVATAR</span>
-              </div>
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/15.png" alt="" />
-                <span class="episode-list-item-title">THE GREEN NIGHT</span>
-              </div>
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/21.png" alt="" />
-                <span class="episode-list-item-title">FANTASTIC FOUR</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- related movie section -->
-        <div class="episode-list-container">
-          <h1 class="episode-list-title">Related TV Series</h1>
-          <div class="episode-list-wrapper">
-            <div class="episode-list">
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/16.png" alt="" />
-                <span class="episode-list-item-title">ASSASSIN</span>
-              </div>
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/17.png" alt="" />
-                <span class="episode-list-item-title">ANTABELLUM</span>
-              </div>
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/18.png" alt="" />
-                <span class="episode-list-item-title">ENOLA HOLMES</span>
-              </div>
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/19.png" alt="" />
-                <span class="episode-list-item-title">MAY DAY</span>
-              </div>
-              <div class="episode-list-item">
-                <img class="episode-list-item-img" src="../pic/20.png" alt="" />
-                <span class="episode-list-item-title">FURY</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- footer -->
-        <div class="footer-container">
-          <p class="footer-text">Powered by AYOZAT</p>
-        </div>
+      <!-- footer -->
+      <div class="footer-container">
+        <p class="footer-text">Powered by AYOZAT</p>
       </div>
     </div>
 
     <script src="app.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-      var swiper = new Swiper(".swiper-container", {
-        effect: "coverflow",
-        grabCursor: false,
-        centeredSlides: true,
-        slidesPerView: 2,
-        coverflowEffect: {
-          rotate: 10,
-          stretch: 10,
-          depth: 100,
-          modifier: 5,
-          slideShadows: true,
-        },
-        loop: true,
-        autoplay: {
-          delay: 1500,
-          disableOnInteraction: true,
-        },
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      });
-    </script>
   </body>
 </html>
