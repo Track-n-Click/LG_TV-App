@@ -1,76 +1,72 @@
+// Function to initialize Swiper for the Hero section
 function initializeSwiperHero() {
-  var swiper = new Swiper(".swiper-container-hero", {
-    effect: "coverflow",
-    grabCursor: false,
-    centeredSlides: true,
-    slidesPerView: 2,
-    coverflowEffect: {
-      rotate: 10,
-      stretch: 10,
-      depth: 110,
-      modifier: 5,
-      slideShadows: true,
-    },
-    loop: true,
-    // navigation: {
-    //   nextEl: ".swiper-button-next",
-    //   prevEl: ".swiper-button-prev",
-    // },
-    pagination: {
-      el: ".swiper-pagination",
-    },
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: true,
+  if (document.querySelector(".swiper-container-hero")) {
+    var swiper = new Swiper(".swiper-container-hero", {
+      effect: "coverflow",
+      grabCursor: false,
+      centeredSlides: true,
+      slidesPerView: 2,
+      coverflowEffect: {
+        rotate: 10,
+        stretch: 10,
+        depth: 110,
+        modifier: 5,
+        slideShadows: true,
+      },
+      loop: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      autoplay: {
+        delay: 2000,
+        disableOnInteraction: true,
+      },
+    });
+  }
+}
+
+// Generalized Swiper initialization function
+function initializeSwiper(containerClass, slidesPerView, spaceBetween) {
+  return new Swiper(containerClass, {
+    grabCursor: true,
+    slidesPerView: slidesPerView,
+    spaceBetween: spaceBetween,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
     },
   });
 }
 
-const slides = document.querySelectorAll(".swiper-slide");
-slides.forEach((slide, index) => {
-  slide.classList.remove("active");
-  if (index === activeSlideIndex) {
-    slide.classList.add("active");
-  }
+// Initialize Swipers for different sections
+function initializeAllSwipers() {
+  initializeSwiperHero();
+  initializeSwiper(".swiper-container-channels", 6, 10);
+  initializeSwiper(".swiper-container-movies", 5, 30);
+  initializeSwiper(".swiper-container-series", 5, 10);
+}
+
+// Fetch data and create sliders
+async function fetchDataAndInitialize() {
+  await fetchSliders();
+  await fetchChannels();
+  await fetchMovies();
+  await fetchTvSeries();
+  initializeAllSwipers();
+}
+
+// Document ready function
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialize profile and login related functions
+  initializeProfileAndLogin();
+
+  // Fetch data and initialize Swipers
+  fetchDataAndInitialize();
 });
 
-function initializeSwiper2() {
-  var mySwiper = new Swiper(".swiper-container-channels", {
-    grabCursor: true,
-    slidesPerView: 6,
-    spaceBetween: 10,
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-  });
-}
-
-function initializeSwiper3() {
-  var mySwiper = new Swiper(".swiper-container-movies", {
-    grabCursor: true,
-    slidesPerView: 5,
-    spaceBetween: 30,
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-  });
-}
-
-function initializeSwiper4() {
-  var mySwiper = new Swiper(".swiper-container-series", {
-    grabCursor: true,
-    slidesPerView: 5,
-    spaceBetween: 10,
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-  });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
+// Profile and login related functions
+function initializeProfileAndLogin() {
   const profileContainer = document.getElementById("profile-container");
   const submenu = document.createElement("div");
   submenu.className = "submenu";
@@ -84,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function checkLoginStatus() {
     const isLoggedIn = localStorage.getItem("user");
 
-    console.log(isLoggedIn);
     profileContainer.innerHTML = ""; // Clear existing content
 
     if (isLoggedIn) {
@@ -102,7 +97,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const profileItem = document.createElement("div");
       profileItem.className = "submenu-item";
       profileItem.innerText = "Profile";
-      // profileItem.onclick = logout;
 
       submenu.appendChild(profileItem);
       submenu.appendChild(logoutItem);
@@ -160,8 +154,9 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   checkLoginStatus();
-});
+}
 
+// Fetch and create sliders
 async function fetchSliders() {
   try {
     const response = await fetch(
@@ -177,85 +172,74 @@ async function fetchSliders() {
 
     // Call the function to create sliders
     createSliders(sliders);
-    // Initialize the swiper after images are loaded
-    initializeSwiperHero();
   } catch (error) {
     console.error("Error fetching Sliders:", error);
   }
 }
 
+// Fetch and create channels
 async function fetchChannels() {
   try {
     const response = await fetch(
       "https://c-1y15z120-t12c.ayozat.com/api/tv-channels/featured"
     );
-    // Check if the response is OK
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
-
-    // Assuming the channels data is stored in response.data
     const channels = data.data;
 
     // Call the function to create channel cards
     createChannelCards(channels);
-    // Initialize the swiper after images are loaded
-    initializeSwiper2();
   } catch (error) {
     console.error("Error fetching Channels:", error);
   }
 }
+
+// Fetch and create movies
 async function fetchMovies() {
   try {
     const response = await fetch(
       "https://c-1y15z120-t12c.ayozat.com/api/movies/random"
     );
 
-    // Check if the response is OK
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
-
-    // Assuming the movies data is stored in response.data
     const movies = data.data;
+
     // Call the function to create movie cards
     createMovieCards(movies);
-    // Initialize the swiper after images are loaded
-    initializeSwiper3();
   } catch (error) {
     console.error("Error fetching movies:", error);
   }
 }
 
+// Fetch and create series
 async function fetchTvSeries() {
   try {
     const response = await fetch(
       "https://c-1y15z120-t12c.ayozat.com/api/tv-series/random"
     );
 
-    // Check if the response is OK
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
-
-    // Assuming the movies data is stored in response.data
     const TVseries = data.data;
 
     // Call the function to create movie cards
     createSeriesCards(TVseries);
-    // Initialize the swiper after images are loaded
-    initializeSwiper4();
   } catch (error) {
-    console.error("Error fetching movies:", error);
+    console.error("Error fetching TV series:", error);
   }
 }
 
+// Function to create sliders
 function createSliders(sliders) {
   const sliderList = document.querySelector(".swiper-wrapper");
 
@@ -277,10 +261,10 @@ function createSliders(sliders) {
   });
 }
 
+// Function to create channel cards
 function createChannelCards(channels) {
   const channelList = document.querySelector(".channel-list");
 
-  // Iterate over the movie data and create movie cards dynamically
   channels.forEach((channel) => {
     const channelItem = document.createElement("div");
     channelItem.className = "swiper-slide channel-list-item";
@@ -302,10 +286,10 @@ function createChannelCards(channels) {
   });
 }
 
+// Function to create movie cards
 function createMovieCards(movies) {
   const movieList = document.querySelector(".movie-list");
 
-  // Iterate over the movie data and create movie cards dynamically
   movies.forEach((movie) => {
     const movieItem = document.createElement("div");
     movieItem.className = "swiper-slide movie-list-item";
@@ -335,11 +319,10 @@ function createMovieCards(movies) {
   });
 }
 
-// Function to create series cards dynamically
+// Function to create series cards
 function createSeriesCards(TVseries) {
   const seriesList = document.querySelector(".series-list");
 
-  // Iterate over the series data and create movie cards dynamically
   TVseries.forEach((series) => {
     const seriesItem = document.createElement("div");
     seriesItem.className = "swiper-slide movie-list-item";
@@ -350,16 +333,16 @@ function createSeriesCards(TVseries) {
       series.title
     }" />
     <div class="overlay"></div>
-    <span class="movie-list-item-title">${series.title}</span>
     <button class="movie-list-item-button" onclick="playMovie('${series.slug
       .replace(/'/g, "\\'")
       .replace(/"/g, "&quot;")}')">
       <i class="fas fa-play-circle"></i>
     </button>
+    <span class="movie-list-item-title">${series.title}</span>
 
     `;
 
-    // Add click event listener to the movie title to navigate to the corresponding page
+    // Add click event listener to the series title to navigate to the corresponding page
     seriesItem
       .querySelector(".movie-list-item-title")
       .addEventListener("click", () => {
@@ -369,14 +352,4 @@ function createSeriesCards(TVseries) {
 
     seriesList.appendChild(seriesItem);
   });
-}
-
-// Call the function to fetch when the page loads
-fetchMovies();
-fetchTvSeries();
-fetchChannels();
-fetchSliders();
-
-function playMovie(slug) {
-  window.location.href = `videoPlayer.html?slug=${slug}`;
 }

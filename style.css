@@ -169,7 +169,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, black, transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.931), transparent);
   z-index: 1; /* Place the overlay above the image */
   opacity: 0;
   transition: all 1s ease-in-out;
@@ -179,6 +179,7 @@ body {
   transform: scale(1.1);
   margin: 0 10px;
   transition: all 1s ease-in;
+  overflow: hidden;
 }
 
 .movie-list-item:hover .overlay {
@@ -197,20 +198,24 @@ body {
 
 .movie-list-item-img {
   transition: all 1s ease-in-out;
-  width: 250px;
-  height: 190px;
+  width: 230px;
+  height: 380px;
   object-fit: cover;
   border-radius: 20px;
+  border: 1px var(--text-lightblue) solid;
 }
 
 .movie-list-item-title {
-  padding: 0 10px;
   font-size: 15px;
   font-weight: 600;
   position: absolute;
-  width: 70%;
-  bottom: 5%;
-  left: 20px;
+  text-align: center;
+  bottom: -15%;
+  width: 230px;
+  left: 2%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
   opacity: 0;
   transition: 1s all ease-in-out;
 }
@@ -230,17 +235,22 @@ body {
 .movie-list-item-button {
   background-color: var(--primary-color);
   color: var(--text-white);
-  border-radius: 50px;
+  border-radius: 100%;
+  width: 51px;
+  height: 50px;
   outline: none;
   border: none;
   cursor: pointer;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   bottom: 50%; /* Adjust this to center vertically */
-  left: 130px; /* Center horizontally */
-  transform: translate(-50%, 50%); /* Center the button precisely */
+  left: 130px;
+  transform: translate(-50%, 50%);
   opacity: 0;
   transition: 1s all ease-in-out;
-  font-size: 35px;
+  font-size: 40px;
 }
 
 .swiper-button-next,
@@ -391,7 +401,7 @@ body {
 }
 
 .swiper-hero {
-  height: 70vh !important;
+  height: 65vh !important;
 }
 
 .swiper-back-dot {
