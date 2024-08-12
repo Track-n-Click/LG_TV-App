@@ -77,13 +77,13 @@
 }
 
 .episode-list-container {
+  /* overflow-x: scroll; */
   margin-top: 100px;
   padding: 0 0 0 0 50px;
 }
 
 .episode-list-wrapper {
   position: relative;
-  /* overflow: hidden; */
 }
 
 .episode-list-title {
@@ -102,7 +102,7 @@
 }
 
 .season-container{
-    display: flex;
+    display: block;
 }
 
 .episode-list-item{
@@ -139,7 +139,6 @@
     font-size: 18px;
     font-weight: 600;
     align-items: center;
-    /* left: 20px; */
     opacity: 0;
     transition: 1s all ease-in-out;
 }
@@ -153,4 +152,36 @@
 .footer-text {
   font-size: 16px;
   font-weight: 400;
+}
+
+.arrow-button {
+  position: absolute;
+  top: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 10;
+  font-size: 24px;
+}
+
+.left-arrow {
+  left: 10px;
+}
+
+.right-arrow {
+  right: 10px;
+}
+
+.episode-list-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.swiper-container-episode,
+.swiper-container-related {
+  display: flex;
+  overflow: hidden;
 }
