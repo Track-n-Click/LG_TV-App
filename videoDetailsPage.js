@@ -1,45 +1,19 @@
-function initializeSwiper5() {
-  var mySwiper = new Swiper(".swiper-container-related", {
+// Generalized Swiper initialization function
+function initializeSwiper(containerClass, slidesPerView, spaceBetween) {
+  return new Swiper(containerClass, {
     grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: 6,
-    spaceBetween: 5,
-    loop: true,
+    slidesPerView: slidesPerView,
+    spaceBetween: spaceBetween,
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
-    },
-    // autoplay: {
-    //   delay: 1500,
-    //   disableOnInteraction: false,
-    // },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
     },
   });
 }
 
-function initializeSwiper6() {
-  var mySwiper = new Swiper(".swiper-container-episode", {
-    grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: 6,
-    spaceBetween: 5,
-    loop: true,
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-    // autoplay: {
-    //   delay: 1500,
-    //   disableOnInteraction: false,
-    // },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-  });
+function initializeAllSwipers() {
+  initializeSwiper(".swiper-container-related", 5, 30);
+  initializeSwiper(".swiper-container-episode", 5, 30);
 }
 
 async function fetchMoviesDetails() {
@@ -93,8 +67,7 @@ async function fetchSeriesDetails() {
       // Call the function to create movie cards
       createVideoDetails(VideoDetailsData);
       createEpisodeCards(EpisodeData);
-      // Initialize the swiper after images are loaded
-      initializeSwiper6();
+
     } catch (error) {
       console.error("Error fetching movies:", error);
     }
@@ -123,8 +96,7 @@ async function fetchRelatedVideos() {
 
       // Call the function to create movie cards
       createRelatedMoviesCards(RelatedVideos);
-      // Initialize the swiper after images are loaded
-      initializeSwiper5();
+
     } catch (error) {
       console.error("Error fetching movies:", error);
     }
@@ -153,8 +125,7 @@ async function fetchRelatedSeries() {
 
       // Call the function to create movie cards
       createRelatedMoviesCards(RelatedSeries);
-      // Initialize the swiper after images are loaded
-      initializeSwiper5();
+
     } catch (error) {
       console.error("Error fetching movies:", error);
     }
@@ -255,24 +226,45 @@ function createEpisodeCards(EpisodeData) {
     seasonTitle.className = "episode-list-title";
     seasonTitle.textContent = season.name;
 
+    const swiperContent = document.createElement("div");
+    swiperContent.className = "swiper-container-episode"
+    
+    const swiper = document.createElement("div");
+    swiper.className = "swiper"
+
     const episodeList = document.createElement("div");
-    episodeList.className = "episode-list";
+    episodeList.className = "episode-list all-episode swiper-wrapper";
+
+    const swiperPagination = document.createElement("div");
+    swiperPagination.className = "swiper-pagination";
+
+    const swiperNextButton = document.createElement("div");
+    swiperNextButton.className = "swiper-button-next id";
+
+    const swiperPrevButton = document.createElement("div");
+    swiperPrevButton.className = "swiper-button-prev id";
 
     // Append the season title and episode list to the season container
-    seasonContainer.appendChild(seasonTitle);
-    seasonContainer.appendChild(episodeList);
+    seasonList.appendChild(seasonTitle);
+    swiperContent.appendChild(episodeList);
+    swiperContent.appendChild(swiperPagination);
+    swiperContent.appendChild(swiperNextButton);
+    swiperContent.appendChild(swiperPrevButton);
+    swiper.appendChild(swiperContent)
+    seasonContainer.appendChild(swiper);
 
     // Iterate through each episode
     season.episodes.forEach((episode) => {
       const episodeItem = document.createElement("div");
-      episodeItem.className = "episode-list-item";
+      episodeItem.className = "movie-list-item swiper-slide";
 
       episodeItem.innerHTML = `
-          <img class="episode-list-item-img" src="${episode.thumbnail}" alt="${
+          <img class="movie-list-item-img" src="${episode.thumbnail}" alt="${
         episode.title
       }" />
-          <span class="episode-list-item-title">${episode.title}</span>
-          <button class="episode-list-item-button" onclick="playMovie('${""
+      <div class="overlay"></div>
+          <span class="movie-list-item-title">${episode.title}</span>
+          <button class="movie-list-item-button" onclick="playMovie('${""
             .replace(/'/g, "\\'")
             .replace(/"/g, "&quot;")}')">
           <i class="fas fa-play-circle"></i>
@@ -281,7 +273,7 @@ function createEpisodeCards(EpisodeData) {
 
       // Add click event listener to the episode title to navigate to the corresponding page
       episodeItem
-        .querySelector(".episode-list-item-title")
+        .querySelector(".movie-list-item-title")
         .addEventListener("click", () => {
           window.location.href = `videoDetailsPage.html?title=${episode.slug}`;
         });
@@ -295,24 +287,9 @@ function createEpisodeCards(EpisodeData) {
   });
 }
 
-document.querySelectorAll(".arrow-button").forEach((button) => {
-  button.addEventListener("click", function () {
-    const container = this.nextElementSibling || this.previousElementSibling;
-    const direction = this.classList.contains("right-arrow") ? 1 : -1;
-    const targetSelector = this.getAttribute("data-target");
-    const target = document.querySelector(targetSelector);
-
-    // Scroll the container by the width of one item
-    target.scrollBy({
-      left:
-        direction *
-        (target.querySelector(".episode-list-item").offsetWidth + 40), // 40px for margin-right
-      behavior: "smooth",
-    });
-  });
-});
 
 fetchMoviesDetails();
 fetchSeriesDetails();
 fetchRelatedVideos();
 fetchRelatedSeries();
+initializeAllSwipers();
