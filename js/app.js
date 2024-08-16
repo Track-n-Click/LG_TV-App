@@ -28,8 +28,8 @@ function initializeTiles() {
   updateSelection(selectedIndex); // Initialize the first tile as selected
 
   items.forEach((item, index) => {
-    item.addEventListener('click', () => {
-      redirect(item.getAttribute('data-page'));
+    item.addEventListener("click", () => {
+      redirect(item.getAttribute("data-page"));
     });
   });
 }
@@ -37,7 +37,7 @@ function initializeTiles() {
 function updateSelection(index) {
   const items = getItems();
   if (items.length === 0) return;
-  
+
   deselect(items[selectedIndex]); // Deselect the current one
   selectedIndex = (index + items.length) % items.length; // Ensure the index wraps around
   select(items[selectedIndex]); // Select the new one
@@ -54,7 +54,7 @@ document.addEventListener("keydown", (event) => {
     case "Enter":
       const items = getItems();
       if (items[selectedIndex]) {
-        redirect(items[selectedIndex].getAttribute('data-page'));
+        redirect(items[selectedIndex].getAttribute("data-page"));
       }
       break;
     case "Escape":
@@ -115,26 +115,3 @@ window.addEventListener("load", function () {
     document.getElementById("main").style.display = "block";
   }, 4000); // Adjust timing as needed
 });
-
-// -------------------------------- Common function -------------------------------- 
-async function toggleVideo(url) {
-  const currentState = await senza.lifecycle.getState();
-  if (currentState === "background" || currentState === "inTransitionToBackground") {
-      senza.lifecycle.moveToForeground();
-  } else {
-      await playVideo(url);
-  }
-}
-
-async function playVideo(url) {
-  try {
-      await senza.remotePlayer.load(url);
-      senza.remotePlayer.play();
-  } catch (error) {
-      console.log("Couldn't load remote player.", error);
-  }
-}
-
-function goBack() {
-  window.history.back();
-}
