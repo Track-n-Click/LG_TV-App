@@ -2,7 +2,7 @@ const videos = [
   {
     id: "simulator",
     thumb: "thumbs/media.jpg",
-    url: "https://senza-developer.s3.amazonaws.com/streams/simulator/simulator.mpd",
+    url: "https://www.ayozat.com",
     title: "Media",
     description:
       "This video tutorial shows how you can use the device simulator to preview how your app will run on a physical cloud connector device.",
@@ -11,7 +11,7 @@ const videos = [
   {
     id: "debugger",
     thumb: "thumbs/finace.jpg",
-    url: "https://senza-developer.s3.amazonaws.com/streams/debugger/debugger.mpd",
+    url: "https://www.ayozat.com",
     title: "Finance",
     description:
       "This video tutorial shows how you can use the Remote Debugger to interact with your cloud connector device and debug your web app. You'll also learn how to use the debugger to run a sample app by changing the URL location.",
@@ -20,7 +20,7 @@ const videos = [
   {
     id: "sample-app",
     thumb: "thumbs/gaming.jpg",
-    url: "https://senza-developer.s3.amazonaws.com/streams/sample-app/sample-app.mpd",
+    url: "https://www.ayozat.com",
     title: "Gaming",
     description:
       "This video tutorial shows how to write an app that plays two videos, one picture-in-picture and the other fullscreen, with animations to switch them back and forth.",
@@ -29,7 +29,7 @@ const videos = [
   {
     id: "zoom",
     thumb: "thumbs/music.jpg",
-    url: "https://senza-developer.s3.amazonaws.com/streams/zoom/zoom.mpd",
+    url: "newPage.html",
     title: "Music",
     description:
       "This video tutorial shows how to write an app that plays two videos, one picture-in-picture and the other fullscreen, with animations to switch them back and forth.",
@@ -38,7 +38,7 @@ const videos = [
   {
     id: "flags",
     thumb: "thumbs/multiviewer.jpg",
-    url: "https://senza-developer.s3.amazonaws.com/streams/flags/flags.mpd",
+    url: "",
     title: "Multi-viewer",
     description:
       "This video tutorial shows how to geolocate the viewer’s cloud connector by getting its IP address from the Senza client library. Warning: contains terrible fake accents.",
@@ -47,7 +47,7 @@ const videos = [
   {
     id: "flags",
     thumb: "thumbs/settings.jpg",
-    url: "https://senza-developer.s3.amazonaws.com/streams/flags/flags.mpd",
+    url: "",
     title: "Settings",
     description:
       "This video tutorial shows how to geolocate the viewer’s cloud connector by getting its IP address from the Senza client library. Warning: contains terrible fake accents.",

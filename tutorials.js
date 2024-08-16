@@ -17,11 +17,14 @@ window.addEventListener("load", async () => {
   }
 });
 
+let selectedUrl = "";
+
 function updateVideos() {
+  table.innerHTML = ""; // Clear the table before updating
   videos.forEach((video, index) => {
     let rowClass = index === selected ? "row selected" : "row";
-    table.innerHTML += `<div class="${rowClass}">
-      <div class="thumb" onclick="redirect()">
+    table.innerHTML += `<div class="${rowClass}" onclick="setSelectedUrl('${video.url}')">
+      <div class="thumb">
         <img src="${video.thumb}">
       </div>
       
@@ -33,29 +36,32 @@ function updateVideos() {
   });
 }
 
-function redirect() {
-  window.open("https://www.ayozat.com/", "_blank");
+function setSelectedUrl(url) {
+  selectedUrl = url;
+  console.log("Selected URL:", selectedUrl);
 }
 
-function redirectToNewPage() {
-  window.location.href = "newPage.html";
+function redirect(url) {
+  if (url.endsWith(".html")) {
+    window.location.href = url;
+  } else {
+    window.open(url, "_blank");
+  }
 }
 
-function backToMain() {
-  window.location.href = "index.html";
+function goBack() {
+  window.history.back();
 }
-// <div class="description">${video.description}</div>
 
 document.addEventListener("keydown", async function (event) {
   switch (event.key) {
     case "Enter":
-      toggleVideo();
-      // redirect();
-      // redirectToNewPage();
+      if (selectedUrl) {
+        redirect(selectedUrl);
+      }
       break;
     case "Escape":
-      // toggleVideo();
-      backToMain();
+      goBack();
       break;
     case "ArrowUp":
       up();
@@ -110,7 +116,7 @@ function right() {
 function select(link) {
   link.classList.add("selected");
   scrollToMiddle(link);
-  console.log("Selected: " + link.innerHTML);
+  // console.log("Selected: " + link.innerHTML);
 }
 
 function deselect(link) {
