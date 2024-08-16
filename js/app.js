@@ -1,4 +1,5 @@
 let selectedIndex = 0;
+let settingsSelected = false;
 
 window.addEventListener("load", async () => {
   try {
@@ -32,15 +33,24 @@ function initializeTiles() {
       redirect(item.getAttribute("data-page"));
     });
   });
+
+  // Add click listener for the settings button
+  document.getElementById("settings-button").addEventListener("click", () => {
+    redirect("pages/settings.html");
+  });
 }
 
 function updateSelection(index) {
   const items = getItems();
   if (items.length === 0) return;
 
-  deselect(items[selectedIndex]); // Deselect the current one
-  selectedIndex = (index + items.length) % items.length; // Ensure the index wraps around
-  select(items[selectedIndex]); // Select the new one
+  deselectAll(); // Deselect all items before selecting the new one
+  if (settingsSelected) {
+    selectSettingsButton(); // Select the settings button if settingsSelected is true
+  } else {
+    selectedIndex = (index + items.length) % items.length; // Ensure the index wraps around
+    select(items[selectedIndex]); // Select the new one
+  }
 }
 
 function redirect(page) {
@@ -52,16 +62,24 @@ function redirect(page) {
 document.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "Enter":
-      const items = getItems();
-      if (items[selectedIndex]) {
-        redirect(items[selectedIndex].getAttribute("data-page"));
+      if (settingsSelected) {
+        redirect("pages/settings.html");
+      } else {
+        const items = getItems();
+        if (items[selectedIndex]) {
+          redirect(items[selectedIndex].getAttribute("data-page"));
+        }
       }
       break;
     case "Escape":
       goBack();
       break;
     case "ArrowUp":
+      handleArrowUp();
+      break;
     case "ArrowDown":
+      handleArrowDown();
+      break;
     case "ArrowLeft":
     case "ArrowRight":
       handleArrowNavigation(event.key);
@@ -72,13 +90,42 @@ document.addEventListener("keydown", (event) => {
   event.preventDefault();
 });
 
-function getItems() {
-  return Array.from(document.getElementsByClassName("grid-item"));
+function handleArrowUp() {
+  if (settingsSelected) {
+    // Prevents moving up if the settings button is selected
+    settingsSelected = false;
+    updateSelection(0); // Move focus to the first row
+  } else if (selectedIndex < 5) {
+    // Move focus to the settings button when pressing up from the first row
+    settingsSelected = true;
+    deselectAll();
+    selectSettingsButton();
+  } else {
+    updateSelection(selectedIndex - 5); // Move up to the item directly above
+  }
+}
+
+function handleArrowDown() {
+  const items = getItems();
+  if (settingsSelected) {
+    settingsSelected = false;
+    updateSelection(0); // Move focus to the first row
+  } else if (selectedIndex >= items.length - 5) {
+    // Prevent moving down when on the last row
+    return;
+  } else {
+    updateSelection(selectedIndex + 5); // Move down to the item directly below
+  }
 }
 
 function handleArrowNavigation(key) {
-  const step = key === "ArrowUp" || key === "ArrowLeft" ? -1 : 1;
-  navigate(step);
+  if (settingsSelected && key === "ArrowDown") {
+    settingsSelected = false;
+    updateSelection(0); // Move focus back to the first item
+  } else if (!settingsSelected) {
+    const step = key === "ArrowLeft" ? -1 : 1;
+    navigate(step);
+  }
 }
 
 function navigate(step) {
@@ -94,8 +141,20 @@ function select(item) {
   item.classList.add("selected");
 }
 
-function deselect(item) {
-  item.classList.remove("selected");
+function deselectAll() {
+  const items = getItems();
+  items.forEach((item) => item.classList.remove("selected"));
+  deselectSettingsButton();
+}
+
+function selectSettingsButton() {
+  const settingsButton = document.getElementById("settings-button");
+  settingsButton.classList.add("selected"); // Add a class to highlight the settings button
+}
+
+function deselectSettingsButton() {
+  const settingsButton = document.getElementById("settings-button");
+  settingsButton.classList.remove("selected"); // Remove the highlight class
 }
 
 function scrollToMiddle(element) {
@@ -106,6 +165,9 @@ function scrollToMiddle(element) {
   });
 }
 
+function getItems() {
+  return Array.from(document.getElementsByClassName("grid-item"));
+}
 // Loader functionality
 window.addEventListener("load", function () {
   const progressBar = document.getElementById("progress-bar");
