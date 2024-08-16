@@ -71,10 +71,10 @@ document.addEventListener("keydown", async (event) => {
       goBack();
       break;
     case "ArrowUp":
-      navigate(-3);
+      navigate(-5);
       break;
     case "ArrowDown":
-      navigate(3);
+      navigate(5);
       break;
     case "ArrowLeft":
       navigate(-1);
