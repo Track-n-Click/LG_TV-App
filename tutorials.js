@@ -24,9 +24,10 @@ function updateVideos() {
       <div class="thumb" onclick="redirect()">
         <img src="${video.thumb}">
       </div>
+      
       <div class="text">
+        <i class="${video.iconClass}"></i>
         <div class="title">${video.title}</div>
-        
       </div>
     </div>`;
   });
