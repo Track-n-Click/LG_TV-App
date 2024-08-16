@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
     setTimeout(function () {
       document.getElementById("loader").style.display = "none";
       document.getElementById("main").style.display = "block";
-    }, 4000);
+    }, 1);
 
     senza.remotePlayer.addEventListener("ended", () => {
       senza.lifecycle.moveToForeground();

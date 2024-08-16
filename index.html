@@ -2,103 +2,77 @@
 <html lang="en">
 <head>
   <title>AYOZAT</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="css/styles.css"> 
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-  <script
-    src="https://kit.fontawesome.com/a076d05399.js"
-    crossorigin="anonymous"
-  ></script>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/styles.css"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
 </head>
 <body>
-    <div id="loader">
-        <img src="images/a_logo.png" alt="Loading...">
-        <div id="progress-bar-container">
-            <div id="progress-bar"></div>
-        </div>
+  <div id="loader">
+    <img src="images/a_logo.png" alt="Loading...">
+    <div id="progress-bar-container">
+      <div id="progress-bar"></div>
     </div>
-    <div id="main">
-      <div id="hero-container"><div id="home-hero"></div></div>
-      <table id="grid-container">
-          <tr>
-              <td>
-                  <div class="grid-item" data-page="media.html">
-                      <div class="thumb">
-                          <img src="images/thumbs/media.jpg" alt="Media">
-                      </div>
-                      <div class="text">
-                          <i class="fa-solid fa-photo-film"></i>
-                          <div class="title">Media</div>
-                      </div>
-                  </div>
-              </td>
-              <td>
-                  <div class="grid-item" data-page="finance.html">
-                      <div class="thumb">
-                          <img src="images/thumbs/finance.jpg" alt="Finance">
-                      </div>
-                      <div class="text">
-                          <i class="fa-solid fa-hand-holding-dollar"></i>
-                          <div class="title">Finance</div>
-                      </div>
-                  </div>
-              </td>
-              <td>
-                  <div class="grid-item" data-page="gaming.html">
-                      <div class="thumb">
-                          <img src="images/thumbs/gaming.jpg" alt="Gaming">
-                      </div>
-                      <div class="text">
-                          <i class="fa-solid fa-dice"></i>
-                          <div class="title">Gaming</div>
-                      </div>
-                  </div>
-              </td>
-              <td>
-                  <div class="grid-item" data-page="music.html">
-                      <div class="thumb">
-                          <img src="images/thumbs/music.jpg" alt="Music">
-                      </div>
-                      <div class="text">
-                          <i class="fa-solid fa-music"></i>
-                          <div class="title">Music</div>
-                      </div>
-                  </div>
-              </td>
-              <td>
-                  <div class="grid-item" data-page="multiviewer.html">
-                      <div class="thumb">
-                          <img src="images/thumbs/multiviewer.jpg" alt="Multi-viewer">
-                      </div>
-                      <div class="text">
-                          <i class="fa-solid fa-tv"></i>
-                          <div class="title">Multi-viewer</div>
-                      </div>
-                  </div>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                  <div class="grid-item" data-page="settings.html">
-                      <div class="thumb">
-                          <img src="images/thumbs/settings.jpg" alt="Settings">
-                      </div>
-                      <div class="text">
-                          <i class="fa-solid fa-gear"></i>
-                          <div class="title">Settings</div>
-                      </div>
-                  </div>
-              </td>
-          </tr>
-      </table>
+  </div>
+  <div id="main">
+    <div id="hero-container"><div id="home-hero"></div></div>
+    <div id="grid-container">
+      <div class="grid-item" data-page="pages/media.html">
+        <div class="thumb">
+          <img src="images/thumbs/media.jpg" alt="Media">
+        </div>
+        <div class="text">
+          <i class="fa-solid fa-photo-film"></i>
+          <div class="title">Media</div>
+        </div>
+      </div>
+      <div class="grid-item" data-page="pages/finance.html">
+        <div class="thumb">
+          <img src="images/thumbs/finance.jpg" alt="Finance">
+        </div>
+        <div class="text">
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+          <div class="title">Finance</div>
+        </div>
+      </div>
+      <div class="grid-item" data-page="pages/gaming.html">
+        <div class="thumb">
+          <img src="images/thumbs/gaming.jpg" alt="Gaming">
+        </div>
+        <div class="text">
+          <i class="fa-solid fa-dice"></i>
+          <div class="title">Gaming</div>
+        </div>
+      </div>
+      <div class="grid-item" data-page="pages/music.html">
+        <div class="thumb">
+          <img src="images/thumbs/music.jpg" alt="Music">
+        </div>
+        <div class="text">
+          <i class="fa-solid fa-music"></i>
+          <div class="title">Music</div>
+        </div>
+      </div>
+      <div class="grid-item" data-page="pages/multiviewer.html">
+        <div class="thumb">
+          <img src="images/thumbs/multiviewer.jpg" alt="Multi-viewer">
+        </div>
+        <div class="text">
+          <i class="fa-solid fa-tv"></i>
+          <div class="title">Multi-viewer</div>
+        </div>
+      </div>
+      <div class="grid-item" data-page="pages/settings.html">
+        <div class="thumb">
+          <img src="images/thumbs/settings.jpg" alt="Settings">
+        </div>
+        <div class="text">
+          <i class="fa-solid fa-gear"></i>
+          <div class="title">Settings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/app.js" defer></script> 
+  <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
 </body>
-<script src="js/app.js" defer></script> 
-<script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
-  
 </html>
