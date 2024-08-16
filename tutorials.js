@@ -81,14 +81,14 @@ function getRows() {
 function up() {
   let rows = getRows();
   deselect(rows[selected]);
-  selected = (selected - 3 + totalCells) % totalCells; // Adjust for 3 columns
+  selected = (selected - 3 + totalCells) % totalCells;
   select(rows[selected]);
 }
 
 function down() {
   let rows = getRows();
   deselect(rows[selected]);
-  selected = (selected + 3) % totalCells; // Adjust for 3 columns
+  selected = (selected + 3) % totalCells;
   select(rows[selected]);
 }
 
