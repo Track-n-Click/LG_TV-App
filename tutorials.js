@@ -1,10 +1,9 @@
-let selected = 0;
-let totalCells = 9; // Assuming 3 rows and 3 columns (9 cells)
+let selectedIndex = 0;
+const totalCells = 9; // Assuming 3 rows and 3 columns (9 cells)
 
 window.addEventListener("load", async () => {
   try {
     await senza.init();
-
     updateVideos();
 
     senza.remotePlayer.addEventListener("ended", () => {
@@ -13,50 +12,58 @@ window.addEventListener("load", async () => {
 
     senza.uiReady();
   } catch (error) {
-    console.error(error);
+    console.error("Error initializing:", error);
   }
 });
 
-let selectedUrl = "";
-
 function updateVideos() {
+  const table = document.getElementById("table"); // Assuming 'table' is an element ID
   table.innerHTML = ""; // Clear the table before updating
+  if (videos.length === 0) return; // Avoid updating if there are no videos
   videos.forEach((video, index) => {
-    let rowClass = index === selected ? "row selected" : "row";
-    table.innerHTML += `<div class="${rowClass}" onclick="setSelectedUrl('${video.url}')">
-      <div class="thumb">
-        <img src="${video.thumb}">
-      </div>
-      
-      <div class="text">
-        <i class="${video.iconClass}"></i>
-        <div class="title">${video.title}</div>
-      </div>
-    </div>`;
+    const rowClass = index === selectedIndex ? "row selected" : "row";
+    table.innerHTML += `
+      <div class="${rowClass}" data-url="${video.url}">
+        <div class="thumb">
+          <img src="${video.thumb}">
+        </div>
+        <div class="text">
+          <i class="${video.iconClass}"></i>
+          <div class="title">${video.title}</div>
+        </div>
+      </div>`;
   });
+  updateSelection(selectedIndex); // Ensure the correct row is selected
 }
 
-function setSelectedUrl(url) {
-  selectedUrl = url;
-  console.log("Selected URL:", selectedUrl);
+function updateSelection(index) {
+  const rows = getRows();
+  if (rows.length === 0) return;
+  deselect(rows[selectedIndex]);
+  selectedIndex = Math.max(0, Math.min(index, rows.length - 1)); // Ensure index is within bounds
+  select(rows[selectedIndex]);
+  selectedUrl = videos[selectedIndex].url; // Update selected URL
 }
 
 function redirect(url) {
   if (url.endsWith(".html")) {
     window.location.href = url;
   } else {
-    window.open(url, "_blank");
+    window.location.href = url;
   }
 }
 
 function goBack() {
+  console.log("Going back");
   window.history.back();
 }
 
-document.addEventListener("keydown", async function (event) {
+document.addEventListener("keydown", async (event) => {
+  console.log("Key pressed:", event.key);
   switch (event.key) {
     case "Enter":
       if (selectedUrl) {
+        console.log("Redirecting to:", selectedUrl);
         redirect(selectedUrl);
       }
       break;
@@ -64,16 +71,16 @@ document.addEventListener("keydown", async function (event) {
       goBack();
       break;
     case "ArrowUp":
-      up();
+      navigate(-3);
       break;
     case "ArrowDown":
-      down();
+      navigate(3);
       break;
     case "ArrowLeft":
-      left();
+      navigate(-1);
       break;
     case "ArrowRight":
-      right();
+      navigate(1);
       break;
     default:
       return;
@@ -85,46 +92,24 @@ function getRows() {
   return Array.from(document.getElementsByClassName("row"));
 }
 
-function up() {
-  let rows = getRows();
-  deselect(rows[selected]);
-  selected = (selected - 3 + totalCells) % totalCells;
-  select(rows[selected]);
+function navigate(step) {
+  const rows = getRows();
+  if (rows.length === 0) return;
+  const newIndex = (selectedIndex + step + totalCells) % totalCells; // Wrap around
+  updateSelection(newIndex);
+  scrollToMiddle(rows[selectedIndex]);
 }
 
-function down() {
-  let rows = getRows();
-  deselect(rows[selected]);
-  selected = (selected + 3) % totalCells;
-  select(rows[selected]);
+function select(row) {
+  row.classList.add("selected");
 }
 
-function left() {
-  let rows = getRows();
-  deselect(rows[selected]);
-  selected = (selected - 1 + totalCells) % totalCells;
-  select(rows[selected]);
+function deselect(row) {
+  row.classList.remove("selected");
 }
 
-function right() {
-  let rows = getRows();
-  deselect(rows[selected]);
-  selected = (selected + 1) % totalCells;
-  select(rows[selected]);
-}
-
-function select(link) {
-  link.classList.add("selected");
-  scrollToMiddle(link);
-  // console.log("Selected: " + link.innerHTML);
-}
-
-function deselect(link) {
-  link.classList.remove("selected");
-}
-
-function scrollToMiddle(link) {
-  link.scrollIntoView({
+function scrollToMiddle(element) {
+  element.scrollIntoView({
     behavior: "smooth",
     block: "center",
     inline: "center",
@@ -134,20 +119,20 @@ function scrollToMiddle(link) {
 async function toggleVideo() {
   const currentState = await senza.lifecycle.getState();
   if (
-    currentState == "background" ||
-    currentState == "inTransitionToBackground"
+    currentState === "background" ||
+    currentState === "inTransitionToBackground"
   ) {
     senza.lifecycle.moveToForeground();
   } else {
-    await playVideo(videos[selected].url);
+    await playVideo(videos[selectedIndex].url);
   }
 }
 
 async function playVideo(url) {
   try {
     await senza.remotePlayer.load(url);
+    senza.remotePlayer.play();
   } catch (error) {
-    console.log("Couldn't load remote player.");
+    console.error("Couldn't load remote player:", error);
   }
-  senza.remotePlayer.play();
 }
