@@ -5,29 +5,99 @@
 
 body {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin: 0;
-  background-color: white;
+  background-color: black;
+  overflow: scroll;
+}
+
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#loader img {
+  width: 100px;
+  margin-bottom: 20px;
+}
+
+#progress-bar-container {
+  width: 80px;
+  background-color: #333;
+  height: 8px;
+  border-radius: 5px;
   overflow: hidden;
+}
+
+#progress-bar {
+  width: 0;
+  height: 100%;
+  background-color: #dd002c;
+  transition: width 5s linear;
+}
+
+#main {
+  display: none;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: scroll;
 }
 
 #main {
   position: relative;
   width: 100%;
-  height: 100vh;
   background-color: black;
   color: white;
   text-align: left;
 }
 
+#hero-container {
+  width: 90%;
+  height: 400px;
+  background: linear-gradient(to bottom, rgb(49, 0, 0), black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgb(57, 57, 57);
+  border-radius: 30px;
+  margin: auto;
+  margin-top: 30px;
+}
+
+#home-hero {
+  height: 400px;
+  background-image: url("thumbs/cover.png");
+  background-size: 40% auto;
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 table {
   padding: 50px 100px;
   width: 100%;
-  height: 100vh;
+  height: 50vh;
   margin: auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns of equal width */
-  grid-gap: 20px; /* Spacing between cells */
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
 }
 
 .row {
@@ -35,21 +105,20 @@ table {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
   border-radius: 5px;
 }
 
 .thumb {
   position: relative;
   width: 100%;
-  height: 230px;
+  height: 180px;
   text-align: center;
-  vertical-align: middle;
+  /* vertical-align: middle; */
   background: linear-gradient(
     60deg,
     rgba(2, 0, 36, 1) 0%,
     rgba(121, 9, 38, 1) 39%,
-    rgba(255, 0, 89, 1) 100%
+    rgb(255, 0, 81) 100%
   );
   transition: background 2s ease;
   border-radius: 20px;
@@ -85,17 +154,18 @@ table {
 }
 
 .title {
-  font: 15pt "Montserrat";
+  font: 12pt "Montserrat";
   font-weight: bold;
+  color: #474747;
   transition: color 0.4s ease, margin 0.4s ease, transform 0.4s ease;
   margin-top: -50px;
 }
 
 i {
-  font-size: 50px;
+  font-size: 40px;
   color: rgb(255, 255, 255);
   position: relative;
-  top: -150px;
+  top: -130px;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 

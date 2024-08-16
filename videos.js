@@ -20,7 +20,7 @@ const videos = [
   {
     id: "sample-app",
     thumb: "thumbs/gaming.jpg",
-    url: "https://www.ayozat.com",
+    url: "gaming.html",
     title: "Gaming",
     description:
       "This video tutorial shows how to write an app that plays two videos, one picture-in-picture and the other fullscreen, with animations to switch them back and forth.",
@@ -29,7 +29,7 @@ const videos = [
   {
     id: "zoom",
     thumb: "thumbs/music.jpg",
-    url: "newPage.html",
+    url: "https://www.ayozat.com/music",
     title: "Music",
     description:
       "This video tutorial shows how to write an app that plays two videos, one picture-in-picture and the other fullscreen, with animations to switch them back and forth.",

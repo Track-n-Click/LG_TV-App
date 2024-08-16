@@ -1,5 +1,5 @@
 let selectedIndex = 0;
-const totalCells = 9; // Assuming 3 rows and 3 columns (9 cells)
+const totalCells = 20; // Assuming 3 rows and 3 columns (9 cells)
 
 window.addEventListener("load", async () => {
   try {
@@ -40,9 +40,9 @@ function updateSelection(index) {
   const rows = getRows();
   if (rows.length === 0) return;
   deselect(rows[selectedIndex]);
-  selectedIndex = Math.max(0, Math.min(index, rows.length - 1)); // Ensure index is within bounds
+  selectedIndex = Math.max(0, Math.min(index, rows.length - 1));
   select(rows[selectedIndex]);
-  selectedUrl = videos[selectedIndex].url; // Update selected URL
+  selectedUrl = videos[selectedIndex].url;
 }
 
 function redirect(url) {
@@ -95,7 +95,7 @@ function getRows() {
 function navigate(step) {
   const rows = getRows();
   if (rows.length === 0) return;
-  const newIndex = (selectedIndex + step + totalCells) % totalCells; // Wrap around
+  const newIndex = (selectedIndex + step + totalCells) % totalCells;
   updateSelection(newIndex);
   scrollToMiddle(rows[selectedIndex]);
 }
@@ -136,3 +136,13 @@ async function playVideo(url) {
     console.error("Couldn't load remote player:", error);
   }
 }
+
+window.addEventListener("load", function () {
+  // Start the progress bar animation
+  const progressBar = document.getElementById("progress-bar");
+  progressBar.style.width = "100%";
+  setTimeout(function () {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("main").style.display = "block";
+  }, 4000);
+});
