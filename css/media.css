@@ -7,41 +7,71 @@ body {
 }
 
 #video-grid-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
     padding: 50px 0;
     width: 90%;
     margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 50px; /* Space between sections */
+}
+
+.media-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    font-size: 24pt;
+    color: #ffffff;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 10px;
+    padding-left: 5%;
+}
+
+.video-row {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    width: 100%;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+}
+
+.video-row::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for better UI */
 }
 
 .video-tile {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    background: linear-gradient(60deg, rgba(2, 0, 36, 1) 0%, rgba(121, 9, 38, 1) 39%, rgb(255, 0, 81) 100%);
-    transition: background 0.4s ease, transform 0.4s ease;
-    overflow: hidden;
+    justify-content: space-between;
+    border-radius: 15px;
+    background: #333;
+    transition: transform 0.4s ease;
     cursor: pointer;
-    width: 300px;
-    height: 200px;
+    width: 180px;
+    height: 270px;
     text-align: center;
+    padding: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    flex: 0 0 auto; /* Ensure tiles don't shrink or grow */
 }
 
 .video-tile.selected {
-    transform: scale(1.05);
-    border: 2px solid rgb(251, 251, 251);
+    transform: scale(1.1);
+    border: 2px solid #ff0051;
 }
 
 .video-tile img {
     width: 100%;
-    height: 100px;
+    height: 180px;
     object-fit: cover;
-    border-radius: 20px;
-    opacity: 0.8;
+    border-radius: 10px;
+    opacity: 0.9;
     transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
@@ -51,7 +81,7 @@ body {
 }
 
 .video-tile .title {
-    font-size: 16pt;
+    font-size: 14pt;
     font-weight: bold;
     color: #ffffff;
     margin-top: 10px;
@@ -59,5 +89,5 @@ body {
 }
 
 .video-tile.selected .title {
-    color: rgba(255, 0, 89, 1);
+    color: #ff0051;
 }
