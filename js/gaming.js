@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
       case "Enter":
         openSelectedGame();
         break;
+      case "Escape":
+        goBack();
+        break;
     }
   });
 
@@ -81,3 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
+function goBack() {
+  window.history.back();
+}

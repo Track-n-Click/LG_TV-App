@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Gamedev Canvas Workshop</title>
+    <title>Walls Game</title>
     <style>
       * {
         padding: 0;
@@ -120,6 +120,9 @@
               height: 10,
               dir: dir,
             });
+            break;
+          case 27: // ESC
+            goBack();
             break;
         }
       };
@@ -275,6 +278,10 @@
           loop();
         });
       })();
+
+      function goBack() {
+        window.history.back();
+      }
     </script>
   </body>
 </html>
