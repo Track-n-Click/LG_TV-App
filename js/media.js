@@ -1,24 +1,39 @@
 import { fetchMovies, fetchTVSeries, fetchTVChannels } from './mediaService.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Fetch and display movies
+    displayPlaceholders('movie-row');
     const movies = await fetchMovies();
-    displayMediaSection('movie-row', movies);
+    replacePlaceholdersWithData('movie-row', movies);
 
-    // Fetch and display TV series
+    displayPlaceholders('tv-row');
     const tvSeries = await fetchTVSeries();
-    displayMediaSection('tv-row', tvSeries);
+    replacePlaceholdersWithData('tv-row', tvSeries);
 
-    // Fetch and display TV channels
+    displayPlaceholders('channels-row');
     const tvChannels = await fetchTVChannels();
-    displayMediaSection('channels-row', tvChannels);
+    replacePlaceholdersWithData('channels-row', tvChannels);
 
     // Initialize navigation
     initializeMediaNavigation();
 });
 
-function displayMediaSection(rowId, mediaItems) {
+function displayPlaceholders(rowId) {
     const row = document.getElementById(rowId);
+    for (let i = 0; i < 6; i++) {  // Display 6 placeholders per row
+        const placeholder = document.createElement("div");
+        placeholder.classList.add("placeholder-tile");
+        placeholder.innerHTML = `
+            <div class="placeholder-img"></div>
+            <div class="placeholder-title"></div>
+        `;
+        row.appendChild(placeholder);
+    }
+}
+
+function replacePlaceholdersWithData(rowId, mediaItems) {
+    const row = document.getElementById(rowId);
+    row.innerHTML = ''; // Clear placeholders
+
     mediaItems.forEach((item, index) => {
         const tile = document.createElement("div");
         tile.classList.add("video-tile");

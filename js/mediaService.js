@@ -5,6 +5,9 @@ const TV_CHANNELS_API_URL = "https://c-1y15z120-t12c.ayozat.com/api/tv-channels/
 export async function fetchMovies() {
     try {
         const response = await fetch(MOVIES_API_URL);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch movies: ${response.status} ${response.statusText}`);
+        }
         const data = await response.json();
         return data.data;
     } catch (error) {
@@ -16,6 +19,9 @@ export async function fetchMovies() {
 export async function fetchTVSeries() {
     try {
         const response = await fetch(TV_SERIES_API_URL);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch TV series: ${response.status} ${response.statusText}`);
+        }
         const data = await response.json();
         return data.data;
     } catch (error) {
@@ -27,6 +33,9 @@ export async function fetchTVSeries() {
 export async function fetchTVChannels() {
     try {
         const response = await fetch(TV_CHANNELS_API_URL);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch TV channels: ${response.status} ${response.statusText}`);
+        }
         const data = await response.json();
         return data.data;
     } catch (error) {
