@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Page</title>
+    <link rel="stylesheet" href="../css/music.css">
+</head>
+<body>
+    <div id="music-grid-container" class="music-content">
+        <!-- Albums section -->
+        <div id="albums" class="music-section">
+            <h2>Albums</h2>
+            <div id="album-row" class="music-row">
+                <!-- Album items will be injected here by music.js -->
+            </div>
+        </div>
+
+        <!-- Latest Songs section -->
+        <div id="latest-songs" class="music-section">
+            <h2>Latest Songs</h2>
+            <div id="latest-songs-row" class="music-row">
+                <!-- Latest songs will be injected here by music.js -->
+            </div>
+        </div>
+
+        <!-- Most Played Songs section -->
+        <div id="most-played-songs" class="music-section">
+            <h2>Most Played Songs</h2>
+            <div id="most-played-songs-row" class="music-row">
+                <!-- Most played songs will be injected here by music.js -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/musicService.js"></script>
+    <script type="module" src="../js/music.js"></script>
+    <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+</body>
+</html>
