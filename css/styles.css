@@ -8,7 +8,7 @@ body {
   height: 100%;
   margin: 0;
   background-color: black;
-  overflow: hidden;
+  overflow: scroll;
   font-family: Montserrat, sans-serif;
 }
 
@@ -71,16 +71,17 @@ body {
   background-repeat: no-repeat;
   width: 100%;
   position: absolute;
-  top: 0;
+  top: 10;
   left: 0;
 }
 
 #grid-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 cards per row */
   gap: 20px;
-  padding: 50px 100px;
+  padding-top: 50px !important;
   width: 90%;
+  padding: 10px;
   margin: auto;
 }
 
@@ -99,14 +100,14 @@ body {
   transition: background 0.4s ease, transform 0.4s ease;
   overflow: hidden;
   cursor: pointer;
-  width: 300px; /* Increased width */
-  height: 200px; /* Increased height */
+  width: 100%;
+  height: 200px;
   text-align: center;
 }
 
 .grid-item.selected {
   transform: scale(1.05);
-  border: 2px solid rgb(251, 251, 251);
+  border: 1px solid rgba(251, 251, 251, 0.492);
 }
 
 .grid-item .thumb {
@@ -144,7 +145,7 @@ body {
 
 .grid-item .title {
   font-size: 16pt; /* Increased font size for larger tiles */
-  font-weight: bold;
+  font-weight: 500;
   color: #ffffff;
   transition: color 0.4s ease, transform 0.4s ease;
 }
@@ -164,10 +165,11 @@ body {
   opacity: 0;
   transform: translateY(-20px);
 }
+
 #settings-button {
-  position: fixed;
-  top: 20px;
-  right: 20px;
+  position: absolute;
+  top: 5%;
+  right: 6%;
   background-color: rgba(255, 0, 89, 0.8);
   padding: 10px;
   border-radius: 50%;
@@ -179,12 +181,12 @@ body {
 
 #settings-button.selected {
   transform: scale(1.05);
-  border: 2px solid white;
+  border: 1px solid white;
 }
 
 #settings-button i {
   color: white;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .section {

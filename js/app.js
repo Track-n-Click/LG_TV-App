@@ -7,12 +7,11 @@ window.addEventListener("load", async () => {
     await senza.init();
     initializeTiles();
 
-    // Hide the loader and display the main content after the initialization is complete
     document.getElementById("progress-bar").style.width = "100%";
     setTimeout(function () {
       document.getElementById("loader").style.display = "none";
       document.getElementById("main").style.display = "block";
-    }, 1);
+    }, 3);
 
     senza.remotePlayer.addEventListener("ended", () => {
       senza.lifecycle.moveToForeground();
