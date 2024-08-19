@@ -22,7 +22,7 @@ body {
 }
 
 h2 {
-  font-size: 24pt;
+  font-size: 20pt;
   color: #ffffff;
   text-align: left;
   width: 100%;
@@ -62,7 +62,7 @@ h2 {
 
 .video-tile.selected {
   transform: scale(1.1);
-  border: 1px solid #ff0051;
+  border: 1px solid #ff00515a;
 }
 
 .video-tile img {
@@ -83,7 +83,7 @@ h2 {
   font-size: 10pt;
   font-weight: bold;
   color: #ffffff98;
-  margin-top: 10px;
+  margin-top: 20px;
   transition: color 0.4s ease, transform 0.4s ease;
 }
 
