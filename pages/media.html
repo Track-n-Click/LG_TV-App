@@ -10,6 +10,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
   </head>
 
   <body>
@@ -23,28 +24,32 @@
     <!-- NavBar -->
     <div class="navbar">
       <div class="navbar-container" id="navbar-container">
-        <div class="logo-container">
-          <a href="index.html">
-            <img
-              class="logo"
-              src="../images/AyozatStreamwhite.png"
-              alt="Logo"
-            />
-          </a>
-        </div>
-        <div class="menu-container">
-          <ul class="menu-list">
-            <li class="menu-list-item">
+          <div class="menu-list">
+            <div class="menu-list-item">
+              <div class="logo-container">
+                <a href="index.html">
+                  <img
+                    class="logo"
+                    src="../images/AyozatStreamwhite.png"
+                    alt="Logo"
+                  />
+                </a>
+              </div>
+            </div>
+            <div class="menu-middle">
+            <div class="menu-list-item">
               <i class="fa-solid fa-magnifying-glass"></i>
-            </li>
-            <li class="menu-list-item active">
+            </div>
+            <div class="menu-list-item">
               <i class="fa-solid fa-house"></i>
-            </li>
-            <li class="menu-list-item"><i class="fa-solid fa-gear"></i></li>
-          </ul>
+            </div>
+            <div class="menu-list-item">
+              <i class="fa-solid fa-gear"></i>
+            </div>
+            </div>
+            <div class="menu-list-item"><div class="profile-container" id="profile-container"></div></i></div>
         </div>
-        <div class="profile-container" id="profile-container"></div>
-      </div>
+        </div>
     </div>
 
     <!-- Login Modal -->
@@ -82,16 +87,16 @@
     </div>
 
     <!-- Home Hero Slider -->
-    <!-- <div class="swiper-main">
+    <div class="swiper-main">
       <div class="swiper">
         <div class="swiper-container swiper-container-hero">
           <div class="swiper-back-dot"></div>
-          <div class="swiper-wrapper swiper-hero">
+          <div class="swiper-wrapper swiper-hero" id="swiper-wrapper">
           </div>
           <div class="swiper-pagination"></div>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div id="video-grid-container" class="media-content">
       <!-- TV Channels section -->
@@ -120,6 +125,7 @@
     </div>
 
     <script type="module" src="../js/mediaService.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script type="module" src="../js/media.js"></script>
     <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
   </body>

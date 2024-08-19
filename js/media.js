@@ -1,4 +1,9 @@
-import { fetchMovies, fetchTVSeries, fetchTVChannels } from "./mediaService.js";
+import {
+  fetchMovies,
+  fetchTVSeries,
+  fetchTVChannels,
+  fetchSliders,
+} from "./mediaService.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   setTimeout(async () => {
@@ -14,10 +19,62 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tvSeries = await fetchTVSeries();
     replacePlaceholdersWithData("tv-row", tvSeries);
 
-    // Initialize navigation
     initializeMediaNavigation();
+    const sliders = await fetchSliders();
+    createSliders(sliders);
+
+    initializeSwiperHero();
   }, 1000);
 });
+
+function initializeSwiperHero() {
+  var swiper = new Swiper(".swiper-container-hero", {
+    effect: "coverflow",
+    grabCursor: false,
+    centeredSlides: true,
+    slidesPerView: 2,
+    coverflowEffect: {
+      rotate: 10,
+      stretch: 10,
+      depth: 110,
+      modifier: 5,
+      slideShadows: true,
+    },
+    loop: true,
+    // navigation: {
+    //   nextEl: ".swiper-button-next",
+    //   prevEl: ".swiper-button-prev",
+    // },
+    pagination: {
+      el: ".swiper-pagination",
+    },
+    autoplay: {
+      delay: 2000,
+      disableOnInteraction: true,
+    },
+  });
+}
+
+function createSliders(sliders) {
+  const sliderList = document.querySelector(".swiper-wrapper");
+
+  // Iterate over the movie data and create movie cards dynamically
+  sliders.forEach((slide) => {
+    const slideItem = document.createElement("div");
+    slideItem.className = "swiper-slide";
+
+    slideItem.innerHTML = `
+      <img class="imgCarousal" src="${slide.banner}" alt="${slide.title}"/>
+      <div class="slider-info">
+      <h1 class="slider-title">${slide.title}</h1>
+      <p class="slider-description">${slide.description}</p>
+      <button class="slider-button">Watch Now</button></div>
+      
+    `;
+
+    sliderList.appendChild(slideItem);
+  });
+}
 
 // Loader functionality
 window.addEventListener("load", function () {
@@ -64,10 +121,11 @@ function initializeMediaNavigation() {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
   const mediaSections = [
+    "navbar-container",
+    "swiper-wrapper",
+    "channels-row",
     "movie-row",
     "tv-row",
-    "channels-row",
-    // "navbar-container",
   ];
 
   if (mediaSections.length > 0) {
@@ -106,7 +164,9 @@ function initializeMediaNavigation() {
     const currentRow = document.getElementById(
       mediaSections[selectedSectionIndex]
     );
-    const currentTiles = currentRow.querySelectorAll(".video-tile");
+    const currentTiles = currentRow.querySelectorAll(
+      ".video-tile, .menu-list-item, .swiper-slide"
+    );
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -118,7 +178,9 @@ function initializeMediaNavigation() {
     selectedItemIndex = 0; // Reset item index to 0 when moving to a new section
 
     const newRow = document.getElementById(mediaSections[selectedSectionIndex]);
-    const newTiles = newRow.querySelectorAll(".video-tile");
+    const newTiles = newRow.querySelectorAll(
+      ".video-tile, .menu-list-item, .swiper-slide"
+    );
 
     if (newTiles.length > 0) {
       newTiles[selectedItemIndex].classList.add("selected");
@@ -130,7 +192,9 @@ function initializeMediaNavigation() {
     const currentRow = document.getElementById(
       mediaSections[selectedSectionIndex]
     );
-    const currentTiles = currentRow.querySelectorAll(".video-tile");
+    const currentTiles = currentRow.querySelectorAll(
+      ".video-tile, .menu-list-item"
+    );
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -207,43 +271,63 @@ document.addEventListener("DOMContentLoaded", function () {
     if (isLoggedIn) {
       const profileIcon = document.createElement("i");
       profileIcon.className = "fa-regular fa-user";
+      profileIcon.tabIndex = 0; // Make the icon focusable
       profileContainer.appendChild(profileIcon);
 
       submenu.innerHTML = ""; // Clear existing submenu items
 
       const logoutItem = document.createElement("div");
       logoutItem.className = "submenu-item";
+      logoutItem.tabIndex = 0; // Make the item focusable
       logoutItem.innerText = "Logout";
-      logoutItem.onclick = logout;
+      logoutItem.onkeypress = function (e) {
+        if (e.key === "Enter") logout();
+      };
 
       const profileItem = document.createElement("div");
       profileItem.className = "submenu-item";
+      profileItem.tabIndex = 0; // Make the item focusable
       profileItem.innerText = "Profile";
-      // profileItem.onclick = logout;
+      // Add event handler for Profile if needed
 
       submenu.appendChild(profileItem);
       submenu.appendChild(logoutItem);
 
       profileContainer.appendChild(submenu);
-      profileContainer.onclick = toggleSubmenu;
+      profileContainer.onkeypress = function (e) {
+        if (e.key === "Enter") toggleSubmenu();
+      };
     } else {
       const loginButton = document.createElement("button");
       loginButton.className = "login-button";
+      loginButton.tabIndex = 0;
       loginButton.innerText = "LOGIN";
-      loginButton.onclick = openLoginModal;
+      loginButton.onkeypress = function (e) {
+        if (e.key === "Enter") openLoginModal();
+      };
       profileContainer.appendChild(loginButton);
     }
   }
 
   // Open login modal
   function openLoginModal() {
+    console.log("Opened");
     loginModal.style.display = "block";
   }
 
-  // Close login modal
-  closeModal.onclick = function () {
-    loginModal.style.display = "none";
+  // Close login modal with Escape key
+  closeModal.onkeypress = function (e) {
+    if (e.key === "Enter" || e.key === "Escape") {
+      loginModal.style.display = "none";
+    }
   };
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      loginModal.style.display = "none";
+      submenu.style.display = "none";
+    }
+  });
 
   // Logout function
   function logout() {
@@ -269,7 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
 
     // Mock login: just save username in local storage
-    const username = document.getElementById("email").value;
+    const email = document.getElementById("email").value;
     localStorage.setItem("user", email);
 
     loginModal.style.display = "none"; // Close modal
