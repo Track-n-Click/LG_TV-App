@@ -116,31 +116,34 @@ body::-webkit-scrollbar {
 
 .grid-item .thumb {
   width: 100%;
-  height: 150px; /* Increased height */
+  height: 100%;
   background-color: #000;
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 10px;
   position: relative;
-  display: none; /* Hide the thumbnail by default */
+  display: none;
+  z-index: 1;
 }
 
 .grid-item.selected .thumb {
-  display: block; /* Show the thumbnail only when selected */
-  height: 300px;
+  display: block;
+  position: absolute;
+  height: 120%;
 }
 
 .grid-item .thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.8;
+  opacity: 0.7;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.grid-item.selected .thumb img {
+.grid-item.selected {
   opacity: 1;
   transform: scale(1.05);
+  z-index: 10;
 }
 
 .grid-item .text {
@@ -148,8 +151,33 @@ body::-webkit-scrollbar {
   color: #ffffff;
 }
 
+.grid-item .overlay {
+  display: none;
+}
+
+.grid-item.selected .overlay {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(49, 0, 0, 0), black);
+  z-index: 2;
+  position: absolute;
+  pointer-events: none;
+}
+
+.grid-item.selected .text {
+  z-index: 200 !important;
+  color: rgb(255, 255, 255);
+  margin-top: 70px;
+}
+
+.grid-item.selected .title {
+  color: #7b7b7b;
+  font-size: 15px;
+}
+
 .grid-item .title {
-  font-size: 15pt; /* Increased font size for larger tiles */
+  font-size: 12pt; /* Increased font size for larger tiles */
   font-weight: 500;
   margin-top: 10px;
   color: #ffffff;
@@ -163,10 +191,6 @@ body::-webkit-scrollbar {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.grid-item.selected .title {
-  color: rgba(255, 0, 89, 1);
-}
-
 .grid-item.selected i {
   opacity: 0;
   transform: translateY(-20px);
@@ -176,18 +200,19 @@ body::-webkit-scrollbar {
   position: absolute;
   top: 5%;
   right: 6%;
-  background-color: rgba(255, 0, 89, 0.8);
+  background-color: rgba(255, 0, 89, 0);
   padding: 10px;
   border-radius: 50%;
   cursor: pointer;
   z-index: 1000;
   transition: transform 0.3s ease, border 0.3s ease;
-  border: none;
+  border: 1px solid rgba(130, 130, 130, 0.763);
 }
 
 #settings-button.selected {
   transform: scale(1.05);
-  border: 1px solid white;
+  border: 2px solid white;
+  color: #dd002c !important;
 }
 
 #settings-button i {
