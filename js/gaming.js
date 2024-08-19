@@ -1,10 +1,12 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const gameCards = document.querySelectorAll(".game-card");
+  const gameTitle = document.getElementById("game-title");
   let currentIndex = 0;
 
   if (gameCards.length > 0) {
     // Initially focus on the first card
     gameCards[currentIndex].classList.add("selected");
+    updateTitle(gameCards[currentIndex]);
   }
 
   document.addEventListener("keydown", (e) => {
@@ -33,13 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function navigate(step) {
     if (gameCards.length > 0) {
       gameCards[currentIndex].classList.remove("selected");
-      currentIndex =
-        (currentIndex + step + gameCards.length) % gameCards.length;
+      currentIndex = (currentIndex + step + gameCards.length) % gameCards.length;
       gameCards[currentIndex].classList.add("selected");
       gameCards[currentIndex].scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
+      updateTitle(gameCards[currentIndex]);
     }
   }
 
@@ -50,30 +52,27 @@ document.addEventListener("DOMContentLoaded", () => {
       const newIndex = currentIndex + step * cols;
       if (newIndex >= 0 && newIndex < gameCards.length) {
         currentIndex = newIndex;
-        gameCards[currentIndex].classList.add("selected");
-        gameCards[currentIndex].scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
       } else {
-        // Wrap around if at the end of the row
-        if (step > 0) {
-          currentIndex = Math.min(gameCards.length - 1, currentIndex + step);
-        } else {
-          currentIndex = Math.max(0, currentIndex + step);
-        }
-        gameCards[currentIndex].classList.add("selected");
-        gameCards[currentIndex].scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
+        // Wrap around if at the edge of the grid
+        currentIndex = step > 0 ? Math.min(gameCards.length - 1, currentIndex + cols) : Math.max(0, currentIndex - cols);
       }
+      gameCards[currentIndex].classList.add("selected");
+      gameCards[currentIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      updateTitle(gameCards[currentIndex]);
     }
+  }
+
+  function updateTitle(card) {
+    const newTitle = card.getAttribute("data-title");
+    gameTitle.textContent = newTitle;
   }
 
   function getNumberOfColumns() {
     const cardWidth = gameCards[0].offsetWidth;
-    const gridWidth = document.querySelector(".grid2-container").offsetWidth;
+    const gridWidth = document.querySelector("#grid2-container").offsetWidth;
     return Math.floor(gridWidth / cardWidth);
   }
 
@@ -83,11 +82,33 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = selectedCard.getAttribute("href");
     }
   }
-});
 
-function goBack() {
-  window.history.back();
-}
+  function goBack() {
+    window.history.back();
+  }
+
+  try {
+    // Initialize senza and UI
+    await senza.init();
+    initializeTiles();
+
+    senza.remotePlayer.addEventListener("ended", () => {
+      senza.lifecycle.moveToForeground();
+    });
+
+    senza.uiReady();
+
+    // Loader and progress bar functionality
+    const progressBar = document.getElementById("progress-bar");
+    progressBar.style.width = "100%";
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("main").style.display = "block";
+    }, 4000); // Adjust timing as needed
+  } catch (error) {
+    console.error("Error initializing:", error);
+  }
+});
 
 window.addEventListener("load", async () => {
   try {
@@ -119,3 +140,4 @@ window.addEventListener("load", function () {
     document.getElementById("main").style.display = "block";
   }, 4000); // Adjust timing as needed
 });
+
