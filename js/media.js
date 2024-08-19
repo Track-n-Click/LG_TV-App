@@ -121,16 +121,24 @@ function initializeMediaNavigation() {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
   const mediaSections = [
-    "navbar-container",
-    "swiper-wrapper",
-    "channels-row",
-    "movie-row",
-    "tv-row",
+    { id: "navbar-container", leftArrow: "", rightArrow: "" },
+    { id: "swiper-wrapper", leftArrow: "", rightArrow: "" },
+    {
+      id: "channels-row",
+      leftArrow: "left-arrow-channels",
+      rightArrow: "right-arrow-channels",
+    },
+    {
+      id: "movie-row",
+      leftArrow: "left-arrow-movies",
+      rightArrow: "right-arrow-movies",
+    },
+    { id: "tv-row", leftArrow: "left-arrow-tv", rightArrow: "right-arrow-tv" },
   ];
 
   if (mediaSections.length > 0) {
     const firstRow = document.getElementById(
-      mediaSections[selectedSectionIndex]
+      mediaSections[selectedSectionIndex].id
     );
     if (firstRow && firstRow.children.length > 0) {
       firstRow.children[selectedItemIndex].classList.add("selected");
@@ -162,7 +170,7 @@ function initializeMediaNavigation() {
 
   function navigateSections(step) {
     const currentRow = document.getElementById(
-      mediaSections[selectedSectionIndex]
+      mediaSections[selectedSectionIndex].id
     );
     const currentTiles = currentRow.querySelectorAll(
       ".video-tile, .menu-list-item, .swiper-slide"
@@ -177,7 +185,9 @@ function initializeMediaNavigation() {
       mediaSections.length;
     selectedItemIndex = 0; // Reset item index to 0 when moving to a new section
 
-    const newRow = document.getElementById(mediaSections[selectedSectionIndex]);
+    const newRow = document.getElementById(
+      mediaSections[selectedSectionIndex].id
+    );
     const newTiles = newRow.querySelectorAll(
       ".video-tile, .menu-list-item, .swiper-slide"
     );
@@ -185,12 +195,13 @@ function initializeMediaNavigation() {
     if (newTiles.length > 0) {
       newTiles[selectedItemIndex].classList.add("selected");
       scrollToSection(newRow);
+      updateArrowVisibility(newRow, newTiles);
     }
   }
 
   function navigateItems(step) {
     const currentRow = document.getElementById(
-      mediaSections[selectedSectionIndex]
+      mediaSections[selectedSectionIndex].id
     );
     const currentTiles = currentRow.querySelectorAll(
       ".video-tile, .menu-list-item"
@@ -203,6 +214,7 @@ function initializeMediaNavigation() {
       currentTiles[selectedItemIndex].classList.add("selected");
 
       scrollToTile(currentRow, currentTiles[selectedItemIndex]);
+      updateArrowVisibility(currentRow, currentTiles);
     }
   }
 
@@ -223,6 +235,25 @@ function initializeMediaNavigation() {
 
     const scrollPosition = tileOffset - rowWidth / 2 + tileWidth / 2;
     row.scrollLeft = scrollPosition;
+  }
+
+  // Function to update the visibility of navigation arrows
+  function updateArrowVisibility(row, tiles) {
+    const currentSection = mediaSections[selectedSectionIndex];
+    const leftArrow = currentSection.leftArrow
+      ? document.getElementById(currentSection.leftArrow)
+      : null;
+    const rightArrow = currentSection.rightArrow
+      ? document.getElementById(currentSection.rightArrow)
+      : null;
+
+    // Check if we are at the start or end of the row
+    const atStart = selectedItemIndex === 0;
+    const atEnd = selectedItemIndex === tiles.length - 1;
+
+    // Show/hide arrows based on position
+    if (leftArrow) leftArrow.style.display = atStart ? "none" : "block";
+    if (rightArrow) rightArrow.style.display = atEnd ? "none" : "block";
   }
 }
 

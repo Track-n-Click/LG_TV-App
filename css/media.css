@@ -460,18 +460,66 @@ h2 {
   margin-bottom: 10px;
 }
 
+.nav-arrow {
+  color: #7b9db4;
+  display: flex;
+  position: absolute;
+  z-index: 20;
+}
+
+.right-arrow {
+  display: none;
+  right: 0;
+  margin-top: 210px;
+  margin-right: 40px;
+}
+
+.left-arrow {
+  left: 0;
+  margin-top: 210px;
+  margin-left: 40px;
+}
+
+.video-row-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden; /* Hide overflow to create the gradient effect */
+}
+
 .video-row {
   display: flex;
   gap: 20px;
   justify-content: flex-start;
   overflow-x: auto;
-  width: 100%;
   padding: 20px;
   scroll-behavior: smooth;
+  position: relative;
 }
 
 .video-row::-webkit-scrollbar {
   display: none; /* Hide scrollbar for better UI */
+}
+
+.video-row-container::before,
+.video-row-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  opacity: 0.9;
+  pointer-events: none; /* Prevent blocking clicks on content */
+  z-index: 1;
+}
+
+.video-row-container::before {
+  left: 0;
+  background: linear-gradient(to right, black, transparent);
+}
+
+.video-row-container::after {
+  right: 0;
+  background: linear-gradient(to left, black, transparent);
 }
 
 .video-tile {
@@ -494,6 +542,8 @@ h2 {
 .video-tile.selected {
   transform: scale(1.1);
   border: 1px solid #ff00515a;
+
+  z-index: 10;
 }
 
 .video-tile img {
