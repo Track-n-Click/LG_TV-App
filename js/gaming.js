@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getNumberOfColumns() {
     const cardWidth = gameCards[0].offsetWidth;
-    const gridWidth = document.querySelector(".games-grid").offsetWidth;
+    const gridWidth = document.querySelector(".grid2-container").offsetWidth;
     return Math.floor(gridWidth / cardWidth);
   }
 
@@ -88,3 +88,34 @@ document.addEventListener("DOMContentLoaded", () => {
 function goBack() {
   window.history.back();
 }
+
+window.addEventListener("load", async () => {
+  try {
+    // Initialize senza and UI
+    await senza.init();
+    initializeTiles();
+
+    document.getElementById("progress-bar").style.width = "100%";
+    setTimeout(function () {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("main").style.display = "block";
+    }, 3);
+
+    senza.remotePlayer.addEventListener("ended", () => {
+      senza.lifecycle.moveToForeground();
+    });
+
+    senza.uiReady();
+  } catch (error) {
+    console.error("Error initializing:", error);
+  }
+});
+// Loader functionality
+window.addEventListener("load", function () {
+  const progressBar = document.getElementById("progress-bar");
+  progressBar.style.width = "100%";
+  setTimeout(function () {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("main").style.display = "block";
+  }, 4000); // Adjust timing as needed
+});
