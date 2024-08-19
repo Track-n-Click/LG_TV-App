@@ -11,7 +11,7 @@ window.addEventListener("load", async () => {
     setTimeout(function () {
       document.getElementById("loader").style.display = "none";
       document.getElementById("main").style.display = "block";
-    }, 3);
+    }, 1000);
 
     senza.remotePlayer.addEventListener("ended", () => {
       senza.lifecycle.moveToForeground();
@@ -167,6 +167,7 @@ function scrollToMiddle(element) {
 function getItems() {
   return Array.from(document.getElementsByClassName("grid-item"));
 }
+
 // Loader functionality
 window.addEventListener("load", function () {
   const progressBar = document.getElementById("progress-bar");

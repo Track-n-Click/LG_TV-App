@@ -1,25 +1,37 @@
 import { fetchMovies, fetchTVSeries, fetchTVChannels } from "./mediaService.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  displayPlaceholders("movie-row");
-  const movies = await fetchMovies();
-  replacePlaceholdersWithData("movie-row", movies);
+  setTimeout(async () => {
+    displayPlaceholders("channels-row");
+    const tvChannels = await fetchTVChannels();
+    replacePlaceholdersWithData("channels-row", tvChannels);
 
-  displayPlaceholders("tv-row");
-  const tvSeries = await fetchTVSeries();
-  replacePlaceholdersWithData("tv-row", tvSeries);
+    displayPlaceholders("movie-row");
+    const movies = await fetchMovies();
+    replacePlaceholdersWithData("movie-row", movies);
 
-  displayPlaceholders("channels-row");
-  const tvChannels = await fetchTVChannels();
-  replacePlaceholdersWithData("channels-row", tvChannels);
+    displayPlaceholders("tv-row");
+    const tvSeries = await fetchTVSeries();
+    replacePlaceholdersWithData("tv-row", tvSeries);
 
-  // Initialize navigation
-  initializeMediaNavigation();
+    // Initialize navigation
+    initializeMediaNavigation();
+  }, 1000);
+});
+
+// Loader functionality
+window.addEventListener("load", function () {
+  const progressBar = document.getElementById("progress-bar");
+  progressBar.style.width = "100%";
+  setTimeout(function () {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("main").style.display = "block";
+  }, 1000);
 });
 
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 7; i++) {
     // Display 6 placeholders per row
     const placeholder = document.createElement("div");
     placeholder.classList.add("placeholder-tile");
@@ -51,7 +63,12 @@ function replacePlaceholdersWithData(rowId, mediaItems) {
 function initializeMediaNavigation() {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
-  const mediaSections = ["movie-row", "tv-row", "channels-row"];
+  const mediaSections = [
+    "movie-row",
+    "tv-row",
+    "channels-row",
+    // "navbar-container",
+  ];
 
   if (mediaSections.length > 0) {
     const firstRow = document.getElementById(
@@ -169,3 +186,95 @@ async function playVideo(url) {
 function goBack() {
   window.history.back();
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const profileContainer = document.getElementById("profile-container");
+  const submenu = document.createElement("div");
+  submenu.className = "submenu";
+  submenu.id = "submenu";
+  profileContainer.appendChild(submenu);
+
+  const loginModal = document.getElementById("login-modal");
+  const closeModal = document.getElementById("close-modal");
+
+  // Check if the user is logged in
+  function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem("user");
+
+    console.log(isLoggedIn);
+    profileContainer.innerHTML = ""; // Clear existing content
+
+    if (isLoggedIn) {
+      const profileIcon = document.createElement("i");
+      profileIcon.className = "fa-regular fa-user";
+      profileContainer.appendChild(profileIcon);
+
+      submenu.innerHTML = ""; // Clear existing submenu items
+
+      const logoutItem = document.createElement("div");
+      logoutItem.className = "submenu-item";
+      logoutItem.innerText = "Logout";
+      logoutItem.onclick = logout;
+
+      const profileItem = document.createElement("div");
+      profileItem.className = "submenu-item";
+      profileItem.innerText = "Profile";
+      // profileItem.onclick = logout;
+
+      submenu.appendChild(profileItem);
+      submenu.appendChild(logoutItem);
+
+      profileContainer.appendChild(submenu);
+      profileContainer.onclick = toggleSubmenu;
+    } else {
+      const loginButton = document.createElement("button");
+      loginButton.className = "login-button";
+      loginButton.innerText = "LOGIN";
+      loginButton.onclick = openLoginModal;
+      profileContainer.appendChild(loginButton);
+    }
+  }
+
+  // Open login modal
+  function openLoginModal() {
+    loginModal.style.display = "block";
+  }
+
+  // Close login modal
+  closeModal.onclick = function () {
+    loginModal.style.display = "none";
+  };
+
+  // Logout function
+  function logout() {
+    localStorage.removeItem("user");
+    checkLoginStatus(); // Update UI after logging out
+  }
+
+  // Toggle submenu visibility
+  function toggleSubmenu() {
+    submenu.style.display =
+      submenu.style.display === "block" ? "none" : "block";
+  }
+
+  // Close the submenu if clicked outside
+  document.addEventListener("click", function (event) {
+    if (!profileContainer.contains(event.target)) {
+      submenu.style.display = "none";
+    }
+  });
+
+  // Handle login form submission
+  document.getElementById("login-form").onsubmit = function (event) {
+    event.preventDefault();
+
+    // Mock login: just save username in local storage
+    const username = document.getElementById("email").value;
+    localStorage.setItem("user", email);
+
+    loginModal.style.display = "none"; // Close modal
+    checkLoginStatus(); // Update UI after logging in
+  };
+
+  checkLoginStatus();
+});

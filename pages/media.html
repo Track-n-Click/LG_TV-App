@@ -1,43 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Media Page</title>
-    <link rel="stylesheet" href="../css/media.css">
-</head>
+    <link rel="stylesheet" href="../css/media.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<body>
+  <body>
+    <div id="loader">
+      <img src="../images/a_logo.png" alt="Loading..." />
+      <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- NavBar -->
+    <div class="navbar">
+      <div class="navbar-container" id="navbar-container">
+        <div class="logo-container">
+          <a href="index.html">
+            <img
+              class="logo"
+              src="../images/AyozatStreamwhite.png"
+              alt="Logo"
+            />
+          </a>
+        </div>
+        <div class="menu-container">
+          <ul class="menu-list">
+            <li class="menu-list-item">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </li>
+            <li class="menu-list-item active">
+              <i class="fa-solid fa-house"></i>
+            </li>
+            <li class="menu-list-item"><i class="fa-solid fa-gear"></i></li>
+          </ul>
+        </div>
+        <div class="profile-container" id="profile-container"></div>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <div class="modal-header">
+          <div class="modal-logo-container">
+            <img src="../images/a_logo.png" alt="" class="modal-logo" />
+          </div>
+          <h2>Welcome back!</h2>
+          <p>Log in and catch up with your favorite things</p>
+        </div>
+        <form id="login-form" class="modal-form">
+          <input
+            type="text"
+            id="email"
+            name="email"
+            required
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Password"
+          />
+          <button type="submit" class="modal-login-button">LOGIN</button>
+          <p class="modal-footer">
+            Scan QR to connect with <span>AyozatTV</span>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Home Hero Slider -->
+    <!-- <div class="swiper-main">
+      <div class="swiper">
+        <div class="swiper-container swiper-container-hero">
+          <div class="swiper-back-dot"></div>
+          <div class="swiper-wrapper swiper-hero">
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div> -->
+
     <div id="video-grid-container" class="media-content">
-        <!-- Movie section -->
-        <div id="movies" class="media-section">
-            <h2>Movies</h2>
-            <div id="movie-row" class="video-row">
-                <!-- Movie items will be injected here by media.js -->
-            </div>
+      <!-- TV Channels section -->
+      <div id="channels" class="media-section">
+        <h2>TV Channels</h2>
+        <div id="channels-row" class="video-row">
+          <!-- TV Channels items will be injected here by media.js -->
         </div>
+      </div>
 
-        <!-- TV Series section -->
-        <div id="tv" class="media-section">
-            <h2>TV Series</h2>
-            <div id="tv-row" class="video-row">
-                <!-- TV Series items will be injected here by media.js -->
-            </div>
+      <!-- Movie section -->
+      <div id="movies" class="media-section">
+        <h2>Movies</h2>
+        <div id="movie-row" class="video-row">
+          <!-- Movie items will be injected here by media.js -->
         </div>
+      </div>
 
-        <!-- TV Channels section -->
-        <div id="channels" class="media-section">
-            <h2>TV Channels</h2>
-            <div id="channels-row" class="video-row">
-                <!-- TV Channels items will be injected here by media.js -->
-            </div>
+      <!-- TV Series section -->
+      <div id="tv" class="media-section">
+        <h2>TV Series</h2>
+        <div id="tv-row" class="video-row">
+          <!-- TV Series items will be injected here by media.js -->
         </div>
+      </div>
     </div>
 
     <script type="module" src="../js/mediaService.js"></script>
     <script type="module" src="../js/media.js"></script>
     <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
-</body>
-
+  </body>
 </html>

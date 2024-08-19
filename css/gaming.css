@@ -9,7 +9,7 @@ body {
 
 #hero-container-gaming {
   width: 90%;
-  height: 400px;
+  height: 300px;
   background: linear-gradient(to bottom, rgb(49, 0, 0), black);
   display: flex;
   align-items: center;
@@ -21,7 +21,7 @@ body {
   margin-top: 30px;
 }
 
-#grid2-container a{
+#grid2-container a {
   /* color: white; */
   text-decoration: none !important;
 }
@@ -43,7 +43,7 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
   gap: 20px;
-  padding-top: 50px !important;
+  padding-top: 100px !important;
   width: 90%;
   padding: 10px;
   margin: auto;
@@ -84,7 +84,6 @@ body {
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 10px;
-
 }
 
 .game-card .text {
@@ -132,7 +131,6 @@ h1 {
   gap: 20px;
   justify-content: center;
 }
-
 
 .game-card .game-title {
   padding: 15px 0;
