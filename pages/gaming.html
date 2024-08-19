@@ -1,33 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>AYOZAT</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Games Gallery</title>
+    <link rel="stylesheet" href="../css/styles.css" />
     <link rel="stylesheet" href="../css/gaming.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
   </head>
+
   <body>
-    <div class="games-gallery">
-      <h1>Games</h1>
-      <div class="games-grid">
-        <a href="./games/snake.html" class="game-card">
-          <img src="../images/gaming/snake.png" alt="Snake Game" />
-          <div class="game-title">Snake</div>
-        </a>
-        <a href="./games/flappy_bird.html" class="game-card">
-          <img
-            src="../images/gaming/flappy_bird.png"
-            alt="Flappy Bird Game"
-          />
-          <div class="game-title">Flappy Bird</div>
-        </a>
-        <a href="./games/walls.html" class="game-card">
-          <img src="../images/gaming/walls.png" alt="Walls Game" />
-          <div class="game-title">Walls</div>
-        </a>
+    <div id="loader">
+      <img src="../images/a_logo.png" alt="Loading..." />
+      <div id="progress-bar-container">
+        <div id="progress-bar"></div>
       </div>
     </div>
+    <div id="main">
+      <div id="hero-container-gaming">
+        <div id="game-hero">
+          <h2 id="game-title">Gaming</h2>
+        </div>
+      </div>
+
+      <div id="grid2-container">
+        <a class="game-card" href="./games/snake.html" data-title="Snake Game">
+          <img src="../images/gaming/snake.png" alt="Snake Game" />
+          <div class="text">
+            <div class="title">Snake</div>
+          </div>
+        </a>
+
+        <a class="game-card" href="./games/flappy_bird.html" data-title="Flappy Bird Game">
+          <img src="../images/gaming/flappy_bird.png" alt="Flappy Bird Game" />
+          <div class="text">
+            <div class="title">Flappy Bird</div>
+          </div>
+        </a>
+
+        <a class="game-card" href="./games/walls.html" data-title="Walls Game">
+          <img src="../images/gaming/walls.png" alt="Walls Game" />
+          <div class="text">
+            <div class="title">Walls</div>
+          </div>
+        </a>
+        <!-- Add more grid items as needed -->
+      </div>
+    </div>
+
+    <!-- <script src="../js/app.js" defer></script>
+    <script src="../js/common.js" defer></script> -->
+    <script src="../js/gaming.js" defer></script>
+    <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
   </body>
-  <script type="module" src="../js/gaming.js"></script>
-  <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
 </html>
