@@ -12,6 +12,10 @@ body {
   font-family: Montserrat, sans-serif;
 }
 
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 #loader {
   position: fixed;
   top: 0;
@@ -123,6 +127,7 @@ body {
 
 .grid-item.selected .thumb {
   display: block; /* Show the thumbnail only when selected */
+  height: 300px;
 }
 
 .grid-item .thumb img {
@@ -139,13 +144,14 @@ body {
 }
 
 .grid-item .text {
-  padding: 10px;
+  padding: 5px;
   color: #ffffff;
 }
 
 .grid-item .title {
-  font-size: 16pt; /* Increased font size for larger tiles */
+  font-size: 15pt; /* Increased font size for larger tiles */
   font-weight: 500;
+  margin-top: 10px;
   color: #ffffff;
   transition: color 0.4s ease, transform 0.4s ease;
 }
