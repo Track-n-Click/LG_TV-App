@@ -41,10 +41,6 @@ function initializeSwiperHero() {
       slideShadows: true,
     },
     loop: true,
-    // navigation: {
-    //   nextEl: ".swiper-button-next",
-    //   prevEl: ".swiper-button-prev",
-    // },
     pagination: {
       el: ".swiper-pagination",
     },
@@ -58,7 +54,6 @@ function initializeSwiperHero() {
 function createSliders(sliders) {
   const sliderList = document.querySelector(".swiper-wrapper");
 
-  // Iterate over the movie data and create movie cards dynamically
   sliders.forEach((slide) => {
     const slideItem = document.createElement("div");
     slideItem.className = "swiper-slide";
@@ -69,33 +64,21 @@ function createSliders(sliders) {
       <h1 class="slider-title">${slide.title}</h1>
       <p class="slider-description">${slide.description}</p>
       <button class="slider-button">Watch Now</button></div>
-      
     `;
 
     sliderList.appendChild(slideItem);
   });
 }
 
-// Loader functionality
-window.addEventListener("load", function () {
-  const progressBar = document.getElementById("progress-bar");
-  progressBar.style.width = "100%";
-  setTimeout(function () {
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("main").style.display = "block";
-  }, 1000);
-});
-
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
   for (let i = 0; i < 7; i++) {
-    // Display 6 placeholders per row
     const placeholder = document.createElement("div");
     placeholder.classList.add("placeholder-tile");
     placeholder.innerHTML = `
-            <div class="placeholder-img"></div>
-            <div class="placeholder-title"></div>
-        `;
+      <div class="placeholder-img"></div>
+      <div class="placeholder-title"></div>
+    `;
     row.appendChild(placeholder);
   }
 }
@@ -108,11 +91,14 @@ function replacePlaceholdersWithData(rowId, mediaItems) {
     const tile = document.createElement("div");
     tile.classList.add("video-tile");
     tile.setAttribute("data-index", index);
-    tile.setAttribute("data-url", item.poster); // Assuming poster is the URL for playback
+    tile.setAttribute("data-url", item.stream_url);
     tile.innerHTML = `
-            <img src="${item.thumbnail}" alt="${item.title}">
-            <div class="title">${item.title || item.name}</div>
-        `;
+      <img src="${item.thumbnail}" alt="${item.title}">
+      <div class="title">${item.title || item.name}</div>
+    `;
+    tile.addEventListener('click', () => {
+      window.location.href = `player.html?title=${encodeURIComponent(item.title || item.name)}&src=${encodeURIComponent(item.stream_url)}`;
+    });
     row.appendChild(tile);
   });
 }
@@ -183,7 +169,7 @@ function initializeMediaNavigation() {
     selectedSectionIndex =
       (selectedSectionIndex + step + mediaSections.length) %
       mediaSections.length;
-    selectedItemIndex = 0; // Reset item index to 0 when moving to a new section
+    selectedItemIndex = 0;
 
     const newRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
@@ -221,7 +207,7 @@ function initializeMediaNavigation() {
   function playSelectedVideo() {
     const selectedTile = document.querySelector(".video-tile.selected");
     const videoUrl = selectedTile.getAttribute("data-url");
-    toggleVideo(videoUrl);
+    window.location.href = `player.html?src=${encodeURIComponent(videoUrl)}`;
   }
 
   function scrollToSection(section) {
@@ -237,7 +223,6 @@ function initializeMediaNavigation() {
     row.scrollLeft = scrollPosition;
   }
 
-  // Function to update the visibility of navigation arrows
   function updateArrowVisibility(row, tiles) {
     const currentSection = mediaSections[selectedSectionIndex];
     const leftArrow = currentSection.leftArrow
@@ -247,149 +232,14 @@ function initializeMediaNavigation() {
       ? document.getElementById(currentSection.rightArrow)
       : null;
 
-    // Check if we are at the start or end of the row
     const atStart = selectedItemIndex === 0;
     const atEnd = selectedItemIndex === tiles.length - 1;
 
-    // Show/hide arrows based on position
     if (leftArrow) leftArrow.style.display = atStart ? "none" : "block";
     if (rightArrow) rightArrow.style.display = atEnd ? "none" : "block";
-  }
-}
-
-async function toggleVideo(url) {
-  const currentState = await senza.lifecycle.getState();
-  if (
-    currentState === "background" ||
-    currentState === "inTransitionToBackground"
-  ) {
-    senza.lifecycle.moveToForeground();
-  } else {
-    await playVideo(url);
-  }
-}
-
-async function playVideo(url) {
-  try {
-    await senza.remotePlayer.load(url);
-    senza.remotePlayer.play();
-  } catch (error) {
-    console.log("Couldn't load remote player.", error);
   }
 }
 
 function goBack() {
   window.history.back();
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  const profileContainer = document.getElementById("profile-container");
-  const submenu = document.createElement("div");
-  submenu.className = "submenu";
-  submenu.id = "submenu";
-  profileContainer.appendChild(submenu);
-
-  const loginModal = document.getElementById("login-modal");
-  const closeModal = document.getElementById("close-modal");
-
-  // Check if the user is logged in
-  function checkLoginStatus() {
-    const isLoggedIn = localStorage.getItem("user");
-
-    console.log(isLoggedIn);
-    profileContainer.innerHTML = ""; // Clear existing content
-
-    if (isLoggedIn) {
-      const profileIcon = document.createElement("i");
-      profileIcon.className = "fa-regular fa-user";
-      profileIcon.tabIndex = 0; // Make the icon focusable
-      profileContainer.appendChild(profileIcon);
-
-      submenu.innerHTML = ""; // Clear existing submenu items
-
-      const logoutItem = document.createElement("div");
-      logoutItem.className = "submenu-item";
-      logoutItem.tabIndex = 0; // Make the item focusable
-      logoutItem.innerText = "Logout";
-      logoutItem.onkeypress = function (e) {
-        if (e.key === "Enter") logout();
-      };
-
-      const profileItem = document.createElement("div");
-      profileItem.className = "submenu-item";
-      profileItem.tabIndex = 0; // Make the item focusable
-      profileItem.innerText = "Profile";
-      // Add event handler for Profile if needed
-
-      submenu.appendChild(profileItem);
-      submenu.appendChild(logoutItem);
-
-      profileContainer.appendChild(submenu);
-      profileContainer.onkeypress = function (e) {
-        if (e.key === "Enter") toggleSubmenu();
-      };
-    } else {
-      const loginButton = document.createElement("button");
-      loginButton.className = "login-button";
-      loginButton.tabIndex = 0;
-      loginButton.innerText = "LOGIN";
-      loginButton.onkeypress = function (e) {
-        if (e.key === "Enter") openLoginModal();
-      };
-      profileContainer.appendChild(loginButton);
-    }
-  }
-
-  // Open login modal
-  function openLoginModal() {
-    console.log("Opened");
-    loginModal.style.display = "block";
-  }
-
-  // Close login modal with Escape key
-  closeModal.onkeypress = function (e) {
-    if (e.key === "Enter" || e.key === "Escape") {
-      loginModal.style.display = "none";
-    }
-  };
-
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      loginModal.style.display = "none";
-      submenu.style.display = "none";
-    }
-  });
-
-  // Logout function
-  function logout() {
-    localStorage.removeItem("user");
-    checkLoginStatus(); // Update UI after logging out
-  }
-
-  // Toggle submenu visibility
-  function toggleSubmenu() {
-    submenu.style.display =
-      submenu.style.display === "block" ? "none" : "block";
-  }
-
-  // Close the submenu if clicked outside
-  document.addEventListener("click", function (event) {
-    if (!profileContainer.contains(event.target)) {
-      submenu.style.display = "none";
-    }
-  });
-
-  // Handle login form submission
-  document.getElementById("login-form").onsubmit = function (event) {
-    event.preventDefault();
-
-    // Mock login: just save username in local storage
-    const email = document.getElementById("email").value;
-    localStorage.setItem("user", email);
-
-    loginModal.style.display = "none"; // Close modal
-    checkLoginStatus(); // Update UI after logging in
-  };
-
-  checkLoginStatus();
-});
