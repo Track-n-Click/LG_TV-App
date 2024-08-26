@@ -43,7 +43,8 @@ function replacePlaceholdersWithData(rowId, musicItems) {
             const tile = document.createElement("div");
             tile.classList.add("music-tile");
             tile.setAttribute("data-index", index);
-            tile.setAttribute("data-url", item.stream_url); // Assuming stream_url is the URL for playback
+            tile.setAttribute("data-title", item.title);
+            tile.setAttribute("data-url", item.stream_url || item.url); // Assuming stream_url or url is the URL for playback
             tile.innerHTML = `
                 <img src="${item.artwork_url}" alt="${item.title}">
                 <div class="title">${item.title}</div>
@@ -54,7 +55,6 @@ function replacePlaceholdersWithData(rowId, musicItems) {
         console.error("Expected an array but received:", musicItems);
     }
 }
-
 
 function initializeMusicNavigation() {
     let selectedSectionIndex = 0;
@@ -127,7 +127,10 @@ function initializeMusicNavigation() {
     function playSelectedMusic() {
         const selectedTile = document.querySelector(".music-tile.selected");
         const musicUrl = selectedTile.getAttribute("data-url");
-        toggleMusic(musicUrl);
+        const musicTitle = selectedTile.getAttribute("data-title");
+
+        // Redirect to the player page with the track's title and URL as query parameters
+        window.location.href = `musicPlayer.html?title=${encodeURIComponent(musicTitle)}&src=${encodeURIComponent(musicUrl)}`;
     }
 
     function scrollToSection(section) {
@@ -142,11 +145,6 @@ function initializeMusicNavigation() {
         const scrollPosition = tileOffset - (rowWidth / 2) + (tileWidth / 2);
         row.scrollLeft = scrollPosition;
     }
-}
-
-async function toggleMusic(url) {
-    // Implement your music playing logic here
-    console.log("Playing music from URL:", url);
 }
 
 function goBack() {
