@@ -4,12 +4,7 @@ const MOST_PLAYED_SONGS_API_URL = "https://c-1y15z120-t12c.ayozat.com/api/most-p
 
 export async function fetchAlbums() {
     try {
-        const response = await fetch(ALBUMS_API_URL, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        });
+        const response = await fetch(ALBUMS_API_URL);
         if (!response.ok) {
             throw new Error(`Failed to fetch albums: ${response.status} ${response.statusText}`);
         }
@@ -23,12 +18,7 @@ export async function fetchAlbums() {
 
 export async function fetchLatestSongs() {
     try {
-        const response = await fetch(LATEST_SONGS_API_URL, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        });
+        const response = await fetch(LATEST_SONGS_API_URL);
         if (!response.ok) {
             throw new Error(`Failed to fetch latest songs: ${response.status} ${response.statusText}`);
         }
@@ -42,12 +32,7 @@ export async function fetchLatestSongs() {
 
 export async function fetchMostPlayedSongs() {
     try {
-        const response = await fetch(MOST_PLAYED_SONGS_API_URL, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        });
+        const response = await fetch(MOST_PLAYED_SONGS_API_URL);
         if (!response.ok) {
             throw new Error(`Failed to fetch most played songs: ${response.status} ${response.statusText}`);
         }

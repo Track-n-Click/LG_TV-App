@@ -8,12 +8,7 @@ const SLIDERS_API_URL = "https://c-1y15z120-t12c.ayozat.com/api/home/slider";
 
 export async function fetchSliders() {
   try {
-    const response = await fetch(SLIDERS_API_URL, {
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      }
-  });
+    const response = await fetch(SLIDERS_API_URL);
     if (!response.ok) {
       throw new Error(
         `Failed to fetch sliders: ${response.status} ${response.statusText}`
@@ -29,12 +24,7 @@ export async function fetchSliders() {
 
 export async function fetchMovies() {
   try {
-    const response = await fetch(MOVIES_API_URL, {
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      }
-  });
+    const response = await fetch(MOVIES_API_URL);
     if (!response.ok) {
       throw new Error(
         `Failed to fetch movies: ${response.status} ${response.statusText}`
@@ -50,12 +40,7 @@ export async function fetchMovies() {
 
 export async function fetchTVSeries() {
   try {
-    const response = await fetch(TV_SERIES_API_URL, {
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      }
-  });
+    const response = await fetch(TV_SERIES_API_URL);
     if (!response.ok) {
       throw new Error(
         `Failed to fetch TV series: ${response.status} ${response.statusText}`
@@ -71,12 +56,7 @@ export async function fetchTVSeries() {
 
 export async function fetchTVChannels() {
   try {
-    const response = await fetch(TV_CHANNELS_API_URL, {
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      }
-  });
+    const response = await fetch(TV_CHANNELS_API_URL);
     if (!response.ok) {
       throw new Error(
         `Failed to fetch TV channels: ${response.status} ${response.statusText}`
