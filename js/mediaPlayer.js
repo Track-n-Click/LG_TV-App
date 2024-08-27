@@ -32,16 +32,16 @@ document.addEventListener("DOMContentLoaded", function () {
     type: "application/x-mpegURL",
   });
 
-  // Setup IMA ads (using same logic as before)
-  const vastTagPreroll = "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=";
+  // Setup IMA ads
+  // const vastTagPreroll = "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=";
 
-  player.ima({
-    adTagUrl: vastTagPreroll,
-    showControlsForAds: true,
-    debug: false,
-  });
+  // player.ima({
+  //   adTagUrl: vastTagPreroll,
+  //   showControlsForAds: true,
+  //   debug: false,
+  // });
 
-  player.ima.initializeAdDisplayContainer();
+  // player.ima.initializeAdDisplayContainer();
 
   player.ready(function() {
     player.play().catch(function(error) {
