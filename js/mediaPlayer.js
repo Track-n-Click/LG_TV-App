@@ -1,12 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
-  const videoTitle = urlParams.get("title");
   const videoSrc = urlParams.get("src");
 
+  if (window.remotePlayer) {
+    try {
+      window.remotePlayer.unload();
+    } catch (error) {
+      console.warn("Failed to unload SDK player:", error);
+    }
+  }
+
+  const sdkVideoElement = document.getElementById('sdk-video-element');
+  if (sdkVideoElement) {
+    sdkVideoElement.remove();
+  }
+  
   const player = videojs("my-video", {
     controls: false, // Hide the default controls
     autoplay: true, // Autoplay the video
-    preload: "auto",
+    preload: "auto", 
+    muted: true, // Mute the video to allow autoplay in most browsers
+    playsinline: true, // Allow inline playback on mobile devices
+    
     controlBar: {
       fullscreenToggle: false, // Hide the fullscreen button (optional)
     },
@@ -18,8 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Setup IMA ads (using same logic as before)
-  const vastTagPreroll =
-    "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=";
+  const vastTagPreroll = "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=";
 
   player.ima({
     adTagUrl: vastTagPreroll,
@@ -29,16 +43,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
   player.ima.initializeAdDisplayContainer();
 
-  // Function to resize video player based on window size
+  player.ready(function() {
+    player.play().catch(function(error) {
+      console.error('Autoplay failed:', error);
+      const playButton = document.createElement('button');
+      playButton.innerText = 'Play';
+      playButton.style.position = 'absolute';
+      playButton.style.top = '50%';
+      playButton.style.left = '50%';
+      playButton.style.transform = 'translate(-50%, -50%)';
+      playButton.addEventListener('click', function() {
+        player.play();
+        playButton.style.display = 'none';
+      });
+      document.body.appendChild(playButton);
+    });
+  });
+
+  // Handle resizing
   function resizeVideoPlayer() {
-    const aspectRatio = 16 / 9; // Assuming 16:9 aspect ratio
+    const aspectRatio = 16 / 9;
     const maxWidth = window.innerWidth;
     const maxHeight = maxWidth / aspectRatio;
 
-    console.log("Initial max width: " + maxWidth);
-    console.log("Initial max height: " + maxHeight);
-
-    // Set dimensions while maintaining aspect ratio
     let newWidth, newHeight;
     if (maxHeight > window.innerHeight) {
       newHeight = window.innerHeight;
@@ -48,13 +75,11 @@ document.addEventListener("DOMContentLoaded", function () {
       newHeight = newWidth / aspectRatio;
     }
 
-    // Update video dimensions
     const videoElement = document.getElementById("my-video");
     videoElement.style.width = `${newWidth - 20}px`;
     videoElement.style.height = `${newHeight - 20}px`;
   }
 
-  // Resize the video player on load and on window resize
   resizeVideoPlayer();
   window.addEventListener("resize", resizeVideoPlayer);
 
