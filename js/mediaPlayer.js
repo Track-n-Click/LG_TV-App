@@ -87,8 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("keydown", function (event) {
     switch (event.key) {
       case "Enter":
-      case " ":
-      case "Spacebar":
         event.preventDefault();
         player.paused() ? player.play() : player.pause();
         break;
