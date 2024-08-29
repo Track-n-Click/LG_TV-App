@@ -1,3 +1,164 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const videoPlayers = document.querySelectorAll(".vp");
+    let currentIndex = 0;
+
+    if (videoPlayers.length > 0) {
+        // Initially focus on the first video player
+        videoPlayers[currentIndex].classList.add("video-active");
+        updateTitle(videoPlayers[currentIndex]);
+    }
+
+    document.addEventListener("keydown", (e) => {
+        switch (e.key) {
+            case "ArrowRight":
+                navigate(1);
+                break;
+            case "ArrowLeft":
+                navigate(-1);
+                break;
+            case "ArrowDown":
+                navigateRow(1);
+                break;
+            case "ArrowUp":
+                navigateRow(-1);
+                break;
+            case "Enter":
+                togglePlayPause();
+                break;
+            case "Escape":
+                goBack();
+                break;
+        }
+    });
+
+    function navigate(step) {
+        if (videoPlayers.length > 0) {
+            videoPlayers[currentIndex].classList.remove("video-active");
+            currentIndex = (currentIndex + step + videoPlayers.length) % videoPlayers.length;
+            videoPlayers[currentIndex].classList.add("video-active");
+            videoPlayers[currentIndex].scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+            updateTitle(videoPlayers[currentIndex]);
+        }
+    }
+
+    function navigateRow(step) {
+        const cols = getNumberOfColumns();
+        if (videoPlayers.length > 0 && cols > 0) {
+            videoPlayers[currentIndex].classList.remove("video-active");
+            const newIndex = currentIndex + step * cols;
+            if (newIndex >= 0 && newIndex < videoPlayers.length) {
+                currentIndex = newIndex;
+            } else {
+                // Wrap around if at the edge of the grid
+                currentIndex = step > 0 ? Math.min(videoPlayers.length - 1, currentIndex + cols) : Math.max(0, currentIndex - cols);
+            }
+            videoPlayers[currentIndex].classList.add("video-active");
+            videoPlayers[currentIndex].scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+            updateTitle(videoPlayers[currentIndex]);
+        }
+    }
+
+    function updateTitle(player) {
+        const titleElement = player.querySelector(".title");
+        if (titleElement) {
+            document.getElementById("game-title").textContent = titleElement.textContent;
+        }
+    }
+
+    function getNumberOfColumns() {
+        const playerWidth = videoPlayers[0].offsetWidth;
+        const gridWidth = document.querySelector(".grid").offsetWidth;
+        return Math.floor(gridWidth / playerWidth);
+    }
+
+    function togglePlayPause() {
+        const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+
+        if (selectedPlayer) {
+            if (document.fullscreenElement) {
+                // Exit full-screen mode
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { /* Firefox */
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE/Edge */
+                    document.msExitFullscreen();
+                }
+
+                // Mute the video when exiting full-screen
+                selectedPlayer.muted = true;
+            } else {
+                // Enter full-screen mode
+                if (selectedPlayer.requestFullscreen) {
+                    selectedPlayer.requestFullscreen();
+                } else if (selectedPlayer.mozRequestFullScreen) { /* Firefox */
+                    selectedPlayer.mozRequestFullScreen();
+                } else if (selectedPlayer.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                    selectedPlayer.webkitRequestFullscreen();
+                } else if (selectedPlayer.msRequestFullscreen) { /* IE/Edge */
+                    selectedPlayer.msRequestFullscreen();
+                }
+
+                // Ensure the video is not muted when entering full-screen
+                selectedPlayer.muted = false;
+            }
+        }
+    }
+
+    // Handle fullscreen changes
+    document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) {
+            // When exiting full-screen mode, mute the video
+            const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+            if (selectedPlayer) {
+                selectedPlayer.muted = true;
+            }
+        }
+    });
+    document.addEventListener("webkitfullscreenchange", () => {
+        if (!document.webkitFullscreenElement) {
+            // When exiting full-screen mode, mute the video
+            const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+            if (selectedPlayer) {
+                selectedPlayer.muted = true;
+            }
+        }
+    });
+    document.addEventListener("mozfullscreenchange", () => {
+        if (!document.mozFullScreenElement) {
+            // When exiting full-screen mode, mute the video
+            const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+            if (selectedPlayer) {
+                selectedPlayer.muted = true;
+            }
+        }
+    });
+    document.addEventListener("MSFullscreenChange", () => {
+        if (!document.msFullscreenElement) {
+            // When exiting full-screen mode, mute the video
+            const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+            if (selectedPlayer) {
+                selectedPlayer.muted = true;
+            }
+        }
+    });
+
+    function goBack() {
+        window.history.back();
+    }
+});
+
+
+
+
 const videoData = {
     "row0": [
       { "id": "vpleft", "title": "MILITARY TV", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/MilitaryChannel.m3u8", "type": "hls" },
