@@ -1,171 +1,216 @@
-const videoUrls = [
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscape.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
-];
+document.addEventListener("DOMContentLoaded", () => {
+    const videoPlayers = document.querySelectorAll(".vp");
+    let currentIndex = 0;
 
-const videoTitles = [
-    "Big Buck Bunny",
-    "Elephants Dream",
-    "Sintel",
-    "Tears of Steel",
-    "For Bigger Blazes",
-    "For Bigger Escape",
-    "For Bigger Fun",
-    "For Bigger Joyrides",
-    "For Bigger Meltdowns",
-    "Subaru Outback",
-    "Volkswagen GTI Review",
-    "We Are Going On Bullrun"
-];
+    if (videoPlayers.length > 0) {
+        // Initially focus on the first video player
+        videoPlayers[currentIndex].classList.add("video-active");
+        updateTitle(videoPlayers[currentIndex]);
+    }
 
-const imageUrl = "../images/a_logo.png"; // Placeholder image URL
+    document.addEventListener("keydown", (e) => {
+        switch (e.key) {
+            case "ArrowRight":
+                navigate(1);
+                break;
+            case "ArrowLeft":
+                navigate(-1);
+                break;
+            case "ArrowDown":
+                navigateRow(1);
+                break;
+            case "ArrowUp":
+                navigateRow(-1);
+                break;
+            case "Enter":
+                togglePlayPause();
+                break;
+            case "Escape":
+                goBack();
+                break;
+        }
+    });
 
-let videos = [];
-let rows = 4;
-let cols = 3;
-let playing = true;
-
-function createVideos() {
-    let main = document.getElementById("main");
-
-    // Get the full viewport dimensions
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-
-    let videoWidth = width / cols;
-    let videoHeight = height / rows;
-
-    main.innerHTML = "";
-    videos = [];
-
-    for (let i = 0; i < rows * cols; i++) {
-        let row = Math.floor(i / cols);
-        let col = i % cols;
-
-        if (row === 1 && col === 1) {
-            // Place an image in the middle (1,1 position for 4x3 grid)
-            let imageContainer = document.createElement("div");
-            imageContainer.style.position = "absolute";
-            imageContainer.style.top = (row * videoHeight) + "px";
-            imageContainer.style.left = (col * videoWidth) + "px";
-            imageContainer.style.width = videoWidth + "px";
-            imageContainer.style.height = videoHeight + "px";
-            imageContainer.style.overflow = "hidden";
-            imageContainer.style.display = "flex";
-            imageContainer.style.justifyContent = "center";
-            imageContainer.style.alignItems = "center";
-            imageContainer.style.backgroundColor = "black";
-
-            let img = document.createElement("img");
-            img.src = imageUrl;
-            img.style.maxWidth = "100%";
-            img.style.maxHeight = "100%";
-            img.style.objectFit = "contain"; // Ensure the image fits without cropping
-
-            imageContainer.appendChild(img);
-            main.appendChild(imageContainer);
-        } else {
-            // Create video elements for all other positions
-            let videoContainer = document.createElement("div");
-            videoContainer.style.position = "absolute";
-            videoContainer.style.top = (row * videoHeight) + "px";
-            videoContainer.style.left = (col * videoWidth) + "px";
-            videoContainer.style.width = videoWidth + "px";
-            videoContainer.style.height = videoHeight + "px";
-            videoContainer.style.overflow = "hidden";
-            videoContainer.style.backgroundColor = "black"; // Adds a black background behind the video
-
-            let video = document.createElement("video");
-            video.style.width = "100%";
-            video.style.height = "100%";
-            video.style.objectFit = "contain"; // Ensure the entire video is visible without cropping
-
-            video.autoplay = "autoplay";
-            video.loop = "loop";
-            video.setAttribute("src", videoUrls[i % videoUrls.length]);
-            video.volume = 0.0;
-            video.load();
-
-            let titleOverlay = document.createElement("div");
-            titleOverlay.innerText = videoTitles[i % videoTitles.length];
-            titleOverlay.style.position = "absolute";
-            titleOverlay.style.bottom = "10px";
-            titleOverlay.style.left = "0";
-            titleOverlay.style.width = "100%";
-            titleOverlay.style.color = "white";
-            titleOverlay.style.textAlign = "center";
-            titleOverlay.style.fontSize = "18px";
-            titleOverlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Semi-transparent black background for the title
-
-            videoContainer.appendChild(video);
-            videoContainer.appendChild(titleOverlay);
-            main.appendChild(videoContainer);
-            videos.push(video);
+    function navigate(step) {
+        if (videoPlayers.length > 0) {
+            videoPlayers[currentIndex].classList.remove("video-active");
+            currentIndex = (currentIndex + step + videoPlayers.length) % videoPlayers.length;
+            videoPlayers[currentIndex].classList.add("video-active");
+            videoPlayers[currentIndex].scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+            updateTitle(videoPlayers[currentIndex]);
         }
     }
 
-    updatePlaying();
-}
-
-function updatePlaying() {
-    videos.forEach((video) => playing ? video.play() : video.pause());
-}
-
-document.addEventListener("keydown", function (event) {
-    switch (event.key) {
-        case "Enter": enter(); break;
-        default: return;
+    function navigateRow(step) {
+        const cols = getNumberOfColumns();
+        if (videoPlayers.length > 0 && cols > 0) {
+            videoPlayers[currentIndex].classList.remove("video-active");
+            const newIndex = currentIndex + step * cols;
+            if (newIndex >= 0 && newIndex < videoPlayers.length) {
+                currentIndex = newIndex;
+            } else {
+                // Wrap around if at the edge of the grid
+                currentIndex = step > 0 ? Math.min(videoPlayers.length - 1, currentIndex + cols) : Math.max(0, currentIndex - cols);
+            }
+            videoPlayers[currentIndex].classList.add("video-active");
+            videoPlayers[currentIndex].scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+            updateTitle(videoPlayers[currentIndex]);
+        }
     }
-    event.preventDefault();
+
+    function updateTitle(player) {
+        const titleElement = player.querySelector(".title");
+        if (titleElement) {
+            document.getElementById("game-title").textContent = titleElement.textContent;
+        }
+    }
+
+    function getNumberOfColumns() {
+        const playerWidth = videoPlayers[0].offsetWidth;
+        const gridWidth = document.querySelector(".grid").offsetWidth;
+        return Math.floor(gridWidth / playerWidth);
+    }
+
+    function togglePlayPause() {
+        const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+
+        if (selectedPlayer) {
+            if (document.fullscreenElement) {
+                // Exit full-screen mode
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { /* Firefox */
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE/Edge */
+                    document.msExitFullscreen();
+                }
+
+                // Mute the video when exiting full-screen
+                selectedPlayer.muted = true;
+            } else {
+                // Enter full-screen mode
+                if (selectedPlayer.requestFullscreen) {
+                    selectedPlayer.requestFullscreen();
+                } else if (selectedPlayer.mozRequestFullScreen) { /* Firefox */
+                    selectedPlayer.mozRequestFullScreen();
+                } else if (selectedPlayer.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                    selectedPlayer.webkitRequestFullscreen();
+                } else if (selectedPlayer.msRequestFullscreen) { /* IE/Edge */
+                    selectedPlayer.msRequestFullscreen();
+                }
+
+                // Ensure the video is not muted when entering full-screen
+                selectedPlayer.muted = false;
+            }
+        }
+    }
+
+    // Handle fullscreen changes
+    document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) {
+            // When exiting full-screen mode, mute the video
+            const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+            if (selectedPlayer) {
+                selectedPlayer.muted = true;
+            }
+        }
+    });
+    document.addEventListener("webkitfullscreenchange", () => {
+        if (!document.webkitFullscreenElement) {
+            // When exiting full-screen mode, mute the video
+            const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+            if (selectedPlayer) {
+                selectedPlayer.muted = true;
+            }
+        }
+    });
+    document.addEventListener("mozfullscreenchange", () => {
+        if (!document.mozFullScreenElement) {
+            // When exiting full-screen mode, mute the video
+            const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+            if (selectedPlayer) {
+                selectedPlayer.muted = true;
+            }
+        }
+    });
+    document.addEventListener("MSFullscreenChange", () => {
+        if (!document.msFullscreenElement) {
+            // When exiting full-screen mode, mute the video
+            const selectedPlayer = videoPlayers[currentIndex].querySelector("video");
+            if (selectedPlayer) {
+                selectedPlayer.muted = true;
+            }
+        }
+    });
+
+    function goBack() {
+        window.history.back();
+    }
 });
 
-// Set up the main container to occupy the full screen
-document.body.style.margin = "0";
-document.body.style.padding = "0";
-document.body.style.overflow = "hidden";
-document.documentElement.style.overflow = "hidden";
-document.documentElement.style.height = "100%";
-document.body.style.height = "100%";
 
-let main = document.createElement("div");
-main.id = "main";
-main.style.position = "relative";
-main.style.width = "100vw";
-main.style.height = "100vh";
-document.body.appendChild(main);
 
-createVideos();
 
-function goBack() {
+const videoData = {
+    "row0": [
+      { "id": "vpleft", "title": "MILITARY TV", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/MilitaryChannel.m3u8", "type": "hls" },
+      { "id": "vpright", "title": "AYO MUSIC", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/AYO.m3u8", "type": "hls" }
+    ],
+    "row1": [
+      { "id": "vp00", "title": "SERENDIB TV", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/SerendibTV.m3u8", "type": "hls" },
+      { "id": "vp01", "title": "Ultimate Strength Network", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/Strongman.m3u8", "type": "hls" },
+      { "id": "vp02", "title": "RMT TV", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/RMTTV.m3u8", "type": "hls" },
+      { "id": "vp03", "title": "AYOZAT FIGHT NETWORK", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/AFN.m3u8", "type": "hls" }
+    ],
+    "row2": [
+      { "id": "vp10", "title": "Nub TV", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/NubTV.m3u8", "type": "hls" },
+      { "id": "vp11", "title": "Collectables Guru", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/CollectableGurus.m3u8", "type": "hls" },
+      { "id": "vp12", "title": "AYOZAT TV", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/AyozatTV.m3u8", "type": "hls" },
+      { "id": "vp13", "title": "AYO SPORT", "manifest": "https://cdn.rtmp1.vodhosting.com/hls/AYOSPORT.m3u8", "type": "hls" }
+    ]
+  };
+
+  // Function to initialize video.js players
+  function initializeVideos() {
+    Object.keys(videoData).forEach(row => {
+      videoData[row].forEach(video => {
+        const player = videojs(video.id, {
+          autoplay: true,
+          muted: true,
+          controls: false // Disable controls to prevent interference
+        });
+        
+        player.src({
+          src: video.manifest,
+          type: 'application/x-mpegURL'
+        });
+
+        // Set video title
+        document.getElementById(`${video.id}-title`).textContent = video.title;
+      });
+    });
+  }
+
+  // Initialize videos after the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', initializeVideos);
+
+  
+  document.addEventListener("keydown", (e) => {
+    switch (e.key) {
+      case "Escape":
+        goBack();
+        break;
+    }
+  });
+
+  function goBack() {
     window.history.back();
-}
-
-
-document.addEventListener("keydown", (event) => {
-    switch (event.key) {
-        case "Enter":
-            enter();
-            break;
-        case "Escape":
-            goBack();
-            break;
-        default:
-            return;
-    }
-    event.preventDefault();
-});
-
-function enter() {
-    playing = !playing;
-    updatePlaying();
   }

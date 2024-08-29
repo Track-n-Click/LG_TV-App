@@ -1,14 +1,312 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Multi Viewer</title>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="styles.css">
+	<title>
+		AYOZAT Multi viewer
+	</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+	<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+
+	<style>
+		html {
+			background-color: #000;
+		}
+
+		body {
+			padding: 0px;
+			font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+			background-color: #000;
+			color: #fff;
+		}
+
+		a {
+			color: #00B7FF;
+		}
+
+		th {
+			padding: 0.3em;
+		}
+
+		.row {
+			margin-right: -15px;
+			margin-left: -15px;
+			align-items: center;
+			align-content: center;
+			display: flex;
+			justify-content: center;
+		}
+
+		.videoInfo {
+			background-color: rgba(0, 0, 0, 0.80);
+			border-radius: 5%;
+			padding-top: 1em;
+			padding-left: 1em;
+			padding-bottom: 1em;
+			z-index: 1000;
+			position: absolute;
+			width: 60%;
+			height: auto;
+			left: 20%;
+			top: 10%;
+		}
+
+		.tiny {
+			font-size: 8px;
+		}
+
+		.vp {
+			border: 1px solid #fff;
+			min-height: 200px;
+			padding: 0px;
+			text-align: center;
+			height: 280px;
+			/* Ensures the height fits the grid */
+		}
+
+		.info {
+			/* background: url('../images/ayozat.png'); */
+			background-color: #fff;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: auto 280px;
+			min-height: 280px;
+			color: #000;
+			text-align: center;
+			padding: 2px;
+		}
+
+		.vp-large {
+			min-height: 280px;
+		}
+
+		.viewport{
+			display: none !important;
+		}
+
+		.ayozat-image {
+			max-height: 250px !important;
+			width: 100%;
+			/* Make image take the full width of its container */
+			height: auto;
+			/* Maintain aspect ratio */
+
+			object-fit: contain;
+			/* Adjust image to fit within the container */
+		}
+
+		video {
+			width: 100%;
+			min-height: 200px;
+			border: 1px solid #777777;
+		}
+
+		.grid .title {
+			margin-top: 7px;
+		}
+
+		.overlay {
+			display: none;
+		}
+
+		.videoInfo {
+			display: none;
+		}
+
+		.video-active {
+			opacity: 1;
+		}
+
+		.video-paused {
+			opacity: 0.5;
+		}
+
+		.video-buffering {
+			border: 3px solid red;
+		}
+
+		.video-unmuted {
+			border: 3px solid green;
+		}
+
+		.title {
+			width: 90%;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 5px;
+			text-align: center;
+			color: #fff;
+			font-size: 14px;
+			background-color: rgba(0, 0, 0, 0.7);
+			/* Add background for better readability */
+			padding: 5px;
+			/* Add padding to create space around the text */
+			position: relative;
+			z-index: 10;
+			/* Ensure titles are above other elements */
+		}
+
+		.overlay {
+			position: relative;
+			width: 100%;
+			top: -20px;
+			background-color: #000;
+			opacity: 0.8;
+			z-index: 20;
+		}
+
+		.shortcut {
+			z-index: 15;
+			font-size: 8px;
+			position: absolute;
+			right: 10px;
+			top: 10px;
+			border: 1px solid;
+			padding: 3px;
+			background-color: #000;
+		}
+
+		.video-js {
+			width: 100%;
+			height: 100%;
+		}
+
+		.col-md-3 {
+			padding: 5px;
+		}
+
+		.vjs-default-skin {
+			color: #fff;
+		}
+
+		.vjs-control-bar {
+			display: none;
+		}
+
+		.vp.selected {
+			border: 1px solid rgba(251, 251, 251, 0.492);
+		}
+
+		.video-active {
+			border: 2px solid #00B7FF;
+			box-shadow: 0 0 10px rgba(0, 183, 255, 0.5);
+			z-index: 10;
+		}
+
+		.vp:not(.video-active) {
+			opacity: 0.7;
+			transition: opacity 0.3s, transform 0.3s;
+		}
+
+		.video-active .title {
+			background-color: rgba(0, 183, 255, 0.7);
+			color: #fff;
+			font-weight: bold;
+		}
+	</style>
 </head>
+
 <body>
-<div id="main">
-</div>
+	<div class="col-md-12" id="multiview">
+		<div class="" style="margin-bottom: 15px;">
+			<div class="col-md-4 vp vp-large" id="vp-left">
+				<div class="videoInfo tiny"></div>
+				<video id="vpleft" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="tiny overlay" id="vpleft-meta"></div>
+				<div id="vpleft-title"></div>
+			</div>
+
+			<div class="col-md-4 info">
+				<p class="tiny">AYOZAT Multiviewer</p>
+				<img class="ayozat-image" src="../images/a_logo.png">
+			</div>
+
+			<div class="col-md-4 vp vp-large" id="vp-right">
+				<div class="videoInfo tiny"></div>
+				<video id="vpright" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="tiny overlay" id="vpright-meta"></div>
+				<div id="vpright-title"></div>
+			</div>
+
+			<div>
+				<p class="tiny viewport text-center">Click on viewport to activate audio | SPACE - pause/resume | F - toggle
+					fullscreen | 1-8 - activate viewport</p>
+			</div>
+		</div>
+
+		<div class="row grid">
+			<div class="col-md-3 vp" id="vp00-div">
+				<div class="videoInfo tiny"></div>
+				<video id="vp00" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="shortcut">1</div>
+				<div class="tiny overlay" id="vp00-meta"></div>
+				<div class="title" id="vp00-title"></div>
+			</div>
+			<div class="col-md-3 vp" id="vp01-div">
+				<div class="videoInfo tiny"></div>
+				<video id="vp01" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="shortcut">2</div>
+				<div class="tiny overlay" id="vp01-meta"></div>
+				<div class="title" id="vp01-title"></div>
+			</div>
+			<div class="col-md-3 vp" id="vp02-div">
+				<div class="videoInfo tiny"></div>
+				<video id="vp02" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="shortcut">3</div>
+				<div class="tiny overlay" id="vp02-meta"></div>
+				<div class="title" id="vp02-title"></div>
+			</div>
+			<div class="col-md-3 vp" id="vp03-div">
+				<div class="videoInfo tiny"></div>
+				<video id="vp03" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="shortcut">4</div>
+				<div class="tiny overlay" id="vp03-meta"></div>
+				<div class="title" id="vp03-title"></div>
+			</div>
+		</div>
+		<div class="row grid mt-10">
+			<div class="col-md-3 vp" id="vp10-div">
+				<div class="videoInfo tiny"></div>
+				<video id="vp10" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="shortcut">5</div>
+				<div class="tiny overlay" id="vp10-meta"></div>
+				<div class="title" id="vp10-title"></div>
+			</div>
+			<div class="col-md-3 vp" id="vp11-div">
+				<div class="videoInfo tiny"></div>
+				<video id="vp11" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="shortcut">6</div>
+				<div class="tiny overlay" id="vp11-meta"></div>
+				<div class="title" id="vp11-title"></div>
+			</div>
+			<div class="col-md-3 vp" id="vp12-div">
+				<div class="videoInfo tiny"></div>
+				<video id="vp12" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="shortcut">7</div>
+				<div class="tiny overlay" id="vp12-meta"></div>
+				<div class="title" id="vp12-title"></div>
+			</div>
+			<div class="col-md-3 vp" id="vp13-div">
+				<div class="videoInfo tiny"></div>
+				<video id="vp13" class="video-js vjs-default-skin" controls preload="auto" autoplay muted></video>
+				<div class="shortcut">8</div>
+				<div class="tiny overlay" id="vp13-meta"></div>
+				<div class="title" id="vp13-title"></div>
+			</div>
+		</div>
+
+	</div>
+	<script src="javascripts/hls.min.js" type="text/javascript"></script>
+	<script src="javascripts/shaka-player.compiled.js" type="text/javascript"></script>
+	<script src="javascripts/viewer.js" type="text/javascript"></script>
+	<script src="javascripts/hover.js" type="text/javascript"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="../js/multiviewer.js" defer></script>
+	<script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+	<script type="text/javascript">
+	</script>
 </body>
-<script type="text/javascript" src="../js/multiviewer.js"></script>
-<script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+
 </html>
