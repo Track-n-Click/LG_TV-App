@@ -1,5 +1,59 @@
+import {  fetchSliders} from "./mediaService.js";
+
 let selectedIndex = 0;
 let settingsSelected = false;
+
+function initializeSwiperHero() {
+  var swiper = new Swiper(".swiper-container-hero", {
+    effect: "coverflow",
+    grabCursor: false,
+    centeredSlides: true,
+    slidesPerView: 2,
+    coverflowEffect: {
+      rotate: 10,
+      stretch: 10,
+      depth: 110,
+      modifier: 5,
+      slideShadows: true,
+    },
+    loop: true,
+    pagination: {
+      el: ".swiper-pagination",
+    },
+    autoplay: {
+      delay: 2000,
+      disableOnInteraction: true,
+    },
+  });
+}
+
+function createSliders(sliders) {
+  const sliderList = document.querySelector(".swiper-wrapper");
+
+  sliders.forEach((slide) => {
+    const slideItem = document.createElement("div");
+    slideItem.className = "swiper-slide";
+
+    slideItem.innerHTML = `
+      <img class="imgCarousal" src="${slide.banner}" alt="${slide.title}"/>
+      <div class="slider-info">
+      <h1 class="slider-title">${slide.title}</h1>
+      <p class="slider-description">${slide.description}</p>
+      <button class="slider-button">Watch Now</button></div>
+    `;
+
+    sliderList.appendChild(slideItem);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  setTimeout(async () => {
+    const sliders = await fetchSliders();
+    createSliders(sliders);
+
+    initializeSwiperHero();
+  }, 1000);
+});
 
 window.addEventListener("load", async () => {
   try {

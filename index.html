@@ -9,6 +9,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       crossorigin="anonymous"
     />
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/swiper/swiper-bundle.min.css"
+  />
   </head>
 
   <body>
@@ -23,7 +27,17 @@
         <div id="settings-button" data-page="pages/settings.html">
           <i class="fa-solid fa-gear"></i>
         </div>
-        <div id="home-hero"></div>
+        <!-- <div id="home-hero"></div> -->
+        <!-- Home Hero Slider -->
+        <div class="swiper-main">
+          <div class="swiper">
+            <div class="swiper-container swiper-container-hero">
+              <div class="swiper-back-dot"></div>
+              <div class="swiper-wrapper swiper-hero" id="swiper-wrapper"></div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="grid-container">
@@ -108,8 +122,9 @@
       </div>
     </div>
 
-    <script src="js/app.js" defer></script>
+    <script type="module"  src="js/app.js" defer></script>
     <script src="js/common.js" defer></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
   </body>
 </html>
