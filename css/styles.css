@@ -1,3 +1,12 @@
+:root {
+  --primary-color: #f50537;
+  --Background-color: #000000;
+  --modal-color: #0f0f0f;
+  --border-color-gray: #282828;
+  --text-white: #ffffff;
+  --text-lightblue: #7b9db4;
+}
+
 @font-face {
   font-family: Montserrat;
   src: url(https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2);
