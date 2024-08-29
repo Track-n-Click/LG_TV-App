@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media Details Page</title>
+    <link rel="stylesheet" href="../../css/videoDetails.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- NavBar -->
+    <div class="navbar">
+      <div class="navbar-container" id="navbar-container">
+        <div class="menu-list">
+          <div class="menu-list-item">
+            <div class="logo-container">
+              <a href="index.html">
+                <img
+                  class="logo"
+                  src="../../images/AyozatStreamwhite.png"
+                  alt="Logo"
+                />
+              </a>
+            </div>
+          </div>
+          <div class="right-nav">
+            <div class="menu-list-item">
+              <i class="fa-regular fa-user"></i>
+            </div>
+            <div class="menu-list-item">
+              <i class="fa-solid fa-bars"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <div class="modal-header">
+          <div class="modal-logo-container">
+            <img src="../../images/a_logo.png" alt="" class="modal-logo" />
+          </div>
+          <h2>Welcome back!</h2>
+          <p>Log in and catch up with your favorite things</p>
+        </div>
+        <form id="login-form" class="modal-form">
+          <input
+            type="text"
+            id="email"
+            name="email"
+            required
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Password"
+          />
+          <button type="submit" class="modal-login-button">LOGIN</button>
+          <p class="modal-footer">
+            Scan QR to connect with <span>AyozatTV</span>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Movie or Series Hero Slider -->
+    <div class="swiper-main">
+      <div class="swiper">
+        <div class="swiper-container swiper-container-hero">
+          <div class="swiper-wrapper swiper-hero" id="swiper-wrapper"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="video-grid-container" class="media-content">
+      <!-- Movie section -->
+      <div id="movies" class="media-section">
+        <h2>Seasons</h2>
+        <div id="left-arrow-movies" class="nav-arrow left-arrow">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="video-row-container">
+          <div id="movie-row" class="video-row">
+            <!-- Movie items will be injected here by media.js -->
+          </div>
+        </div>
+        <div id="right-arrow-movies" class="nav-arrow right-arrow">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../../js/mediaService.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script type="module" src="../../js/videoDetails.js"></script>
+    <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+  </body>
+</html>

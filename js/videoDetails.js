@@ -1,30 +1,36 @@
 import {
-  fetchMovies,
-  fetchTVSeries,
-  fetchTVChannels,
-  fetchSliders,
+  fetchVideoDetailsBySlug,
+  fetchSeriesDetailsBySlug,
 } from "./mediaService.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  setTimeout(async () => {
-    displayPlaceholders("channels-row");
-    const tvChannels = await fetchTVChannels();
-    replacePlaceholdersWithData("channels-row", tvChannels, "tv");
+  const urlParams = new URLSearchParams(window.location.search);
 
-    displayPlaceholders("movie-row");
-    const movies = await fetchMovies();
-    replacePlaceholdersWithData("movie-row", movies, "movies");
+  const movieSlug = urlParams.get("movie-slug");
+  const seriesSlug = urlParams.get("series-slug");
 
-    displayPlaceholders("tv-row");
-    const tvSeries = await fetchTVSeries();
-    replacePlaceholdersWithData("tv-row", tvSeries, "series");
+  let details;
 
-    initializeMediaNavigation();
-    const sliders = await fetchSliders();
-    createSliders(sliders);
+  if (movieSlug) {
+    details = await fetchVideoDetailsBySlug(movieSlug);
+    console.log("movie", details);
+  } else if (seriesSlug) {
+    details = await fetchSeriesDetailsBySlug(seriesSlug);
+    console.log("series", details);
+  } else {
+    console.log("No valid slug found in the URL.");
+    return;
+  }
 
-    initializeSwiperHero();
-  }, 1000);
+  // Proceed to create sliders or handle other DOM manipulations
+  createSliders(details);
+
+  // Uncomment and customize these functions as needed
+  // displayPlaceholders("movie-row");
+  // const movies = await fetchMovies();
+  // replacePlaceholdersWithData("movie-row", movies);
+  // initializeMediaNavigation();
+  // initializeSwiperHero();
 });
 
 function initializeSwiperHero() {
@@ -32,42 +38,32 @@ function initializeSwiperHero() {
     effect: "coverflow",
     grabCursor: false,
     centeredSlides: true,
-    slidesPerView: 2,
-    coverflowEffect: {
-      rotate: 10,
-      stretch: 10,
-      depth: 110,
-      modifier: 5,
-      slideShadows: true,
-    },
+    slidesPerView: 1,
     loop: true,
     pagination: {
       el: ".swiper-pagination",
     },
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: true,
-    },
   });
 }
 
-function createSliders(sliders) {
+function createSliders(details) {
   const sliderList = document.querySelector(".swiper-wrapper");
 
-  sliders.forEach((slide) => {
-    const slideItem = document.createElement("div");
-    slideItem.className = "swiper-slide";
+  const slideItem = document.createElement("div");
+  slideItem.className = "swiper-slide";
 
-    slideItem.innerHTML = `
-      <img class="imgCarousal" src="${slide.banner}" alt="${slide.title}"/>
+  slideItem.innerHTML = `
+      <div class="overlay"></div>
+      <img class="imgCarousal" src="${
+        details.poster_image || details.poster
+      }" alt="${details.title}"/>
       <div class="slider-info">
-      <h1 class="slider-title">${slide.title}</h1>
-      <p class="slider-description">${slide.description}</p>
+      <h1 class="slider-title">${details.title}</h1>
+      <p class="slider-description">${details.description}</p>
       <button class="slider-button">Watch Now</button></div>
     `;
 
-    sliderList.appendChild(slideItem);
-  });
+  sliderList.appendChild(slideItem);
 }
 
 function displayPlaceholders(rowId) {
@@ -83,26 +79,23 @@ function displayPlaceholders(rowId) {
   }
 }
 
-function replacePlaceholdersWithData(rowId, mediaItems, type) {
+function replacePlaceholdersWithData(rowId, mediaItems) {
   const row = document.getElementById(rowId);
   row.innerHTML = ""; // Clear placeholders
-
-  console.log("Selected media type:", type);
 
   mediaItems.forEach((item, index) => {
     const tile = document.createElement("div");
     tile.classList.add("video-tile");
     tile.setAttribute("data-index", index);
     tile.setAttribute("data-url", item.stream_url);
-    tile.setAttribute("data-slug", item.slug);
-    tile.setAttribute("data-type", type);
-    tile.setAttribute("data-title", item.title || item.name);
     tile.innerHTML = `
       <img src="${item.thumbnail}" alt="${item.title}">
       <div class="title">${item.title || item.name}</div>
     `;
     tile.addEventListener("click", () => {
-      playSelectedVideo();
+      window.location.href = `player.html?title=${encodeURIComponent(
+        item.title || item.name
+      )}&src=${encodeURIComponent(item.stream_url)}`;
     });
     row.appendChild(tile);
   });
@@ -115,16 +108,10 @@ function initializeMediaNavigation() {
     { id: "navbar-container", leftArrow: "", rightArrow: "" },
     { id: "swiper-wrapper", leftArrow: "", rightArrow: "" },
     {
-      id: "channels-row",
-      leftArrow: "left-arrow-channels",
-      rightArrow: "right-arrow-channels",
-    },
-    {
       id: "movie-row",
       leftArrow: "left-arrow-movies",
       rightArrow: "right-arrow-movies",
     },
-    { id: "tv-row", leftArrow: "left-arrow-tv", rightArrow: "right-arrow-tv" },
   ];
 
   if (mediaSections.length > 0) {
@@ -211,30 +198,8 @@ function initializeMediaNavigation() {
 
   function playSelectedVideo() {
     const selectedTile = document.querySelector(".video-tile.selected");
-    if (!selectedTile) return;
-
     const videoUrl = selectedTile.getAttribute("data-url");
-    const slug = selectedTile.getAttribute("data-slug");
-    const mediaType = selectedTile.getAttribute("data-type");
-    const title = selectedTile.getAttribute("data-title");
-
-    console.log("Selected video type:", mediaType);
-
-    if (mediaType === "tv") {
-      window.location.href = `player.html?title=${encodeURIComponent(
-        title
-      )}&src=${encodeURIComponent(videoUrl)}`;
-    } else if (mediaType === "movies") {
-      console.log("Redirecting to video details page...");
-      window.location.href = `media/videoDetails.html?movie-slug=${encodeURIComponent(
-        slug
-      )}`;
-    } else {
-      console.log("Redirecting to video details page...");
-      window.location.href = `media/videoDetails.html?series-slug=${encodeURIComponent(
-        slug
-      )}`;
-    }
+    window.location.href = `player.html?src=${encodeURIComponent(videoUrl)}`;
   }
 
   function scrollToSection(section) {
