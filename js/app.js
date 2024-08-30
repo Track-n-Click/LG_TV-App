@@ -1,4 +1,4 @@
-import {  fetchSliders} from "./mediaService.js";
+import { fetchSliders } from "./mediaService.js";
 
 let selectedIndex = 0;
 let settingsSelected = false;
