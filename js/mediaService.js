@@ -11,6 +11,9 @@ const VIDEO_DETAILS_BY_SLUG_API_URL =
 const SERIES_DETAILS_BY_SLUG_API_URL =
   "https://c-1y15z120-t12c.ayozat.com/api/tv-series";
 
+const SERIES_DETAILS_BY_STREAM_KEY_API_URL =
+  "https://c-1y15z120-t12c.ayozat.com/api/tv-series/episodes";
+
 export async function fetchSliders() {
   try {
     const response = await fetch(SLIDERS_API_URL);
@@ -94,6 +97,24 @@ export async function fetchVideoDetailsBySlug(slug) {
 export async function fetchSeriesDetailsBySlug(slug) {
   try {
     const response = await fetch(SERIES_DETAILS_BY_SLUG_API_URL + "/" + slug);
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch Series Details: ${response.status} ${response.statusText}`
+      );
+    }
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Failed to fetch Series Details:", error);
+    return [];
+  }
+}
+
+export async function fetchSeriesDetailsByStreamKey(streamKey) {
+  try {
+    const response = await fetch(
+      SERIES_DETAILS_BY_STREAM_KEY_API_URL + "/" + streamKey
+    );
     if (!response.ok) {
       throw new Error(
         `Failed to fetch Series Details: ${response.status} ${response.statusText}`

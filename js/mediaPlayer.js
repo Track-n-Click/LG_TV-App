@@ -1,6 +1,33 @@
+import { fetchSeriesDetailsByStreamKey } from "./mediaService.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
-  const videoSrc = urlParams.get("src");
+
+  // Extract the video source from the parameters
+  const src = urlParams.get("src");
+  const movieSrc = urlParams.get("movie-src");
+  const seriesSrc = urlParams.get("series-src");
+
+  // Determine the actual video source to use
+  let videoSrc = src || movieSrc; // Use `let` to allow reassignment
+
+  if (seriesSrc) {
+    fetchSeriesDetailsByStreamKey(seriesSrc)
+      .then((data) => {
+        console.log("Series Details:", data);
+        videoSrc = data.url; // Update videoSrc with the URL from fetched data
+        // Now you can safely use videoSrc to initialize the player
+        initializePlayer(videoSrc);
+      })
+      .catch((error) => {
+        console.error("Error fetching series details:", error);
+      });
+  } else if (videoSrc) {
+    console.log("Video Source URL:", videoSrc);
+    initializePlayer(videoSrc); // Directly initialize player if src or movie-src is present
+  } else {
+    console.error("No video source found in URL parameters.");
+  }
 
   if (window.remotePlayer) {
     try {
@@ -10,27 +37,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  const sdkVideoElement = document.getElementById('sdk-video-element');
+  const sdkVideoElement = document.getElementById("sdk-video-element");
   if (sdkVideoElement) {
     sdkVideoElement.remove();
   }
-  
+
   const player = videojs("my-video", {
     controls: false, // Hide the default controls
     autoplay: true, // Autoplay the video
-    preload: "auto", 
+    preload: "auto",
     muted: true, // Mute the video to allow autoplay in most browsers
     playsinline: true, // Allow inline playback on mobile devices
-    
+
     controlBar: {
       fullscreenToggle: false, // Hide the fullscreen button (optional)
     },
   });
 
-  player.src({
-    src: videoSrc,
-    type: "application/x-mpegURL",
-  });
+  // Function to initialize video player
+  function initializePlayer(videoSrc) {
+    console.log("Initializing player with video source:", videoSrc);
+    player.src({
+      src: videoSrc,
+      type: "application/x-mpegURL",
+    });
+  }
 
   // Setup IMA ads
   // const vastTagPreroll = "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=";
@@ -43,18 +74,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // player.ima.initializeAdDisplayContainer();
 
-  player.ready(function() {
-    player.play().catch(function(error) {
-      console.error('Autoplay failed:', error);
-      const playButton = document.createElement('button');
-      playButton.innerText = 'Play';
-      playButton.style.position = 'absolute';
-      playButton.style.top = '50%';
-      playButton.style.left = '50%';
-      playButton.style.transform = 'translate(-50%, -50%)';
-      playButton.addEventListener('click', function() {
+  player.ready(function () {
+    player.play().catch(function (error) {
+      console.error("Autoplay failed:", error);
+      const playButton = document.createElement("button");
+      playButton.innerText = "Play";
+      playButton.style.position = "absolute";
+      playButton.style.top = "50%";
+      playButton.style.left = "50%";
+      playButton.style.transform = "translate(-50%, -50%)";
+      playButton.addEventListener("click", function () {
         player.play();
-        playButton.style.display = 'none';
+        playButton.style.display = "none";
       });
       document.body.appendChild(playButton);
     });

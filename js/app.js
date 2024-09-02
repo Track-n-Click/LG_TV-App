@@ -134,6 +134,8 @@ document.addEventListener("keydown", (event) => {
       handleArrowDown();
       break;
     case "ArrowLeft":
+      handleArrowNavigation(event.key);
+      break;
     case "ArrowRight":
       handleArrowNavigation(event.key);
       break;
@@ -145,9 +147,9 @@ document.addEventListener("keydown", (event) => {
 
 function handleArrowUp() {
   if (settingsSelected) {
-    // Prevents moving up if the settings button is selected
     settingsSelected = false;
-    updateSelection(0); // Move focus to the first row
+    updateSelection(0);
+    window.scrollTo(0, 0);
   } else if (selectedIndex < 5) {
     // Move focus to the settings button when pressing up from the first row
     settingsSelected = true;
@@ -174,7 +176,7 @@ function handleArrowDown() {
 function handleArrowNavigation(key) {
   if (settingsSelected && key === "ArrowDown") {
     settingsSelected = false;
-    updateSelection(0); // Move focus back to the first item
+    updateSelection(0);
   } else if (!settingsSelected) {
     const step = key === "ArrowLeft" ? -1 : 1;
     navigate(step);
