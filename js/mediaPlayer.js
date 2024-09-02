@@ -8,27 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const movieSrc = urlParams.get("movie-src");
   const seriesSrc = urlParams.get("series-src");
 
-  // Determine the actual video source to use
-  let videoSrc = src || movieSrc; // Use `let` to allow reassignment
-
-  if (seriesSrc) {
-    fetchSeriesDetailsByStreamKey(seriesSrc)
-      .then((data) => {
-        console.log("Series Details:", data);
-        videoSrc = data.url; // Update videoSrc with the URL from fetched data
-        // Now you can safely use videoSrc to initialize the player
-        initializePlayer(videoSrc);
-      })
-      .catch((error) => {
-        console.error("Error fetching series details:", error);
-      });
-  } else if (videoSrc) {
-    console.log("Video Source URL:", videoSrc);
-    initializePlayer(videoSrc); // Directly initialize player if src or movie-src is present
-  } else {
-    console.error("No video source found in URL parameters.");
-  }
-
   if (window.remotePlayer) {
     try {
       window.remotePlayer.unload();
@@ -54,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   });
 
-  // Function to initialize video player
   function initializePlayer(videoSrc) {
     console.log("Initializing player with video source:", videoSrc);
     player.src({
@@ -62,6 +40,29 @@ document.addEventListener("DOMContentLoaded", function () {
       type: "application/x-mpegURL",
     });
   }
+
+  // Determine the actual video source to use
+  let videoSrc = src || movieSrc; // Use `let` to allow reassignment
+
+  if (seriesSrc) {
+    fetchSeriesDetailsByStreamKey(seriesSrc)
+      .then((data) => {
+        console.log("Series Details:", data);
+        videoSrc = data.url; // Update videoSrc with the URL from fetched data
+        // Now you can safely use videoSrc to initialize the player
+        initializePlayer(videoSrc);
+      })
+      .catch((error) => {
+        console.error("Error fetching series details:", error);
+      });
+  } else if (videoSrc) {
+    console.log("Video Source URL:", videoSrc);
+    initializePlayer(videoSrc); // Directly initialize player if src or movie-src is present
+  } else {
+    console.error("No video source found in URL parameters.");
+  }
+
+  // Function to initialize video player
 
   // Setup IMA ads
   // const vastTagPreroll = "https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=";
