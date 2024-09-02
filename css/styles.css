@@ -358,4 +358,10 @@ body::-webkit-scrollbar {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, border 0.3s ease;
+}
+
+.slider-button.selected {
+  transform: scale(1.05);
+  border: 2px solid white;
 }
