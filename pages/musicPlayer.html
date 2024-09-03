@@ -1,17 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Music Player</title>
-    <link rel="stylesheet" href="../css/musicPlayer.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../css/musicPlayer.css" />
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
     <div id="audio-player-container">
-        <h1 id="track-title"></h1>
-        <audio id="audio-player" controls></audio>
+      <div
+        id="artwork"
+        style="background-image: url('https://via.placeholder.com/800')"
+      ></div>
+      <div class="overlay"></div>
+      <div class="audio-player-content">
+        <div class="music-artwork">
+          <img
+            src="https://images.saatchiart.com/saatchi/1794626/art/8464718/7528864-HSC00001-7.jpg"
+            alt="Album Art"
+            id="album-art"
+          />
+        </div>
+        <h2 id="track-title">I Need to Know (Live)</h2>
+        <p id="artist-name">Daniel Reuss</p>
+
+        <div id="progress">
+          <span id="current-time">0:00</span>
+          <div id="progress-container">
+            <div id="progress-bar"></div>
+          </div>
+          <span id="duration">0:00</span>
+        </div>
+
+        <div id="custom-controls">
+          <button id="prev-btn" class="control-btn">
+            <i class="fas fa-backward"></i>
+          </button>
+          <button id="play-pause-btn" class="control-btn">
+            <i class="fas fa-play"></i>
+          </button>
+          <button id="next-btn" class="control-btn">
+            <i class="fas fa-forward"></i>
+          </button>
+        </div>
+        <input
+          id="volume-control"
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          value="1"
+          style="display: none; transform: rotate(-90deg)"
+        />
+      </div>
+      <audio id="audio-player"></audio>
     </div>
 
     <script src="../js/musicPlayer.js"></script>
-</body>
+  </body>
 </html>
