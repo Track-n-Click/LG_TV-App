@@ -1,63 +1,127 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const audioPlayer = document.getElementById("audio-player");
+  const playPauseBtn = document.getElementById("play-pause-btn");
+  const progressBar = document.getElementById("progress-bar");
+  const progressContainer = document.getElementById("progress-container");
+  const volumeControl = document.getElementById("volume-control");
+  const trackTitleElement = document.getElementById("track-title");
+  const trackArtistElement = document.getElementById("artist-name");
+  const albumArtwork = document.getElementById("album-art");
+  const currentTimeElement = document.getElementById("current-time");
+  const durationElement = document.getElementById("duration");
+
   const urlParams = new URLSearchParams(window.location.search);
   const trackTitle = urlParams.get("title");
   const trackSrc = urlParams.get("src");
+  const trackArtist = urlParams.get("artist");
+  const trackArtwork = urlParams.get("artwork");
 
-  const trackTitleElement = document.getElementById("track-title");
-  const audioPlayer = document.getElementById("audio-player");
-
-  if (trackTitle && trackSrc) {
+  // Set track title and source if provided in URL parameters
+  if (trackTitle && trackSrc && trackArtist && trackArtwork) {
     trackTitleElement.textContent = trackTitle;
     audioPlayer.src = trackSrc;
+    trackArtistElement.textContent = trackArtist;
+    albumArtwork.src = trackArtwork;
+
+    // Update the duration once the metadata is loaded
+    audioPlayer.addEventListener("loadedmetadata", function () {
+      durationElement.textContent = formatTime(audioPlayer.duration);
+    });
 
     // Auto-play the track when the page loads
-    audioPlayer.play();
+    audioPlayer
+      .play()
+      .then(() => {
+        // Update the button icon to 'Pause' if autoplay is successful
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      })
+      .catch((error) => {
+        console.log(
+          "Playback prevented due to user interaction policy.",
+          error
+        );
+      });
   }
 
-  // Handle Keyboard Shortcuts
-  document.addEventListener("keydown", function (event) {
+  audioPlayer.addEventListener("timeupdate", updateProgress);
+  progressContainer.addEventListener("click", setProgress);
+  // volumeControl.addEventListener("input", setVolume);
+
+  // Add a global keydown event listener to handle keyboard shortcuts
+  document.addEventListener("keydown", handleKeyboardShortcuts);
+
+  function updateProgress() {
+    if (audioPlayer.duration) {
+      const progressPercent =
+        (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Update current time display
+      currentTimeElement.textContent = formatTime(audioPlayer.currentTime);
+    }
+  }
+
+  function setProgress(e) {
+    const width = this.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audioPlayer.duration;
+    audioPlayer.currentTime = (clickX / width) * duration;
+  }
+
+  volumeControl.addEventListener("input", setVolume);
+
+  function setVolume() {
+    audioPlayer.volume = volumeControl.value;
+  }
+
+  function handleKeyboardShortcuts(event) {
     switch (event.key) {
       case " ":
       case "Enter":
         event.preventDefault();
         if (audioPlayer.paused) {
-          audioPlayer.play();
+          audioPlayer
+            .play()
+            .then(() => {
+              playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            })
+            .catch((error) => {
+              console.log(
+                "Playback prevented due to user interaction policy.",
+                error
+              );
+            });
         } else {
           audioPlayer.pause();
+          playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
         }
         break;
-      case "ArrowRight": // Fast forward 10 seconds
+      case "ArrowRight":
         event.preventDefault();
         audioPlayer.currentTime = Math.min(
           audioPlayer.currentTime + 10,
           audioPlayer.duration
         );
         break;
-      case "ArrowLeft": // Rewind 10 seconds
+      case "ArrowLeft":
         event.preventDefault();
         audioPlayer.currentTime = Math.max(audioPlayer.currentTime - 10, 0);
         break;
-      case "ArrowUp": // Increase volume
-        event.preventDefault();
+      case "ArrowUp":
+        showVolumeControl();
         audioPlayer.volume = Math.min(audioPlayer.volume + 0.1, 1);
+        volumeControl.value = audioPlayer.volume;
         break;
-      case "ArrowDown": // Decrease volume
-        event.preventDefault();
+      case "ArrowDown":
+        showVolumeControl();
         audioPlayer.volume = Math.max(audioPlayer.volume - 0.1, 0);
+        volumeControl.value = audioPlayer.volume;
         break;
-      case "m": // Mute/Unmute
+      case "m":
         event.preventDefault();
         audioPlayer.muted = !audioPlayer.muted;
         break;
-      case "f": // Fullscreen (for future enhancements if video player added)
-        event.preventDefault();
-        if (document.fullscreenElement) {
-          document.exitFullscreen();
-        } else if (audioPlayer.requestFullscreen) {
-          audioPlayer.requestFullscreen();
-        }
-        break;
-      case "Escape": // Exit fullscreen or go back
+      case "Escape":
         event.preventDefault();
         if (document.fullscreenElement) {
           document.exitFullscreen();
@@ -66,44 +130,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         break;
     }
-  });
-});
+  }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const audioPlayer = document.getElementById("audio-player");
-  const playPauseBtn = document.getElementById("play-pause-btn");
-  const progressBar = document.getElementById("progress-bar");
-  const progressContainer = document.getElementById("progress-container");
-  const volumeControl = document.getElementById("volume-control");
+  function showVolumeControl() {
+    volumeControl.style.display = "block";
+    volumeControl.style.opacity = 1;
 
-  // Play/Pause functionality
-  playPauseBtn.addEventListener("click", function () {
-    if (audioPlayer.paused) {
-      audioPlayer.play();
-      playPauseBtn.textContent = "Pause";
-    } else {
-      audioPlayer.pause();
-      playPauseBtn.textContent = "Play";
-    }
-  });
+    // Hide volume control after a short delay if no further interaction
+    clearTimeout(volumeControl.hideTimeout);
+    volumeControl.hideTimeout = setTimeout(() => {
+      volumeControl.style.opacity = 0;
+      setTimeout(() => {
+        volumeControl.style.display = "none";
+      }, 200); // Wait for fade-out transition to complete
+    }, 3000); // Hide after 3 seconds of inactivity
+  }
 
-  // Update progress bar as audio plays
-  audioPlayer.addEventListener("timeupdate", function () {
-    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-    progressBar.style.width = `${progress}%`;
-  });
-
-  // Seek when clicking on progress bar
-  progressContainer.addEventListener("click", function (e) {
-    const clickX = e.offsetX;
-    const width = progressContainer.clientWidth;
-    const duration = audioPlayer.duration;
-
-    audioPlayer.currentTime = (clickX / width) * duration;
-  });
-
-  // Volume control
-  volumeControl.addEventListener("input", function () {
-    audioPlayer.volume = volumeControl.value;
-  });
+  // Utility function to format time in minutes and seconds
+  function formatTime(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  }
 });
