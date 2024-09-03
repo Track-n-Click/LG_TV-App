@@ -1,0 +1,46 @@
+<!-- Header Component: Navbar and Login Modal -->
+<div class="navbar">
+  <div class="navbar-container" id="navbar-container">
+    <div class="logo-container">
+      <a href="index.html">
+        <img class="logo" src="../images/AyozatStreamwhite.png" alt="Logo" />
+      </a>
+    </div>
+    <div class="right-nav">
+      <div class="menu-list-item" id="settings-button">
+        <i class="fa-solid fa-gear"></i>
+      </div>
+      <div class="menu-list-item" id="profile-button" tabindex="0">
+        <i class="fa-solid fa-user"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div id="login-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="close-modal">&times;</span>
+    <div class="modal-header">
+      <div class="modal-logo-container">
+        <img src="../images/a_logo.png" alt="Logo" class="modal-logo" />
+      </div>
+      <h2>Welcome back!</h2>
+      <p>Log in and catch up with your favorite things</p>
+    </div>
+    <form id="login-form" class="modal-form">
+      <input type="text" id="email" name="email" required placeholder="Email" />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+        placeholder="Password"
+      />
+      <button type="submit" class="modal-login-button">LOGIN</button>
+      <p class="modal-footer">
+        Scan QR to connect with <span>AyozatTV</span>
+      </p>
+    </form>
+  </div>
+</div>

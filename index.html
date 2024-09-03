@@ -4,6 +4,7 @@
     <title>AYOZAT</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/header.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -22,6 +23,8 @@
         <div id="progress-bar"></div>
       </div>
     </div>
+
+    <div id="header-placeholder"></div>
     <div id="main">
       <div id="hero-container">
         <div id="settings-button" data-page="pages/settings.html">
@@ -123,7 +126,20 @@
     </div>
 
     <script type="module" src="js/app.js" defer></script>
-    <script type="module" src="js/common.js" defer></script>
+    <script>
+      // Load the header dynamically
+      fetch('header.html')
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById('header-placeholder').innerHTML = data;
+          // Load the header JS after the HTML is loaded
+          const script = document.createElement('script');
+          script.src = 'js/header.js';
+          script.defer = true;
+          document.body.appendChild(script);
+        })
+        .catch((error) => console.error('Error loading header:', error));
+    </script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
   </body>

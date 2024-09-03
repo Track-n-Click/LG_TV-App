@@ -1,0 +1,195 @@
+.navbar {
+  width: 100%;
+  height: 50px;
+  background-color: var(--background-color);
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  box-sizing: border-box;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 20%;
+  margin-right: 15px;
+}
+
+.navbar-title {
+  color: #fff;
+  font-size: 24px; /* Adjust font size */
+  font-weight: 700;
+}
+
+.right-nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.menu-list-item {
+  cursor: pointer;
+  color: #fff;
+  font-size: 20px; /* Adjust icon size */
+  padding: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  border-radius: 50%; /* Rounded background */
+}
+
+.menu-list-item i {
+  color: #fff; /* Icon color */
+  transition: color 0.3s ease;
+}
+
+.menu-list-item:hover i {
+  color: var(--primary-color); /* Hover effect */
+}
+.menu-list-item.selected i {
+  color: var(--primary-color); /* Icon color when selected */
+}
+
+/* Login Modal */
+input,
+.menu-list-item {
+  cursor: none; /* Remove mouse pointer */
+}
+
+/* Highlight the focused input */
+input:focus {
+  outline: 2px solid var(--primary-color); /* Highlight input when focused */
+  background-color: var(
+    --border-color-gray
+  ); /* Background for better visibility */
+}
+
+/* Modal styles to ensure visibility and focus */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  overflow-y: auto; /* Allow scrolling within the modal */
+}
+
+.modal-content {
+  background-color: var(--modal-color);
+  margin: 8% auto;
+  padding: 20px 20px;
+  border: 1px solid var(--border-color-gray);
+  width: 30%;
+  border-radius: 10px;
+  color: var(--text-white);
+  overflow: hidden; /* Prevent overflow */
+  max-height: 80vh; /* Ensure modal doesn't exceed viewport */
+}
+
+.modal-header {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.modal-logo-container {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  background-color: #ffffff;
+  border-radius: 100%;
+  padding: 10px;
+  margin-top: 50px;
+  box-shadow: 0px 10px 50px rgba(255, 0, 0, 0.837);
+}
+
+.modal-header h2 {
+  margin: 0;
+  padding-top: 50px;
+  font-weight: 600;
+  font-size: 25px;
+  color: #fff;
+}
+
+.modal-form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-form input {
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border-color-gray);
+  border-radius: 5px;
+  color: #ccc;
+  background-color: transparent;
+  font-size: 16px;
+  outline: none;
+}
+
+.modal-login-button {
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  display: block;
+  font-size: 16px;
+  margin: 4px auto;
+  cursor: none;
+  border-radius: 50px;
+  outline: none;
+}
+
+.modal-footer {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: var(--text-lightblue);
+}
+
+.close {
+  color: var(--text-white);
+  float: right;
+  font-size: 20px;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: var(--primary-color);
+}
+
+input:focus {
+  outline: 2px solid var(--primary-color);
+}
+
+.menu-list-item:focus {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.modal-login-button:focus {
+  background-color: var(--primary-color);
+  outline: none;
+}

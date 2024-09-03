@@ -1,9 +1,8 @@
 import { fetchSliders } from "./mediaService.js";
 
 let selectedIndex = 0;
-let settingsSelected = false;
-let currentSection = 'slider'; // Possible values: 'settings', 'slider', 'grid'
-let swiper; 
+let currentSection = "slider"; // Possible values: 'slider', 'grid', 'settings', 'profile'
+let swiper;
 let currentSliderIndex = 0;
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -35,8 +34,9 @@ window.addEventListener("load", async () => {
   }
 });
 
+// Initialize Swiper for hero section
 function initializeSwiperHero() {
-  if (typeof swiper !== 'undefined') {
+  if (typeof swiper !== "undefined") {
     swiper.destroy(true, true);
   }
   swiper = new Swiper(".swiper-container-hero", {
@@ -62,6 +62,7 @@ function initializeSwiperHero() {
   });
 }
 
+// Create sliders from fetched data
 function createSliders(sliders) {
   const sliderList = document.querySelector(".swiper-wrapper");
 
@@ -87,6 +88,7 @@ function createSliders(sliders) {
   });
 }
 
+// Initialize grid items (tiles) and their navigation
 function initializeTiles() {
   const items = getItems();
   updateSelection(selectedIndex); // Initialize the first tile as selected
@@ -96,33 +98,27 @@ function initializeTiles() {
       redirect(item.getAttribute("data-page"));
     });
   });
-
-  // Add click listener for the settings button
-  document.getElementById("settings-button").addEventListener("click", () => {
-    redirect("pages/settings.html");
-  });
 }
 
+// Update the selected tile
 function updateSelection(index) {
   const items = getItems();
   if (items.length === 0) return;
 
   deselectAll(); // Deselect all items before selecting the new one
-  if (settingsSelected) {
-    selectSettingsButton(); // Select the settings button if settingsSelected is true
-  } else {
-    selectedIndex = (index + items.length) % items.length; // Ensure the index wraps around
-    select(items[selectedIndex]); // Select the new one
-    scrollToElement(items[selectedIndex]); // Scroll to the selected grid item
-  }
+  selectedIndex = (index + items.length) % items.length; // Ensure the index wraps around
+  select(items[selectedIndex]); // Select the new one
+  scrollToElement(items[selectedIndex]); // Scroll to the selected grid item
 }
 
+// Redirect to a specified page
 function redirect(page) {
   if (page) {
     window.location.href = page; // Redirect to the specified page
   }
 }
 
+// Handle keydown events for navigation
 document.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "Enter":
@@ -147,10 +143,13 @@ document.addEventListener("keydown", (event) => {
   event.preventDefault();
 });
 
+// Handle Enter key to select the current option
 function handleEnterKey() {
-  if (currentSection === 'settings') {
+  if (currentSection === "settings") {
     redirect("pages/settings.html");
-  } else if (currentSection === 'slider') {
+  } else if (currentSection === "profile") {
+    openLoginModal(); 
+  } else if (currentSection === "slider") {
     const activeSlide = document.querySelector(".swiper-slide-active");
     if (activeSlide) {
       const watchNowButton = activeSlide.querySelector(".slider-button");
@@ -158,7 +157,7 @@ function handleEnterKey() {
         watchNowButton.click();
       }
     }
-  } else if (currentSection === 'grid') {
+  } else if (currentSection === "grid") {
     const items = getItems();
     if (items[selectedIndex]) {
       redirect(items[selectedIndex].getAttribute("data-page"));
@@ -166,48 +165,77 @@ function handleEnterKey() {
   }
 }
 
+function openLoginModal() {
+  console.log("block");
+  document.getElementById("login-modal").style.display = "block";
+}
+
+// Handle navigation with arrow keys
 function handleArrowUp() {
-  if (currentSection === 'grid') {
-    currentSection = 'slider';
+  if (currentSection === "grid") {
+    currentSection = "slider";
     deselectAll();
     selectSliderButton();
-    scrollToElement(document.querySelector('.swiper-container-hero')); // Scroll to slider
-  } else if (currentSection === 'slider') {
-    currentSection = 'settings';
+    scrollToElement(document.querySelector(".swiper-container-hero")); // Scroll to slider
+  } else if (currentSection === "slider") {
+    currentSection = "settings";
     deselectAll();
     selectSettingsButton();
     scrollToElement(document.getElementById("settings-button")); // Scroll to settings button
+  } else if (currentSection === "profile") {
+    currentSection = "settings";
+    deselectProfileButton();
+    selectSettingsButton();
+    scrollToElement(document.getElementById("settings-button"));
   }
 }
 
 function handleArrowDown() {
-  if (currentSection === 'settings') {
-    currentSection = 'slider';
-    deselectAll();
-    selectSliderButton();
-    scrollToElement(document.querySelector('.swiper-container-hero')); // Scroll to slider
-  } else if (currentSection === 'slider') {
-    currentSection = 'grid';
+  if (currentSection === "settings") {
+    currentSection = "profile";
+    deselectSettingsButton();
+    selectProfileButton();
+    scrollToElement(document.getElementById("profile-button")); // Scroll to profile button
+  } else if (currentSection === "slider") {
+    currentSection = "grid";
     deselectAll();
     updateSelection(0);
     scrollToElement(document.getElementById("grid-container")); // Scroll to grid
+  } else if (currentSection === "profile") {
+    currentSection = "slider";
+    deselectProfileButton();
+    selectSliderButton();
+    scrollToElement(document.querySelector(".swiper-container-hero")); // Scroll to slider
   }
 }
 
 function handleArrowNavigation(key) {
-  if (currentSection === 'settings') {
-    return; // No left/right navigation in settings
-  } else if (currentSection === 'slider') {
-    if (key === 'ArrowLeft') {
+  if (currentSection === "settings" || currentSection === "profile") {
+    if (key === "ArrowRight" && currentSection === "settings") {
+      // Navigate to profile button
+      currentSection = "profile";
+      deselectSettingsButton();
+      selectProfileButton();
+      scrollToElement(document.getElementById("profile-button"));
+    } else if (key === "ArrowLeft" && currentSection === "profile") {
+      // Navigate back to settings button
+      currentSection = "settings";
+      deselectProfileButton();
+      selectSettingsButton();
+      scrollToElement(document.getElementById("settings-button"));
+    }
+  } else if (currentSection === "slider") {
+    if (key === "ArrowLeft") {
       swiper.slidePrev();
-      currentSliderIndex = (currentSliderIndex - 1 + swiper.slides.length) % swiper.slides.length;
+      currentSliderIndex =
+        (currentSliderIndex - 1 + swiper.slides.length) % swiper.slides.length;
       selectSliderButton(); // Highlight "Watch Now" button
-    } else if (key === 'ArrowRight') {
+    } else if (key === "ArrowRight") {
       swiper.slideNext();
       currentSliderIndex = (currentSliderIndex + 1) % swiper.slides.length;
       selectSliderButton(); // Highlight "Watch Now" button
     }
-  } else if (currentSection === 'grid') {
+  } else if (currentSection === "grid") {
     const step = key === "ArrowLeft" ? -1 : 1;
     navigate(step);
   }
@@ -222,6 +250,7 @@ function navigate(step) {
   scrollToElement(items[selectedIndex]);
 }
 
+// Helper functions
 function select(item) {
   item.classList.add("selected");
 }
@@ -229,8 +258,9 @@ function select(item) {
 function deselectAll() {
   const items = getItems();
   items.forEach((item) => item.classList.remove("selected"));
-  deselectSettingsButton();
   deselectSlider();
+  deselectSettingsButton();
+  deselectProfileButton();
 }
 
 function deselectSlider() {
@@ -257,6 +287,16 @@ function selectSettingsButton() {
 function deselectSettingsButton() {
   const settingsButton = document.getElementById("settings-button");
   settingsButton.classList.remove("selected");
+}
+
+function selectProfileButton() {
+  const profileButton = document.getElementById("profile-button");
+  profileButton.classList.add("selected");
+}
+
+function deselectProfileButton() {
+  const profileButton = document.getElementById("profile-button");
+  profileButton.classList.remove("selected");
 }
 
 function scrollToElement(element) {
