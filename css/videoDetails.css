@@ -350,19 +350,24 @@ i {
   height: 400px !important;
 }
 
+.swiper-slide {
+  height: 400px;
+}
+
 .swiper-container {
   width: 90%;
+  height: 400px !important;
   margin: auto;
-  padding-bottom: 60px;
+  /* padding-bottom: 60px; */
   /* overflow: scroll; */
 }
 
 .swiper-wrapper {
-  height: auto !important;
+  height: 400px !important;
 }
 
 .swiper-hero {
-  height: 70vh !important;
+  height: 400px !important;
 }
 
 .swiper-back-dot {
@@ -388,7 +393,7 @@ i {
 
 .slider-info {
   position: absolute;
-  top: 20%;
+  top: 25%;
   width: 40%;
   left: 2%;
   right: 0;
@@ -426,6 +431,12 @@ i {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50px;
+}
+
+.slider-button.selected {
+  background-color: var(--Background-color);
+  border: var(--primary-color) 1px solid;
+  transition: all 0.5s ease-in-out;
 }
 
 .id {
@@ -515,6 +526,11 @@ h2 {
 .video-row-container::after {
   right: 0;
   background: linear-gradient(to left, black, transparent);
+}
+
+h2 {
+  color: white;
+  margin-left: 1% !important;
 }
 
 .video-tile {

@@ -12,24 +12,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   let details;
 
   if (movieSlug) {
+    //remove the episode list
+    const videoGridContainer = document.getElementById("video-grid-container");
+    if (videoGridContainer) {
+      videoGridContainer.style.display = "none";
+    }
     details = await fetchVideoDetailsBySlug(movieSlug);
     console.log("movie", details);
+    initializeMediaNavigation();
   } else if (seriesSlug) {
     details = await fetchSeriesDetailsBySlug(seriesSlug);
     console.log("series", details);
+    const seasons = details.seasons;
+    createSeasonsAndEpisodes(seasons);
+    initializeMediaNavigation(details.seasons);
   } else {
     console.log("No valid slug found in the URL.");
     return;
   }
 
-  // Proceed to create sliders or handle other DOM manipulations
   createSliders(details);
 
-  // Uncomment and customize these functions as needed
-  // displayPlaceholders("movie-row");
-  // const movies = await fetchMovies();
-  // replacePlaceholdersWithData("movie-row", movies);
-  // initializeMediaNavigation();
   // initializeSwiperHero();
 });
 
@@ -52,6 +55,8 @@ function createSliders(details) {
   const slideItem = document.createElement("div");
   slideItem.className = "swiper-slide";
 
+  const type = details.tv_show_type === "tv_show" ? "series" : "movie";
+
   slideItem.innerHTML = `
       <div class="overlay"></div>
       <img class="imgCarousal" src="${
@@ -60,10 +65,23 @@ function createSliders(details) {
       <div class="slider-info">
       <h1 class="slider-title">${details.title}</h1>
       <p class="slider-description">${details.description}</p>
-      <button class="slider-button">Watch Now</button></div>
+      <button class="slider-button" id="slider-button" data-url="${
+        details.url || details?.seasons[0]?.episodes[0].stream_key
+      }" data-type="${type}">Watch Now</button></div>
     `;
 
   sliderList.appendChild(slideItem);
+
+  // console.log("key", details?.seasons[0]?.episodes[0].stream_key);
+
+  // Add event listener to the new button
+  const sliderButton = slideItem.querySelector(".slider-button");
+  sliderButton.addEventListener("click", (event) => {
+    document.querySelectorAll(".slider-button.selected").forEach((button) => {
+      button.classList.remove("selected");
+    });
+    sliderButton.classList.add("selected");
+  });
 }
 
 function displayPlaceholders(rowId) {
@@ -87,7 +105,8 @@ function replacePlaceholdersWithData(rowId, mediaItems) {
     const tile = document.createElement("div");
     tile.classList.add("video-tile");
     tile.setAttribute("data-index", index);
-    tile.setAttribute("data-url", item.stream_url);
+    tile.setAttribute("data-url", item.stream_key);
+    tile.setAttribute("data-type", "series");
     tile.innerHTML = `
       <img src="${item.thumbnail}" alt="${item.title}">
       <div class="title">${item.title || item.name}</div>
@@ -95,24 +114,67 @@ function replacePlaceholdersWithData(rowId, mediaItems) {
     tile.addEventListener("click", () => {
       window.location.href = `player.html?title=${encodeURIComponent(
         item.title || item.name
-      )}&src=${encodeURIComponent(item.stream_url)}`;
+      )}&src=${encodeURIComponent(item.stream_key)}`;
     });
     row.appendChild(tile);
   });
 }
 
-function initializeMediaNavigation() {
+function createSeasonsAndEpisodes(seasons) {
+  const seasonsContainer = document.getElementById("seasons-container");
+
+  if (!seasonsContainer) {
+    console.error(`No element found with ID: ${containerId}`);
+    return;
+  }
+
+  if (seasons && seasons.length > 0) {
+    seasons.forEach((season, index) => {
+      // Create a new season header element
+      const seasonNumber = document.createElement("h2");
+      seasonNumber.innerHTML = `Season ${index + 1}`;
+
+      // Create a new movie-row container for each season
+      const movieRowContainer = document.createElement("div");
+      movieRowContainer.className = "video-row";
+      movieRowContainer.id = `movie-row-${index}`;
+
+      // Append the season header and the movie row to the container
+      seasonsContainer.appendChild(seasonNumber);
+      seasonsContainer.appendChild(movieRowContainer);
+
+      // Display placeholders in the new movie row
+      displayPlaceholders(`movie-row-${index}`);
+
+      // Replace placeholders with season episodes
+      replacePlaceholdersWithData(`movie-row-${index}`, season.episodes);
+    });
+  } else {
+    console.log("No seasons found.");
+  }
+}
+
+function initializeMediaNavigation(seasons) {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
   const mediaSections = [
     { id: "navbar-container", leftArrow: "", rightArrow: "" },
     { id: "swiper-wrapper", leftArrow: "", rightArrow: "" },
-    {
-      id: "movie-row",
-      leftArrow: "left-arrow-movies",
-      rightArrow: "right-arrow-movies",
-    },
   ];
+
+  function updateMediaSections(mediaSections, seasons) {
+    seasons.forEach((season, index) => {
+      mediaSections.push({
+        id: `movie-row-${index}`,
+        leftArrow: "left-arrow-movies",
+        rightArrow: "right-arrow-movies",
+      });
+    });
+  }
+
+  if (seasons && seasons.length > 0) {
+    updateMediaSections(mediaSections, seasons);
+  }
 
   if (mediaSections.length > 0) {
     const firstRow = document.getElementById(
@@ -151,7 +213,7 @@ function initializeMediaNavigation() {
       mediaSections[selectedSectionIndex].id
     );
     const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .menu-list-item, .swiper-slide"
+      ".video-tile, .menu-list-item, .slider-button "
     );
 
     if (currentTiles.length > 0) {
@@ -167,7 +229,7 @@ function initializeMediaNavigation() {
       mediaSections[selectedSectionIndex].id
     );
     const newTiles = newRow.querySelectorAll(
-      ".video-tile, .menu-list-item, .swiper-slide"
+      ".video-tile, .menu-list-item, .slider-button"
     );
 
     if (newTiles.length > 0) {
@@ -182,7 +244,7 @@ function initializeMediaNavigation() {
       mediaSections[selectedSectionIndex].id
     );
     const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .menu-list-item"
+      ".video-tile, .menu-list-item, .slider-button"
     );
 
     if (currentTiles.length > 0) {
@@ -197,9 +259,43 @@ function initializeMediaNavigation() {
   }
 
   function playSelectedVideo() {
+    const selectedButton = document.querySelector(".slider-button.selected");
     const selectedTile = document.querySelector(".video-tile.selected");
-    const videoUrl = selectedTile.getAttribute("data-url");
-    window.location.href = `player.html?src=${encodeURIComponent(videoUrl)}`;
+
+    if (!selectedButton && !selectedTile) {
+      console.error("No video button or tile is selected.");
+      return;
+    }
+
+    // Safely get the type from either selectedButton or selectedTile
+    const type = selectedButton
+      ? selectedButton.getAttribute("data-type")
+      : selectedTile?.getAttribute("data-type");
+
+    if (type === "movie" && selectedButton) {
+      const videoUrl = selectedButton.getAttribute("data-url");
+      console.log("Movie URL:", videoUrl);
+      window.location.href = `../player.html?movie-src=${encodeURIComponent(
+        videoUrl
+      )}`;
+    } else if (type === "series") {
+      const videoUrl =
+        selectedButton?.getAttribute("data-url") ||
+        selectedTile?.getAttribute("data-url");
+
+      if (videoUrl) {
+        console.log("Series URL:", videoUrl);
+        window.location.href = `../player.html?series-src=${encodeURIComponent(
+          videoUrl
+        )}`;
+      } else {
+        console.error("No URL found for the series.");
+      }
+    } else {
+      console.error(
+        "Invalid type or no selected button/tile for the video type."
+      );
+    }
   }
 
   function scrollToSection(section) {

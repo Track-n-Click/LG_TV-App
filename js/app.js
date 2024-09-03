@@ -134,6 +134,8 @@ document.addEventListener("keydown", (event) => {
       handleArrowDown();
       break;
     case "ArrowLeft":
+      handleArrowNavigation(event.key);
+      break;
     case "ArrowRight":
       handleArrowNavigation(event.key);
       break;
