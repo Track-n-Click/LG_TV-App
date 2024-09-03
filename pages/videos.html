@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Media Page</title>
+    <title>Videos Page</title>
     <link rel="stylesheet" href="../css/media.css" />
     <link
       rel="stylesheet"
@@ -90,22 +90,33 @@
     </div>
 
     <div id="video-grid-container" class="media-content">
-      <!-- TV Channels section -->
-      <div id="channels" class="media-section">
-        <h2>TV Channels</h2>
-        <div id="left-arrow-channels" class="nav-arrow left-arrow">
+      <!-- Movie section -->
+      <div id="movies" class="media-section">
+        <h2>Movies</h2>
+        <div id="left-arrow-movies" class="nav-arrow left-arrow">
           <i class="fa-solid fa-chevron-left"></i>
         </div>
         <div class="video-row-container">
-          <div id="channels-row" class="video-row">
-            <!-- TV Channels items will be injected here by media.js -->
+          <div id="movie-row" class="video-row">
+            <!-- Movie items will be injected here by media.js -->
           </div>
         </div>
-
-        <div id="right-arrow-channels" class="nav-arrow right-arrow">
+        <div id="right-arrow-movies" class="nav-arrow right-arrow">
           <i class="fa-solid fa-chevron-right"></i>
         </div>
       </div>
+
+      <!-- TV Series section -->
+      <div id="tv" class="media-section">
+        <h2>TV Series</h2>
+        <div id="left-arrow-tv" class="nav-arrow left-arrow">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="video-row-container">
+          <div id="tv-row" class="video-row">
+            <!-- TV Series items will be injected here by media.js -->
+          </div>
+        </div>
 
         <div id="right-arrow-tv" class="nav-arrow right-arrow">
           <i class="fa-solid fa-chevron-right"></i>
@@ -115,7 +126,7 @@
 
     <script type="module" src="../js/mediaService.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script type="module" src="../js/media.js"></script>
+    <script type="module" src="../js/videos.js"></script>
     <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
   </body>
 </html>
