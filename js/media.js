@@ -1,6 +1,6 @@
 import {
-  fetchMovies,
-  fetchTVSeries,
+  // fetchMovies,
+  // fetchTVSeries,
   fetchTVChannels,
   fetchSliders,
 } from "./mediaService.js";
@@ -11,13 +11,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tvChannels = await fetchTVChannels();
     replacePlaceholdersWithData("channels-row", tvChannels, "tv");
 
-    displayPlaceholders("movie-row");
-    const movies = await fetchMovies();
-    replacePlaceholdersWithData("movie-row", movies, "movies");
+    // displayPlaceholders("movie-row");
+    // const movies = await fetchMovies();
+    // replacePlaceholdersWithData("movie-row", movies, "movies");
 
-    displayPlaceholders("tv-row");
-    const tvSeries = await fetchTVSeries();
-    replacePlaceholdersWithData("tv-row", tvSeries, "series");
+    // displayPlaceholders("tv-row");
+    // const tvSeries = await fetchTVSeries();
+    // replacePlaceholdersWithData("tv-row", tvSeries, "series");
 
     initializeMediaNavigation();
     const sliders = await fetchSliders();
@@ -119,12 +119,12 @@ function initializeMediaNavigation() {
       leftArrow: "left-arrow-channels",
       rightArrow: "right-arrow-channels",
     },
-    {
-      id: "movie-row",
-      leftArrow: "left-arrow-movies",
-      rightArrow: "right-arrow-movies",
-    },
-    { id: "tv-row", leftArrow: "left-arrow-tv", rightArrow: "right-arrow-tv" },
+    // {
+    //   id: "movie-row",
+    //   leftArrow: "left-arrow-movies",
+    //   rightArrow: "right-arrow-movies",
+    // },
+    // { id: "tv-row", leftArrow: "left-arrow-tv", rightArrow: "right-arrow-tv" },
   ];
 
   if (mediaSections.length > 0) {
