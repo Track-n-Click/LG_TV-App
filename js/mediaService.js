@@ -14,6 +14,8 @@ const SERIES_DETAILS_BY_SLUG_API_URL =
 const SERIES_DETAILS_BY_STREAM_KEY_API_URL =
   "https://c-1y15z120-t12c.ayozat.com/api/tv-series/episodes";
 
+const VIDEO_SLIDERS_API_URL = "https://c-1y15z120-t12c.ayozat.com/api/video/slider";  
+
 export async function fetchSliders() {
   try {
     const response = await fetch(SLIDERS_API_URL);
@@ -124,6 +126,23 @@ export async function fetchSeriesDetailsByStreamKey(streamKey) {
     return data.data;
   } catch (error) {
     console.error("Failed to fetch Series Details:", error);
+    return [];
+  }
+}
+
+export async function fetchVideosSliders() {
+  try {
+    const response = await fetch(VIDEO_SLIDERS_API_URL);
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch sliders: ${response.status} ${response.statusText}`
+      );
+    }
+    const data = await response.json();
+    const combinedData = [...data.movies, ...data.tv_series];
+    return combinedData;
+  } catch (error) {
+    console.error("Failed to fetch sliders:", error);
     return [];
   }
 }

@@ -2,7 +2,7 @@ import {
     fetchMovies,
     fetchTVSeries,
     // fetchTVChannels,
-    fetchSliders,
+    fetchVideosSliders,
   } from "./mediaService.js";
   
   document.addEventListener("DOMContentLoaded", async () => {
@@ -20,7 +20,7 @@ import {
       replacePlaceholdersWithData("tv-row", tvSeries, "series");
   
       initializeMediaNavigation();
-      const sliders = await fetchSliders();
+      const sliders = await fetchVideosSliders();
       createSliders(sliders);
   
       initializeSwiperHero();
@@ -59,7 +59,7 @@ import {
       slideItem.className = "swiper-slide";
   
       slideItem.innerHTML = `
-        <img class="imgCarousal" src="${slide.banner}" alt="${slide.title}"/>
+        <img class="imgCarousal" src="${slide.poster_image}" alt="${slide.title}"/>
         <div class="slider-info">
         <h1 class="slider-title">${slide.title}</h1>
         <p class="slider-description">${slide.description}</p>
