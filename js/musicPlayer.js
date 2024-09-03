@@ -68,3 +68,42 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const audioPlayer = document.getElementById("audio-player");
+  const playPauseBtn = document.getElementById("play-pause-btn");
+  const progressBar = document.getElementById("progress-bar");
+  const progressContainer = document.getElementById("progress-container");
+  const volumeControl = document.getElementById("volume-control");
+
+  // Play/Pause functionality
+  playPauseBtn.addEventListener("click", function () {
+    if (audioPlayer.paused) {
+      audioPlayer.play();
+      playPauseBtn.textContent = "Pause";
+    } else {
+      audioPlayer.pause();
+      playPauseBtn.textContent = "Play";
+    }
+  });
+
+  // Update progress bar as audio plays
+  audioPlayer.addEventListener("timeupdate", function () {
+    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progressBar.style.width = `${progress}%`;
+  });
+
+  // Seek when clicking on progress bar
+  progressContainer.addEventListener("click", function (e) {
+    const clickX = e.offsetX;
+    const width = progressContainer.clientWidth;
+    const duration = audioPlayer.duration;
+
+    audioPlayer.currentTime = (clickX / width) * duration;
+  });
+
+  // Volume control
+  volumeControl.addEventListener("input", function () {
+    audioPlayer.volume = volumeControl.value;
+  });
+});

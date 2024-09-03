@@ -1,17 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Music Player</title>
-    <link rel="stylesheet" href="../css/musicPlayer.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../css/musicPlayer.css" />
+  </head>
+  <body>
     <div id="audio-player-container">
-        <h1 id="track-title"></h1>
-        <audio id="audio-player" controls></audio>
+      <div
+        id="artwork"
+        style="background-image: url('https://via.placeholder.com/800')"
+      ></div>
+      <div class="overlay"></div>
+      <div class="audio-player-content">
+        <h1 id="track-title">I Need to Know (Live)</h1>
+        <div id="custom-controls">
+          <button id="play-pause-btn" class="control-btn">Play</button>
+          <div id="progress-container">
+            <div id="progress-bar"></div>
+          </div>
+          <input
+            id="volume-control"
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value="1"
+          />
+        </div>
+      </div>
+      <audio
+        id="audio-player"
+        src="https://1y15z120-t12c.ayozat.com/stream/42574374?expires=1725384598&amp;signature=0b623a83673ffb9d6bcd39f9789600617c81d6a22c31cdb1871d7c2220313bb9"
+      ></audio>
     </div>
 
     <script src="../js/musicPlayer.js"></script>
-</body>
+  </body>
 </html>
