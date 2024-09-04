@@ -57,12 +57,17 @@ import {
     sliders.forEach((slide) => {
       const slideItem = document.createElement("div");
       slideItem.className = "swiper-slide";
+
+    // Slice the description to a desired length (e.g., 100 characters)
+    const truncatedDescription = slide.description.length > 300
+    ? slide.description.slice(0, 300) + "..."
+    : slide.description;
   
       slideItem.innerHTML = `
         <img class="imgCarousal" src="${slide.poster_image}" alt="${slide.title}"/>
         <div class="slider-info">
         <h1 class="slider-title">${slide.title}</h1>
-        <p class="slider-description">${slide.description}</p>
+        <p class="slider-description">${truncatedDescription}</p>
         <button class="slider-button">Watch Now</button></div>
       `;
   
