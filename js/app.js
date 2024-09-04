@@ -1,25 +1,28 @@
 import { fetchSliders } from "./mediaService.js";
 
 let selectedIndex = 0;
-let currentSection = "slider"; // Possible values: 'slider', 'grid', 'settings', 'profile'
+let currentSection = "slider"; // Possible values: 'settings_profile', 'slider', 'grid'
 let swiper;
 let currentSliderIndex = 0;
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", initializeContent);
+window.addEventListener("load", initializeSenza);
+
+function initializeContent() {
   setTimeout(async () => {
     const sliders = await fetchSliders();
     createSliders(sliders);
     initializeSwiperHero();
   }, 1000);
-});
+}
 
-window.addEventListener("load", async () => {
+async function initializeSenza() {
   try {
     await senza.init();
     initializeTiles();
 
     document.getElementById("progress-bar").style.width = "100%";
-    setTimeout(function () {
+    setTimeout(() => {
       document.getElementById("loader").style.display = "none";
       document.getElementById("main").style.display = "block";
     }, 1000);
@@ -32,11 +35,11 @@ window.addEventListener("load", async () => {
   } catch (error) {
     console.error("Error initializing:", error);
   }
-});
+}
 
 // Initialize Swiper for hero section
 function initializeSwiperHero() {
-  if (typeof swiper !== "undefined") {
+  if (swiper) {
     swiper.destroy(true, true);
   }
   swiper = new Swiper(".swiper-container-hero", {
@@ -65,27 +68,27 @@ function initializeSwiperHero() {
 // Create sliders from fetched data
 function createSliders(sliders) {
   const sliderList = document.querySelector(".swiper-wrapper");
-
   sliders.forEach((slide, index) => {
-    const slideItem = document.createElement("div");
-    slideItem.className = "swiper-slide";
-
-    slideItem.innerHTML = `
-      <img class="imgCarousal" src="${slide.banner}" alt="${slide.title}"/>
-      <div class="slider-info">
-        <h1 class="slider-title">${slide.title}</h1>
-        <p class="slider-description">${slide.description}</p>
-        <button class="slider-button" data-index="${index}">Watch Now</button>
-      </div>
-    `;
-
+    const slideItem = createSliderElement(slide, index);
     sliderList.appendChild(slideItem);
-
-    // Add event listener to redirect when "Watch Now" button is clicked
-    slideItem.querySelector(".slider-button").addEventListener("click", () => {
-      redirect("pages/media.html");
-    });
   });
+}
+
+function createSliderElement(slide, index) {
+  const slideItem = document.createElement("div");
+  slideItem.className = "swiper-slide";
+  slideItem.innerHTML = `
+    <img class="imgCarousal" src="${slide.banner}" alt="${slide.title}" />
+    <div class="slider-info">
+      <h1 class="slider-title">${slide.title}</h1>
+      <p class="slider-description">${slide.description}</p>
+      <button class="slider-button" data-index="${index}">Watch Now</button>
+    </div>
+  `;
+  slideItem.querySelector(".slider-button").addEventListener("click", () => {
+    redirect("pages/media.html");
+  });
+  return slideItem;
 }
 
 // Initialize grid items (tiles) and their navigation
@@ -93,7 +96,7 @@ function initializeTiles() {
   const items = getItems();
   updateSelection(selectedIndex); // Initialize the first tile as selected
 
-  items.forEach((item, index) => {
+  items.forEach((item) => {
     item.addEventListener("click", () => {
       redirect(item.getAttribute("data-page"));
     });
@@ -128,14 +131,10 @@ document.addEventListener("keydown", (event) => {
       goBack();
       break;
     case "ArrowUp":
-      handleArrowUp();
-      break;
     case "ArrowDown":
-      handleArrowDown();
+      handleVerticalNavigation(event.key);
       break;
     case "ArrowLeft":
-      handleArrowNavigation(event.key);
-      break;
     case "ArrowRight":
       handleArrowNavigation(event.key);
       break;
@@ -147,100 +146,98 @@ document.addEventListener("keydown", (event) => {
 
 // Handle Enter key to select the current option
 function handleEnterKey() {
-  if (currentSection === "settings") {
-    redirect("pages/settings.html");
-  } else if (currentSection === "profile") {
-    openLoginModal(); 
-  } else if (currentSection === "slider") {
-    const activeSlide = document.querySelector(".swiper-slide-active");
-    if (activeSlide) {
-      const watchNowButton = activeSlide.querySelector(".slider-button");
-      if (watchNowButton) {
-        watchNowButton.click();
-      }
-    }
-  } else if (currentSection === "grid") {
-    const items = getItems();
-    if (items[selectedIndex]) {
-      redirect(items[selectedIndex].getAttribute("data-page"));
+  switch (currentSection) {
+    case "settings_profile":
+      redirect("pages/settings.html");
+      break;
+    case "slider":
+      clickActiveSliderButton();
+      break;
+    case "grid":
+      clickActiveGridItem();
+      break;
+  }
+}
+
+function clickActiveSliderButton() {
+  const activeSlide = document.querySelector(".swiper-slide-active");
+  if (activeSlide) {
+    const watchNowButton = activeSlide.querySelector(".slider-button");
+    if (watchNowButton) {
+      watchNowButton.click();
     }
   }
 }
 
-function openLoginModal() {
-  console.log("block");
-  document.getElementById("login-modal").style.display = "block";
+function clickActiveGridItem() {
+  const items = getItems();
+  if (items[selectedIndex]) {
+    redirect(items[selectedIndex].getAttribute("data-page"));
+  }
 }
 
 // Handle navigation with arrow keys
-function handleArrowUp() {
-  if (currentSection === "grid") {
-    currentSection = "slider";
-    deselectAll();
-    selectSliderButton();
-    scrollToElement(document.querySelector(".swiper-container-hero")); // Scroll to slider
-  } else if (currentSection === "slider") {
-    currentSection = "settings";
-    deselectAll();
-    selectSettingsButton();
-    scrollToElement(document.getElementById("settings-button")); // Scroll to settings button
-  } else if (currentSection === "profile") {
-    currentSection = "settings";
-    deselectProfileButton();
-    selectSettingsButton();
-    scrollToElement(document.getElementById("settings-button"));
+function handleVerticalNavigation(key) {
+  if (key === "ArrowUp") {
+    if (currentSection === "grid") {
+      navigateToSlider();
+    } else if (currentSection === "slider") {
+      navigateToSettingsProfile();
+    }
+  } else if (key === "ArrowDown") {
+    if (currentSection === "settings_profile") {
+      navigateToSlider();
+    } else if (currentSection === "slider") {
+      navigateToGrid();
+    }
   }
 }
 
-function handleArrowDown() {
-  if (currentSection === "settings") {
-    currentSection = "profile";
-    deselectSettingsButton();
-    selectProfileButton();
-    scrollToElement(document.getElementById("profile-button")); // Scroll to profile button
-  } else if (currentSection === "slider") {
-    currentSection = "grid";
-    deselectAll();
-    updateSelection(0);
-    scrollToElement(document.getElementById("grid-container")); // Scroll to grid
-  } else if (currentSection === "profile") {
-    currentSection = "slider";
-    deselectProfileButton();
-    selectSliderButton();
-    scrollToElement(document.querySelector(".swiper-container-hero")); // Scroll to slider
-  }
+function navigateToSlider() {
+  currentSection = "slider";
+  deselectAll();
+  selectSliderButton();
+  scrollToElement(document.querySelector(".swiper-container-hero"));
+}
+
+function navigateToSettingsProfile() {
+  currentSection = "settings_profile";
+  deselectAll();
+  selectSettingsButton(); // Start with selecting settings
+  scrollToElement(document.getElementById("settings-button"));
+}
+
+function navigateToGrid() {
+  currentSection = "grid";
+  deselectAll();
+  updateSelection(0);
+  scrollToElement(document.getElementById("grid-container"));
 }
 
 function handleArrowNavigation(key) {
-  if (currentSection === "settings" || currentSection === "profile") {
-    if (key === "ArrowRight" && currentSection === "settings") {
-      // Navigate to profile button
-      currentSection = "profile";
-      deselectSettingsButton();
-      selectProfileButton();
-      scrollToElement(document.getElementById("profile-button"));
-    } else if (key === "ArrowLeft" && currentSection === "profile") {
-      // Navigate back to settings button
-      currentSection = "settings";
-      deselectProfileButton();
-      selectSettingsButton();
-      scrollToElement(document.getElementById("settings-button"));
-    }
+  if (currentSection === "settings_profile") {
+    handleSettingsProfileNavigation(key); // Call header.js function
   } else if (currentSection === "slider") {
-    if (key === "ArrowLeft") {
-      swiper.slidePrev();
-      currentSliderIndex =
-        (currentSliderIndex - 1 + swiper.slides.length) % swiper.slides.length;
-      selectSliderButton(); // Highlight "Watch Now" button
-    } else if (key === "ArrowRight") {
-      swiper.slideNext();
-      currentSliderIndex = (currentSliderIndex + 1) % swiper.slides.length;
-      selectSliderButton(); // Highlight "Watch Now" button
-    }
+    navigateSlider(key);
   } else if (currentSection === "grid") {
-    const step = key === "ArrowLeft" ? -1 : 1;
-    navigate(step);
+    navigateGrid(key);
   }
+}
+
+function navigateSlider(key) {
+  if (key === "ArrowLeft") {
+    swiper.slidePrev();
+    currentSliderIndex = (currentSliderIndex - 1 + swiper.slides.length) % swiper.slides.length;
+  } else if (key === "ArrowRight") {
+    swiper.slideNext();
+    currentSliderIndex = (currentSliderIndex + 1) % swiper.slides.length;
+  }
+  selectSliderButton();
+}
+
+function navigateGrid(key) {
+  const step = key === "ArrowLeft" ? -1 : 1;
+  navigate(step);
 }
 
 function navigate(step) {
@@ -281,26 +278,6 @@ function selectSliderButton() {
   }
 }
 
-function selectSettingsButton() {
-  const settingsButton = document.getElementById("settings-button");
-  settingsButton.classList.add("selected");
-}
-
-function deselectSettingsButton() {
-  const settingsButton = document.getElementById("settings-button");
-  settingsButton.classList.remove("selected");
-}
-
-function selectProfileButton() {
-  const profileButton = document.getElementById("profile-button");
-  profileButton.classList.add("selected");
-}
-
-function deselectProfileButton() {
-  const profileButton = document.getElementById("profile-button");
-  profileButton.classList.remove("selected");
-}
-
 function scrollToElement(element) {
   element.scrollIntoView({
     behavior: "smooth",
@@ -312,13 +289,3 @@ function scrollToElement(element) {
 function getItems() {
   return Array.from(document.getElementsByClassName("grid-item"));
 }
-
-// Loader functionality
-window.addEventListener("load", function () {
-  const progressBar = document.getElementById("progress-bar");
-  progressBar.style.width = "100%";
-  setTimeout(function () {
-    document.getElementById("loader").style.display = "none";
-    document.getElementById("main").style.display = "block";
-  }, 4000); // Adjust timing as needed
-});
