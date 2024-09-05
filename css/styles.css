@@ -25,6 +25,10 @@ body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
 
+body.no-scroll {
+  overflow: hidden;
+}
+
 #loader {
   position: fixed;
   top: 0;

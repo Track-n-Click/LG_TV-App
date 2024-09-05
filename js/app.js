@@ -148,7 +148,11 @@ document.addEventListener("keydown", (event) => {
 function handleEnterKey() {
   switch (currentSection) {
     case "settings_profile":
-      redirect("pages/settings.html");
+      if (document.getElementById("profile-button").classList.contains("selected")) {
+        openLoginModal();
+      } else if (document.getElementById("settings-button").classList.contains("selected")) {
+        redirect("pages/settings.html"); 
+      }
       break;
     case "slider":
       clickActiveSliderButton();
@@ -158,6 +162,7 @@ function handleEnterKey() {
       break;
   }
 }
+
 
 function clickActiveSliderButton() {
   const activeSlide = document.querySelector(".swiper-slide-active");
