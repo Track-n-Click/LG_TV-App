@@ -1,3 +1,12 @@
+:root {
+  --primary-color: #f50537;
+  --Background-color: #000000;
+  --modal-color: #0f0f0f;
+  --border-color-gray: #282828;
+  --text-white: #ffffff;
+  --text-lightblue: #7b9db4;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -120,4 +129,135 @@ h2 {
   background: #555;
   margin-top: 10px;
   border-radius: 5px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  font-size: 50px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  color: lightgray !important;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.swiper-pagination-bullet {
+  background-color: var(--text-lightblue) !important;
+  /* width: 20px !important; */
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--primary-color) !important;
+  width: 20px !important;
+  height: 5px !important;
+  border-radius: 20px !important;
+  opacity: 1 !important;
+}
+
+.swiper-main {
+  width: 100%;
+  margin: auto;
+}
+
+.swiper {
+  width: 100%;
+  height: auto !important;
+}
+
+.swiper-container {
+  width: 100%;
+  padding-top: -100px;
+  padding-bottom: 60px;
+  scale: 1.1;
+}
+
+.swiper-wrapper {
+  height: auto !important;
+}
+
+.swiper-hero {
+  height: 60vh !important;
+}
+
+.swiper-back-dot {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%; /* Adjust size as needed */
+  height: 70%; /* Adjust size as needed */
+  background: radial-gradient(circle, var(--primary-color) 0%, transparent 40%);
+  opacity: 0.5; /* Adjust transparency as needed */
+  border-radius: 100%;
+  z-index: -1; /* Position it behind the swiper */
+}
+
+.imgCarousal {
+  width: 100%;
+  height: auto;
+  margin: auto;
+  object-fit: cover;
+  -webkit-box-reflect: below 5px
+    linear-gradient(transparent, transparent 90%, rgba(0, 0, 0, 0.5));
+  border-radius: 10px;
+  border: var(--border-color-gray) solid 1px;
+}
+
+.imgCarousal:hover {
+  /* box-shadow: 1px 1px 30px -2px var(--primary-color); */
+  border: var(--text-lightblue) solid 1px;
+  transition: all 0.5s ease-in-out;
+}
+
+.slider-info {
+  position: absolute;
+  bottom: -10px;
+  width: 60%;
+  margin: auto;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  color: white;
+  text-align: center;
+  opacity: 0.4; /* Start with hidden state */
+  transition: opacity 0.3s ease-in-out;
+}
+
+.slider-info h1 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.slider-info p {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.swiper-slide-active .slider-info {
+  opacity: 1;
+  scale: 1.1;
+}
+
+.slider-button {
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+.id {
+  color: #fff;
 }
