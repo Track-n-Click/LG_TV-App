@@ -36,7 +36,10 @@ function setupProfileButtonListeners() {
 }
 
 function handleEscapeKey(event) {
-  if (event.key === "Escape" && document.getElementById("login-modal").style.display === "block") {
+  if (
+    event.key === "Escape" &&
+    document.getElementById("login-modal").style.display === "block"
+  ) {
     closeLoginModal();
   }
 }
@@ -86,7 +89,9 @@ function setupLoginModalNavigation() {
     if (document.getElementById("login-modal").style.display === "block") {
       if (event.key === "ArrowUp" || event.key === "ArrowDown") {
         if (event.key === "ArrowUp") {
-          currentIndex = (currentIndex - 1 + focusableElements.length) % focusableElements.length;
+          currentIndex =
+            (currentIndex - 1 + focusableElements.length) %
+            focusableElements.length;
         } else if (event.key === "ArrowDown") {
           currentIndex = (currentIndex + 1) % focusableElements.length;
         }
@@ -108,7 +113,8 @@ function setupLoginModalNavigation() {
   }
 
   // Store function to remove the listener later
-  document.getElementById("login-modal").removeNavigationListener = removeNavigationListener;
+  document.getElementById("login-modal").removeNavigationListener =
+    removeNavigationListener;
 }
 
 // Removes keydown listeners for modal navigation
@@ -143,7 +149,7 @@ function verifyLoginAndRedirect() {
   // Perform basic login verification (replace with actual logic)
   if (email === "test@example.com" && password === "password") {
     alert("Login successful! Redirecting...");
-    window.location.href = "app.html"; // Redirect to the app.html page
+    window.location.href = "index.html"; // Redirect to the app.html page
   } else {
     alert("Invalid email or password. Please try again.");
   }
