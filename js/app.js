@@ -148,10 +148,16 @@ document.addEventListener("keydown", (event) => {
 function handleEnterKey() {
   switch (currentSection) {
     case "settings_profile":
-      if (document.getElementById("profile-button").classList.contains("selected")) {
+      if (
+        document.getElementById("profile-button").classList.contains("selected")
+      ) {
         openLoginModal();
-      } else if (document.getElementById("settings-button").classList.contains("selected")) {
-        redirect("pages/settings.html"); 
+      } else if (
+        document
+          .getElementById("settings-button")
+          .classList.contains("selected")
+      ) {
+        redirect("pages/settings.html");
       }
       break;
     case "slider":
@@ -162,7 +168,6 @@ function handleEnterKey() {
       break;
   }
 }
-
 
 function clickActiveSliderButton() {
   const activeSlide = document.querySelector(".swiper-slide-active");
@@ -232,7 +237,8 @@ function handleArrowNavigation(key) {
 function navigateSlider(key) {
   if (key === "ArrowLeft") {
     swiper.slidePrev();
-    currentSliderIndex = (currentSliderIndex - 1 + swiper.slides.length) % swiper.slides.length;
+    currentSliderIndex =
+      (currentSliderIndex - 1 + swiper.slides.length) % swiper.slides.length;
   } else if (key === "ArrowRight") {
     swiper.slideNext();
     currentSliderIndex = (currentSliderIndex + 1) % swiper.slides.length;
@@ -257,6 +263,20 @@ function navigate(step) {
 // Helper functions
 function select(item) {
   item.classList.add("selected");
+}
+
+function deselectSettingsButton() {
+  const settingsButton = document.getElementById("settings-button");
+  if (settingsButton) {
+    settingsButton.classList.remove("selected");
+  }
+}
+
+function deselectProfileButton() {
+  const profileButton = document.getElementById("profile-button");
+  if (profileButton) {
+    profileButton.classList.remove("selected");
+  }
 }
 
 function deselectAll() {

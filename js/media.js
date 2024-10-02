@@ -1,9 +1,4 @@
-import {
-  // fetchMovies,
-  // fetchTVSeries,
-  fetchTVChannels,
-  fetchSliders,
-} from "./mediaService.js";
+import { fetchTVChannels } from "./mediaService.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   setTimeout(async () => {
@@ -11,64 +6,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tvChannels = await fetchTVChannels();
     replacePlaceholdersWithData("channels-row", tvChannels, "tv");
 
-    // displayPlaceholders("movie-row");
-    // const movies = await fetchMovies();
-    // replacePlaceholdersWithData("movie-row", movies, "movies");
-
-    // displayPlaceholders("tv-row");
-    // const tvSeries = await fetchTVSeries();
-    // replacePlaceholdersWithData("tv-row", tvSeries, "series");
-
     initializeMediaNavigation();
-    const sliders = await fetchSliders();
-    createSliders(sliders);
-
-    initializeSwiperHero();
   }, 1000);
 });
-
-function initializeSwiperHero() {
-  var swiper = new Swiper(".swiper-container-hero", {
-    effect: "coverflow",
-    grabCursor: false,
-    centeredSlides: true,
-    slidesPerView: 2,
-    coverflowEffect: {
-      rotate: 10,
-      stretch: 10,
-      depth: 110,
-      modifier: 5,
-      slideShadows: true,
-    },
-    loop: true,
-    pagination: {
-      el: ".swiper-pagination",
-    },
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: true,
-    },
-  });
-}
-
-function createSliders(sliders) {
-  const sliderList = document.querySelector(".swiper-wrapper");
-
-  sliders.forEach((slide) => {
-    const slideItem = document.createElement("div");
-    slideItem.className = "swiper-slide";
-
-    slideItem.innerHTML = `
-      <img class="imgCarousal" src="${slide.banner}" alt="${slide.title}"/>
-      <div class="slider-info">
-      <h1 class="slider-title">${slide.title}</h1>
-      <p class="slider-description">${slide.description}</p>
-      <button class="slider-button">Watch Now</button></div>
-    `;
-
-    sliderList.appendChild(slideItem);
-  });
-}
 
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
@@ -85,9 +25,7 @@ function displayPlaceholders(rowId) {
 
 function replacePlaceholdersWithData(rowId, mediaItems, type) {
   const row = document.getElementById(rowId);
-  row.innerHTML = ""; // Clear placeholders
-
-  console.log("Selected media type:", type);
+  row.innerHTML = "";
 
   mediaItems.forEach((item, index) => {
     const tile = document.createElement("div");
@@ -111,21 +49,8 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
 function initializeMediaNavigation() {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
-  const mediaSections = [
-    { id: "navbar-container", leftArrow: "", rightArrow: "" },
-    { id: "swiper-wrapper", leftArrow: "", rightArrow: "" },
-    {
-      id: "channels-row",
-      leftArrow: "left-arrow-channels",
-      rightArrow: "right-arrow-channels",
-    },
-    // {
-    //   id: "movie-row",
-    //   leftArrow: "left-arrow-movies",
-    //   rightArrow: "right-arrow-movies",
-    // },
-    // { id: "tv-row", leftArrow: "left-arrow-tv", rightArrow: "right-arrow-tv" },
-  ];
+
+  const mediaSections = [{ id: "channels-row" }];
 
   if (mediaSections.length > 0) {
     const firstRow = document.getElementById(
@@ -139,16 +64,16 @@ function initializeMediaNavigation() {
   document.addEventListener("keydown", (e) => {
     switch (e.key) {
       case "ArrowUp":
-        navigateSections(-1);
+        navigateGrid(-5);
         break;
       case "ArrowDown":
-        navigateSections(1);
+        navigateGrid(5);
         break;
       case "ArrowLeft":
-        navigateItems(-1);
+        navigateGrid(-1);
         break;
       case "ArrowRight":
-        navigateItems(1);
+        navigateGrid(1);
         break;
       case "Enter":
         playSelectedVideo();
@@ -159,44 +84,11 @@ function initializeMediaNavigation() {
     }
   });
 
-  function navigateSections(step) {
+  function navigateGrid(step) {
     const currentRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
-    const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .menu-list-item, .swiper-slide"
-    );
-
-    if (currentTiles.length > 0) {
-      currentTiles[selectedItemIndex].classList.remove("selected");
-    }
-
-    selectedSectionIndex =
-      (selectedSectionIndex + step + mediaSections.length) %
-      mediaSections.length;
-    selectedItemIndex = 0;
-
-    const newRow = document.getElementById(
-      mediaSections[selectedSectionIndex].id
-    );
-    const newTiles = newRow.querySelectorAll(
-      ".video-tile, .menu-list-item, .swiper-slide"
-    );
-
-    if (newTiles.length > 0) {
-      newTiles[selectedItemIndex].classList.add("selected");
-      scrollToSection(newRow);
-      updateArrowVisibility(newRow, newTiles);
-    }
-  }
-
-  function navigateItems(step) {
-    const currentRow = document.getElementById(
-      mediaSections[selectedSectionIndex].id
-    );
-    const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .menu-list-item"
-    );
+    const currentTiles = currentRow.querySelectorAll(".video-tile");
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -205,8 +97,15 @@ function initializeMediaNavigation() {
       currentTiles[selectedItemIndex].classList.add("selected");
 
       scrollToTile(currentRow, currentTiles[selectedItemIndex]);
-      updateArrowVisibility(currentRow, currentTiles);
     }
+  }
+
+  function scrollToTile(row, tile) {
+    tile.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
   }
 
   function playSelectedVideo() {
@@ -214,56 +113,11 @@ function initializeMediaNavigation() {
     if (!selectedTile) return;
 
     const videoUrl = selectedTile.getAttribute("data-url");
-    const slug = selectedTile.getAttribute("data-slug");
-    const mediaType = selectedTile.getAttribute("data-type");
     const title = selectedTile.getAttribute("data-title");
 
-    console.log("Selected video type:", mediaType);
-
-    if (mediaType === "tv") {
-      window.location.href = `player.html?title=${encodeURIComponent(
-        title
-      )}&src=${encodeURIComponent(videoUrl)}`;
-    } else if (mediaType === "movies") {
-      console.log("Redirecting to video details page...");
-      window.location.href = `media/videoDetails.html?movie-slug=${encodeURIComponent(
-        slug
-      )}`;
-    } else {
-      console.log("Redirecting to video details page...");
-      window.location.href = `media/videoDetails.html?series-slug=${encodeURIComponent(
-        slug
-      )}`;
-    }
-  }
-
-  function scrollToSection(section) {
-    section.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
-  function scrollToTile(row, tile) {
-    const tileOffset = tile.offsetLeft;
-    const rowWidth = row.clientWidth;
-    const tileWidth = tile.clientWidth;
-
-    const scrollPosition = tileOffset - rowWidth / 2 + tileWidth / 2;
-    row.scrollLeft = scrollPosition;
-  }
-
-  function updateArrowVisibility(row, tiles) {
-    const currentSection = mediaSections[selectedSectionIndex];
-    const leftArrow = currentSection.leftArrow
-      ? document.getElementById(currentSection.leftArrow)
-      : null;
-    const rightArrow = currentSection.rightArrow
-      ? document.getElementById(currentSection.rightArrow)
-      : null;
-
-    const atStart = selectedItemIndex === 0;
-    const atEnd = selectedItemIndex === tiles.length - 1;
-
-    if (leftArrow) leftArrow.style.display = atStart ? "none" : "block";
-    if (rightArrow) rightArrow.style.display = atEnd ? "none" : "block";
+    window.location.href = `player.html?title=${encodeURIComponent(
+      title
+    )}&src=${encodeURIComponent(videoUrl)}`;
   }
 }
 

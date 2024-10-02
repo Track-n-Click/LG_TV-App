@@ -102,6 +102,12 @@ function replacePlaceholdersWithData(rowId, musicItems) {
   if (Array.isArray(musicItems)) {
     musicItems.forEach((item, index) => {
       const tile = document.createElement("div");
+      if (rowId === "album-row") {
+        tile.setAttribute("type", "album");
+        tile.setAttribute("id", item.id);
+      } else {
+        tile.setAttribute("type", "music");
+      }
       tile.classList.add("music-tile");
       tile.setAttribute("data-index", index);
       tile.setAttribute("data-title", item.title);
@@ -209,13 +215,20 @@ function initializeMusicNavigation() {
     const musicTitle = selectedTile.getAttribute("data-title");
     const musicArtist = selectedTile.getAttribute("data-artist");
     const musicArtwork = selectedTile.getAttribute("data-artwork");
+    const type = selectedTile.getAttribute("type");
+    const albumId = selectedTile.getAttribute("id");
 
-    // Redirect to the player page with the track's title and URL as query parameters
-    window.location.href = `musicPlayer.html?title=${encodeURIComponent(
-      musicTitle
-    )}&src=${encodeURIComponent(musicUrl)}&artist=${encodeURIComponent(
-      musicArtist
-    )}&artwork=${encodeURIComponent(musicArtwork)}`;
+    if (type === "music") {
+      window.location.href = `musicPlayer.html?title=${encodeURIComponent(
+        musicTitle
+      )}&src=${encodeURIComponent(musicUrl)}&artist=${encodeURIComponent(
+        musicArtist
+      )}&artwork=${encodeURIComponent(musicArtwork)}`;
+    } else {
+      window.location.href = `musicPlayer.html?id=${encodeURIComponent(
+        albumId
+      )}`;
+    }
   }
 
   function scrollToSection(section) {
