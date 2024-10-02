@@ -37,6 +37,7 @@ body {
 #game-hero h2 {
   color: white;
   font-size: 50px;
+  width: 100%;
 }
 
 #grid2-container {
