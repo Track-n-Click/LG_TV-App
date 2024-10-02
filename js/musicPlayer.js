@@ -1,3 +1,5 @@
+import { fetchAlbumById } from "./musicService.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   const audioPlayer = document.getElementById("audio-player");
   const playPauseBtn = document.getElementById("play-pause-btn");
@@ -10,12 +12,92 @@ document.addEventListener("DOMContentLoaded", function () {
   const currentTimeElement = document.getElementById("current-time");
   const durationElement = document.getElementById("duration");
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const trackTitle = urlParams.get("title");
-  const trackSrc = urlParams.get("src");
-  const trackArtist = urlParams.get("artist");
-  const trackArtwork = urlParams.get("artwork");
+  const trackListElement = document.getElementById("track-list");
+  const albumTitleElement = document.getElementById("album-title");
+  const albumDescriptionElement = document.getElementById("album-description");
+  const albumSection = document.getElementById("album-section");
 
+  const urlParams = new URLSearchParams(window.location.search);
+  let trackTitle = urlParams.get("title");
+  let trackSrc = urlParams.get("src");
+  let trackArtist = urlParams.get("artist");
+  let trackArtwork = urlParams.get("artwork");
+
+  const id = urlParams.get("id");
+
+  if (id) {
+    fetchAlbumById(id)
+      .then((data) => {
+        console.log("Album Details:", data);
+
+        albumSection.classList.remove("hidden");
+
+        // Set album title and description
+        albumTitleElement.textContent = data.title;
+        albumDescriptionElement.textContent = data.description;
+
+        // Populate the track list
+        data.songs.forEach((song) => {
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `
+    <div class="track-link" data-src="${song.stream_url}" data-title="${song.title}" data-artist="${data.artists[0].name}" data-artwork="${song.artwork_url}">
+      <img src="${song.artwork_url}" alt="${song.title} Artwork" class="track-artwork" style="width: 50px; height: 50px; margin-right: 10px;"/> <!-- Add this line for artwork -->
+      <span>${song.title}</span> <!-- Title displayed next to artwork -->
+    </div>`;
+          trackListElement.appendChild(listItem);
+        });
+
+        // Play the first song automatically
+        const firstSong = data.songs[0];
+        playTrack(
+          firstSong.stream_url,
+          firstSong.title,
+          data.artists[0].name,
+          firstSong.artwork_url
+        );
+
+        // Add click event listener to each track link
+        const trackLinks = document.querySelectorAll(".track-link");
+        trackLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const songSrc = link.getAttribute("data-src");
+            const songTitle = link.getAttribute("data-title");
+            const songArtist = link.getAttribute("data-artist");
+            const songArtwork = link.getAttribute("data-artwork");
+            playTrack(songSrc, songTitle, songArtist, songArtwork);
+          });
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching album details:", error);
+      });
+  }
+
+  function playTrack(src, title, artist, artwork) {
+    trackTitleElement.textContent = title;
+    trackArtistElement.textContent = artist;
+    albumArtwork.src = artwork;
+    audioPlayer.src = src;
+
+    // Update the duration once the metadata is loaded
+    audioPlayer.addEventListener("loadedmetadata", function () {
+      durationElement.textContent = formatTime(audioPlayer.duration);
+    });
+
+    // Auto-play the track
+    audioPlayer
+      .play()
+      .then(() => {
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      })
+      .catch((error) => {
+        console.log(
+          "Playback prevented due to user interaction policy.",
+          error
+        );
+      });
+  }
   // Set track title and source if provided in URL parameters
   if (trackTitle && trackSrc && trackArtist && trackArtwork) {
     trackTitleElement.textContent = trackTitle;

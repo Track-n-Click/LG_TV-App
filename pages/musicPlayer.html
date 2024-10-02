@@ -58,9 +58,19 @@
           style="display: none; transform: rotate(-90deg)"
         />
       </div>
+      <!-- Right-side album section (initially hidden) -->
+      <div id="album-section" class="album-section hidden">
+        <h3 id="album-title">Album Title</h3>
+        <p id="album-description">Album Description</p>
+        <div id="album-tracks">
+          <h4>Tracks</h4>
+          <ul id="track-list"></ul>
+        </div>
+      </div>
       <audio id="audio-player"></audio>
     </div>
 
-    <script src="../js/musicPlayer.js"></script>
+    <script type="module" src="../js/musicService.js"></script>
+    <script type="module" src="../js/musicPlayer.js"></script>
   </body>
 </html>
