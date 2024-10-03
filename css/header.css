@@ -19,7 +19,7 @@ body {
   margin: 0;
   background-color: var(--background-color);
   overflow: scroll;
-  font-family: Montserrat, sans-serif;
+  font-family: "Alexandria", sans-serif !important;
 }
 
 body.no-scroll {
