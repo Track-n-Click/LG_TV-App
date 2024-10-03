@@ -46,13 +46,27 @@ function handleEscapeKey(event) {
   }
 }
 
-function openLoginModal() {
-  document.getElementById("login-modal").style.display = "block";
-  document.body.classList.add("no-scroll"); // Disable background scroll
-  setupLoginModalNavigation(); // Setup navigation within the modal
-  document.addEventListener("keydown", handleEscapeKey); // Add Escape key listener when modal opens
-  focusInput(0); // Automatically focus the first input when the modal opens
-  isModalOpen = true; // Set modal state to open
+async function openLoginModal() {
+    document.getElementById("login-modal").style.display = "block";
+    document.body.classList.add("no-scroll"); // Disable background scroll
+    setupLoginModalNavigation(); // Setup navigation within the modal
+    document.addEventListener("keydown", handleEscapeKey); // Add Escape key listener when modal opens
+    isModalOpen = true; // Set modal state to open
+    await loadKeyboard(); // Wait for the keyboard to load before continuing
+    focusInput(0); // Focus the first input after the keyboard loads
+}
+
+async function loadKeyboard() {
+  try {
+      const response = await fetch('pages/keyboard/keyboard.html'); // Update path as needed
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      const keyboardHTML = await response.text();
+      document.querySelector('.keyboard-container').innerHTML = keyboardHTML;
+  } catch (error) {
+      console.error('Failed to load keyboard:', error);
+  }
 }
 
 function closeLoginModal() {
