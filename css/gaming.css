@@ -58,12 +58,9 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  background: linear-gradient(
-    60deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(121, 9, 38, 1) 39%,
-    rgb(255, 0, 81) 100%
-  );
+  background: #191919;
+  border: 1px solid rgba(251, 251, 251, 0.228);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
   transition: background 0.4s ease, transform 0.4s ease;
   overflow: hidden;
   cursor: pointer;
@@ -76,15 +73,21 @@ body {
 .game-card.selected {
   transform: scale(1.05);
   border: 1px solid rgba(251, 251, 251, 0.492);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0),
+    rgba(112, 0, 21, 0.741)
+  );
 }
 
 .game-card img {
-  width: 150px;
-  height: 150px; /* Increased height */
+  width: 80%;
+  height: 250px;
   background-color: #000;
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 .game-card .text {
@@ -93,7 +96,7 @@ body {
 }
 
 .game-card .title {
-  font-size: 16pt; /* Increased font size for larger tiles */
+  font-size: 12pt; /* Increased font size for larger tiles */
   font-weight: 500;
   color: #ffffff;
   transition: color 0.4s ease, transform 0.4s ease;
@@ -123,7 +126,7 @@ body {
 
 h1 {
   margin-bottom: 30px;
-  font-size: 36px;
+  font-size: 20px;
 }
 
 .games-grid {
