@@ -7,18 +7,13 @@
   --text-lightblue: #7b9db4;
 }
 
-@font-face {
-  font-family: Montserrat;
-  src: url(https://fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2);
-}
-
 body {
   width: 100%;
   height: 100%;
   margin: 0;
   background-color: black;
   overflow: scroll;
-  font-family: Montserrat, sans-serif;
+  font-family: "Alexandria", sans-serif !important;
 }
 
 body::-webkit-scrollbar {
