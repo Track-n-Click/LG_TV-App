@@ -111,7 +111,7 @@ function replacePlaceholdersWithData(rowId, musicItems) {
       tile.setAttribute("data-index", index);
       tile.setAttribute("data-title", item.title);
       tile.setAttribute("data-url", item.stream_url || item.url);
-      tile.setAttribute("data-artist", "Artist Name");
+      tile.setAttribute("data-artist", item.artists[0].name);
       tile.setAttribute("data-artwork", item.artwork_url);
       tile.innerHTML = `
                 <img src="${item.artwork_url}" alt="${item.title}">
@@ -246,7 +246,7 @@ function initializeMusicNavigation() {
         musicArtist
       )}&artwork=${encodeURIComponent(musicArtwork)}`;
     } else {
-      window.location.href = `musicPlayer.html?id=${encodeURIComponent(
+      window.location.href = `musicPlayerForAlbum.html?id=${encodeURIComponent(
         albumId
       )}`;
     }
