@@ -123,6 +123,11 @@ function redirect(page) {
 
 // Handle keydown events for navigation
 document.addEventListener("keydown", (event) => {
+  // Check if the modal is open
+  if (isModalOpen) {
+    return; // Skip further processing if the modal is open
+  }
+
   switch (event.key) {
     case "Enter":
       handleEnterKey();

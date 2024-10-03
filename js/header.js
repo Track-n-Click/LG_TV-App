@@ -7,6 +7,8 @@ function initializeHeader() {
   setupProfileButtonListeners();
 }
 
+let isModalOpen = false;
+
 function setupNavbarScroll() {
   let lastScrollTop = 0;
   const navbar = document.querySelector(".navbar");
@@ -50,6 +52,7 @@ function openLoginModal() {
   setupLoginModalNavigation(); // Setup navigation within the modal
   document.addEventListener("keydown", handleEscapeKey); // Add Escape key listener when modal opens
   focusInput(0); // Automatically focus the first input when the modal opens
+  isModalOpen = true; // Set modal state to open
 }
 
 function closeLoginModal() {
@@ -57,6 +60,7 @@ function closeLoginModal() {
   document.body.classList.remove("no-scroll"); // Enable background scroll
   document.removeEventListener("keydown", handleEscapeKey); // Remove Escape key listener when modal closes
   removeModalNavigation(); // Remove navigation keydown listeners
+  isModalOpen = false; // Set modal state to closed
 }
 
 // Focus on a specific input in the modal
