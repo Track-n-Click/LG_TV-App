@@ -1,13 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const gameCards = document.querySelectorAll(".game-card");
-  const gameTitle = document.getElementById("game-title");
   let currentIndex = 0;
-
-  if (gameCards.length > 0) {
-    // Initially focus on the first card
-    gameCards[currentIndex].classList.add("selected");
-    updateTitle(gameCards[currentIndex]);
-  }
 
   document.addEventListener("keydown", (e) => {
     switch (e.key) {
@@ -35,7 +28,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   function navigate(step) {
     if (gameCards.length > 0) {
       gameCards[currentIndex].classList.remove("selected");
-      currentIndex = (currentIndex + step + gameCards.length) % gameCards.length;
+      currentIndex =
+        (currentIndex + step + gameCards.length) % gameCards.length;
       gameCards[currentIndex].classList.add("selected");
       gameCards[currentIndex].scrollIntoView({
         behavior: "smooth",
@@ -54,7 +48,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentIndex = newIndex;
       } else {
         // Wrap around if at the edge of the grid
-        currentIndex = step > 0 ? Math.min(gameCards.length - 1, currentIndex + cols) : Math.max(0, currentIndex - cols);
+        currentIndex =
+          step > 0
+            ? Math.min(gameCards.length - 1, currentIndex + cols)
+            : Math.max(0, currentIndex - cols);
       }
       gameCards[currentIndex].classList.add("selected");
       gameCards[currentIndex].scrollIntoView({
@@ -140,4 +137,3 @@ window.addEventListener("load", function () {
     document.getElementById("main").style.display = "block";
   }, 4000); // Adjust timing as needed
 });
-

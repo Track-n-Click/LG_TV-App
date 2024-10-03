@@ -47,11 +47,12 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
 }
 
 function initializeMediaNavigation() {
-  let selectedSectionIndex = 0;
-  let selectedItemIndex = 0;
+  let selectedSectionIndex = 0; // Start at the first section (e.g., title)
+  let selectedItemIndex = 0; // Start at the first item in the selected section
 
-  const mediaSections = [{ id: "channels-row" }];
+  const mediaSections = [{ id: "title" }, { id: "channels-row" }];
 
+  // Initialize the first row and item as selected
   if (mediaSections.length > 0) {
     const firstRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
@@ -64,10 +65,24 @@ function initializeMediaNavigation() {
   document.addEventListener("keydown", (e) => {
     switch (e.key) {
       case "ArrowUp":
-        navigateGrid(-5);
+        if (selectedSectionIndex > 0) {
+          selectedSectionIndex--;
+          selectedItemIndex = 0; // Reset to first item when moving to a new section
+          updateSelectedSection();
+        } else {
+          // When reaching the top, scroll up to the relevant section
+          scrollPageUp();
+        }
         break;
       case "ArrowDown":
-        navigateGrid(5);
+        if (selectedSectionIndex < mediaSections.length - 1) {
+          selectedSectionIndex++;
+          selectedItemIndex = 0; // Reset to first item when moving to a new section
+          updateSelectedSection();
+        } else {
+          // Scroll down if trying to move beyond the last section
+          scrollPageDown();
+        }
         break;
       case "ArrowLeft":
         navigateGrid(-1);
@@ -83,6 +98,23 @@ function initializeMediaNavigation() {
         break;
     }
   });
+
+  function updateSelectedSection() {
+    // Clear the selected class from the current section and item
+    const prevSection = document.querySelector(".video-tile.selected");
+    if (prevSection) prevSection.classList.remove("selected");
+
+    // Select the new section and first item
+    const currentRow = document.getElementById(
+      mediaSections[selectedSectionIndex].id
+    );
+    const currentTiles = currentRow.querySelectorAll(".video-tile");
+
+    if (currentTiles.length > 0) {
+      currentTiles[selectedItemIndex].classList.add("selected");
+      scrollToTile(currentRow, currentTiles[selectedItemIndex]);
+    }
+  }
 
   function navigateGrid(step) {
     const currentRow = document.getElementById(
@@ -105,6 +137,22 @@ function initializeMediaNavigation() {
       behavior: "smooth",
       block: "center",
       inline: "center",
+    });
+  }
+
+  function scrollPageUp() {
+    // Scroll the entire page up when at the top section
+    window.scrollBy({
+      top: -window.innerHeight,
+      behavior: "smooth",
+    });
+  }
+
+  function scrollPageDown() {
+    // Scroll the entire page down when at the last section
+    window.scrollBy({
+      top: window.innerHeight,
+      behavior: "smooth",
     });
   }
 

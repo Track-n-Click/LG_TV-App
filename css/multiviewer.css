@@ -1,0 +1,275 @@
+html {
+  background-color: #000;
+}
+
+body {
+  padding: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+}
+
+#hero-container {
+  width: 90%;
+  height: 300px;
+  background: url("../images/thumbs/multiviewer.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgb(57, 57, 57);
+  border-radius: 30px;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 100px;
+  position: relative; /* Ensures child elements can be positioned relative to this container */
+}
+
+#hero {
+  height: 100%; /* Ensure #hero fills the container */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Allows positioning of the overlay and text */
+}
+
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(112, 0, 21, 0.741)
+  ); /* Gradient from bottom to top */
+  z-index: 0; /* Make sure the overlay is behind the text */
+}
+
+#hero h2 {
+  color: white;
+  font-size: 40px;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* Ensure the text is above the overlay */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Adds a soft shadow to the text */
+}
+
+#hero p {
+  color: rgb(213, 213, 213);
+  font-size: 15px;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* Ensure the text is above the overlay */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Adds a soft shadow to the text */
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin-top: 120px;
+  color: white;
+  position: relative;
+  z-index: 1; /* Ensure the text is above the overlay */
+}
+
+a {
+  color: #00b7ff;
+}
+
+th {
+  padding: 0.3em;
+}
+
+.row {
+  width: 90%;
+  margin: auto;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+}
+
+.top-grid {
+  width: 90%;
+  margin: auto;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+}
+
+.videoInfo {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 5%;
+  padding-top: 1em;
+  padding-left: 1em;
+  padding-bottom: 1em;
+  z-index: 1000;
+  position: absolute;
+  width: 60%;
+  height: auto;
+  left: 20%;
+  top: 10%;
+}
+
+.tiny {
+  font-size: 8px;
+}
+
+.vp {
+  border: 1px solid #fff;
+  min-height: 200px;
+  padding: 0px;
+  text-align: center;
+  height: 280px;
+  /* Ensures the height fits the grid */
+}
+
+.info {
+  /* background: url('../images/ayozat.png'); */
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto 280px;
+  min-height: 280px;
+  color: #000;
+  text-align: center;
+  padding: 2px;
+}
+
+.vp-large {
+  min-height: 280px;
+}
+
+.viewport {
+  display: none !important;
+}
+
+.ayozat-image {
+  max-height: 250px !important;
+  width: 100%;
+  /* Make image take the full width of its container */
+  height: auto;
+  /* Maintain aspect ratio */
+
+  object-fit: contain;
+  /* Adjust image to fit within the container */
+}
+
+video {
+  width: 100%;
+  min-height: 200px;
+  border: 1px solid #777777;
+}
+
+.grid .title {
+  margin-top: 7px;
+}
+
+.overlay {
+  display: none;
+}
+
+.videoInfo {
+  display: none;
+}
+
+.video-active {
+  opacity: 1;
+}
+
+.video-paused {
+  opacity: 0.5;
+}
+
+.video-buffering {
+  border: 3px solid red;
+}
+
+.video-unmuted {
+  border: 3px solid green;
+}
+
+.title {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Add background for better readability */
+  padding: 5px;
+  /* Add padding to create space around the text */
+  position: relative;
+  z-index: 10;
+  /* Ensure titles are above other elements */
+}
+
+.overlay {
+  position: relative;
+  width: 100%;
+  top: -20px;
+  background-color: #000;
+  opacity: 0.8;
+  z-index: 20;
+}
+
+.shortcut {
+  z-index: 15;
+  font-size: 8px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border: 1px solid;
+  padding: 3px;
+  background-color: #000;
+}
+
+.video-js {
+  width: 100%;
+  height: 100%;
+}
+
+.col-md-3 {
+  padding: 5px;
+}
+
+.vjs-default-skin {
+  color: #fff;
+}
+
+.vjs-control-bar {
+  display: none;
+}
+
+.vp.selected {
+  border: 1px solid rgba(251, 251, 251, 0.492);
+}
+
+.video-active {
+  border: 2px solid #00b7ff;
+  box-shadow: 0 0 10px rgba(0, 183, 255, 0.5);
+  z-index: 10;
+}
+
+.vp:not(.video-active) {
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.video-active .title {
+  background-color: rgba(0, 183, 255, 0.7);
+  color: #fff;
+  font-weight: bold;
+}

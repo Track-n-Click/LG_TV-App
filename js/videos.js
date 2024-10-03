@@ -1,16 +1,11 @@
 import {
   fetchMovies,
   fetchTVSeries,
-  // fetchTVChannels,
   fetchVideosSliders,
 } from "./mediaService.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   setTimeout(async () => {
-    //   displayPlaceholders("channels-row");
-    //   const tvChannels = await fetchTVChannels();
-    //   replacePlaceholdersWithData("channels-row", tvChannels, "tv");
-
     displayPlaceholders("movie-row");
     const movies = await fetchMovies();
     replacePlaceholdersWithData("movie-row", movies, "movies");
@@ -21,61 +16,61 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     initializeMediaNavigation();
 
-    const sliders = await fetchVideosSliders();
-    createSliders(sliders);
+    // const sliders = await fetchVideosSliders();
+    // createSliders(sliders);
 
-    initializeSwiperHero();
+    // initializeSwiperHero();
   }, 1000);
 });
 
-function initializeSwiperHero() {
-  var swiper = new Swiper(".swiper-container-hero", {
-    effect: "coverflow",
-    grabCursor: false,
-    centeredSlides: true,
-    slidesPerView: 2,
-    coverflowEffect: {
-      rotate: 10,
-      stretch: 10,
-      depth: 110,
-      modifier: 5,
-      slideShadows: true,
-    },
-    loop: true,
-    pagination: {
-      el: ".swiper-pagination",
-    },
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: true,
-    },
-  });
-}
+// function initializeSwiperHero() {
+//   var swiper = new Swiper(".swiper-container-hero", {
+//     effect: "coverflow",
+//     grabCursor: false,
+//     centeredSlides: true,
+//     slidesPerView: 2,
+//     coverflowEffect: {
+//       rotate: 10,
+//       stretch: 10,
+//       depth: 110,
+//       modifier: 5,
+//       slideShadows: true,
+//     },
+//     loop: true,
+//     pagination: {
+//       el: ".swiper-pagination",
+//     },
+//     autoplay: {
+//       delay: 2000,
+//       disableOnInteraction: true,
+//     },
+//   });
+// }
 
-function createSliders(sliders) {
-  const sliderList = document.querySelector(".swiper-wrapper");
+// function createSliders(sliders) {
+//   const sliderList = document.querySelector(".swiper-wrapper");
 
-  sliders.forEach((slide) => {
-    const slideItem = document.createElement("div");
-    slideItem.className = "swiper-slide";
+//   sliders.forEach((slide) => {
+//     const slideItem = document.createElement("div");
+//     slideItem.className = "swiper-slide";
 
-    // Slice the description to a desired length (e.g., 100 characters)
-    const truncatedDescription =
-      slide?.description?.length > 300
-        ? slide?.description.slice(0, 300) + "..."
-        : slide?.description;
+//     // Slice the description to a desired length (e.g., 100 characters)
+//     const truncatedDescription =
+//       slide?.description?.length > 300
+//         ? slide?.description.slice(0, 300) + "..."
+//         : slide?.description;
 
-    slideItem.innerHTML = `
-        <img class="imgCarousal" src="${slide.poster_image}" alt="${slide.title}"/>
-        <div class="slider-info">
-        <h1 class="slider-title">${slide.title}</h1>
-        <p class="slider-description">${truncatedDescription}</p>
-        <button class="slider-button">Watch Now</button></div>
-      `;
+//     slideItem.innerHTML = `
+//         <img class="imgCarousal" src="${slide.poster_image}" alt="${slide.title}"/>
+//         <div class="slider-info">
+//         <h1 class="slider-title">${slide.title}</h1>
+//         <p class="slider-description">${truncatedDescription}</p>
+//         <button class="slider-button">Watch Now</button></div>
+//       `;
 
-    sliderList.appendChild(slideItem);
-  });
-}
+//     sliderList.appendChild(slideItem);
+//   });
+// }
 
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
@@ -119,19 +114,21 @@ function initializeMediaNavigation() {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
   const mediaSections = [
-    { id: "navbar-container", leftArrow: "", rightArrow: "" },
-    { id: "swiper-wrapper", leftArrow: "", rightArrow: "" },
-    //   {
-    //     id: "channels-row",
-    //     leftArrow: "left-arrow-channels",
-    //     rightArrow: "right-arrow-channels",
-    //   },
+    {
+      id: "hero-container",
+      leftArrow: null,
+      rightArrow: null,
+    },
     {
       id: "movie-row",
       leftArrow: "left-arrow-movies",
       rightArrow: "right-arrow-movies",
     },
-    { id: "tv-row", leftArrow: "left-arrow-tv", rightArrow: "right-arrow-tv" },
+    {
+      id: "tv-row",
+      leftArrow: "left-arrow-tv",
+      rightArrow: "right-arrow-tv",
+    },
   ];
 
   if (mediaSections.length > 0) {
@@ -170,9 +167,7 @@ function initializeMediaNavigation() {
     const currentRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
-    const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .menu-list-item, .swiper-slide"
-    );
+    const currentTiles = currentRow.querySelectorAll(".video-tile");
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -186,14 +181,16 @@ function initializeMediaNavigation() {
     const newRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
-    const newTiles = newRow.querySelectorAll(
-      ".video-tile, .menu-list-item, .swiper-slide"
-    );
 
-    if (newTiles.length > 0) {
-      newTiles[selectedItemIndex].classList.add("selected");
-      scrollToSection(newRow);
-      updateArrowVisibility(newRow, newTiles);
+    if (mediaSections[selectedSectionIndex].id === "hero-container") {
+      scrollToTop(); // Scroll to the top for the hero section
+    } else {
+      const newTiles = newRow.querySelectorAll(".video-tile");
+      if (newTiles.length > 0) {
+        newTiles[selectedItemIndex].classList.add("selected");
+        scrollToSection(newRow);
+        updateArrowVisibility(newRow, newTiles);
+      }
     }
   }
 
@@ -201,9 +198,7 @@ function initializeMediaNavigation() {
     const currentRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
-    const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .menu-list-item"
-    );
+    const currentTiles = currentRow.querySelectorAll(".video-tile");
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -271,6 +266,11 @@ function initializeMediaNavigation() {
 
     if (leftArrow) leftArrow.style.display = atStart ? "none" : "block";
     if (rightArrow) rightArrow.style.display = atEnd ? "none" : "block";
+  }
+
+  function scrollToTop() {
+    // Scroll the entire page up to the top for hero section
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }
 

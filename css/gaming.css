@@ -58,12 +58,9 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  background: linear-gradient(
-    60deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(121, 9, 38, 1) 39%,
-    rgb(255, 0, 81) 100%
-  );
+  background: #191919;
+  border: 1px solid rgba(251, 251, 251, 0.228);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
   transition: background 0.4s ease, transform 0.4s ease;
   overflow: hidden;
   cursor: pointer;
@@ -76,15 +73,21 @@ body {
 .game-card.selected {
   transform: scale(1.05);
   border: 1px solid rgba(251, 251, 251, 0.492);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0),
+    rgba(112, 0, 21, 0.741)
+  );
 }
 
 .game-card img {
-  width: 150px;
-  height: 150px; /* Increased height */
+  width: 80%;
+  height: 250px;
   background-color: #000;
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 .game-card .text {
@@ -93,7 +96,7 @@ body {
 }
 
 .game-card .title {
-  font-size: 16pt; /* Increased font size for larger tiles */
+  font-size: 12pt; /* Increased font size for larger tiles */
   font-weight: 500;
   color: #ffffff;
   transition: color 0.4s ease, transform 0.4s ease;
@@ -123,7 +126,7 @@ body {
 
 h1 {
   margin-bottom: 30px;
-  font-size: 36px;
+  font-size: 20px;
 }
 
 .games-grid {
@@ -147,4 +150,75 @@ h1 {
 .game-card.selected {
   border: 2px solid #ff0051;
   transform: scale(1.05);
+}
+
+#hero-container {
+  width: 90%;
+  height: 300px;
+  background: url("../images/thumbs/gaming.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgb(57, 57, 57);
+  border-radius: 30px;
+  margin: auto;
+  margin-top: 30px;
+  position: relative; /* Ensures child elements can be positioned relative to this container */
+}
+
+#hero {
+  height: 100%; /* Ensure #hero fills the container */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Allows positioning of the overlay and text */
+}
+
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(112, 0, 21, 0.741)
+  ); /* Gradient from bottom to top */
+  z-index: 0; /* Make sure the overlay is behind the text */
+}
+
+#hero h2 {
+  color: white;
+  font-size: 40px;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* Ensure the text is above the overlay */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Adds a soft shadow to the text */
+}
+
+#hero p {
+  color: rgb(213, 213, 213);
+  font-size: 15px;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* Ensure the text is above the overlay */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Adds a soft shadow to the text */
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin-top: 120px;
+  color: white;
+  position: relative;
+  z-index: 1; /* Ensure the text is above the overlay */
 }
