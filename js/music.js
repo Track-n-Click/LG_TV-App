@@ -20,66 +20,66 @@ document.addEventListener("DOMContentLoaded", async () => {
   // const mostPlayedSongs = await fetchMostPlayedSongs();
   // replacePlaceholdersWithData("most-played-songs-row", mostPlayedSongs);
 
-  const sliders = await fetchMostPlayedSongs();
-  createSliders(sliders);
+  // const sliders = await fetchMostPlayedSongs();
+  // createSliders(sliders);
 
-  console.log(sliders);
+  // console.log(sliders);
 
-  initializeSwiperHero();
+  // initializeSwiperHero();
 
   // Initialize navigation
   initializeMusicNavigation();
 });
 
-function initializeSwiperHero() {
-  var swiper = new Swiper(".swiper-container-hero", {
-    effect: "coverflow",
-    grabCursor: false,
-    centeredSlides: true,
-    slidesPerView: 3,
-    coverflowEffect: {
-      rotate: 10,
-      // stretch: 5,
-      depth: 110,
-      // modifier: 1,
-      slideShadows: true,
-    },
-    loop: true,
-    pagination: {
-      el: ".swiper-pagination",
-    },
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: true,
-    },
-  });
-}
+// function initializeSwiperHero() {
+//   var swiper = new Swiper(".swiper-container-hero", {
+//     effect: "coverflow",
+//     grabCursor: false,
+//     centeredSlides: true,
+//     slidesPerView: 3,
+//     coverflowEffect: {
+//       rotate: 10,
+//       // stretch: 5,
+//       depth: 110,
+//       // modifier: 1,
+//       slideShadows: true,
+//     },
+//     loop: true,
+//     pagination: {
+//       el: ".swiper-pagination",
+//     },
+//     autoplay: {
+//       delay: 2000,
+//       disableOnInteraction: true,
+//     },
+//   });
+// }
 
-function createSliders(sliders) {
-  const sliderList = document.querySelector(".swiper-wrapper");
+// function createSliders(sliders) {
+//   const sliderList = document.querySelector(".swiper-wrapper");
 
-  sliders.forEach((slide) => {
-    const slideItem = document.createElement("div");
-    slideItem.className = "swiper-slide";
+//   sliders.forEach((slide) => {
+//     const slideItem = document.createElement("div");
+//     slideItem.className = "swiper-slide";
 
-    // Slice the description to a desired length (e.g., 100 characters)
-    const truncatedDescription =
-      slide?.description?.length > 300
-        ? slide.description.slice(0, 300) + "..."
-        : slide.description;
+//     // Slice the description to a desired length (e.g., 100 characters)
+//     const truncatedDescription =
+//       slide?.description?.length > 300
+//         ? slide.description.slice(0, 300) + "..."
+//         : slide.description;
 
-    slideItem.innerHTML = `
-        
-        <div class="slider-info">
-        <img class="imgCarousal" src="${slide.artwork_url}" alt="${slide.title}"/>
-        <h1 class="slider-title">${slide.title}</h1>
-        <p class="slider-description">${truncatedDescription}</p>
-        <button class="slider-button"><i class="fas fa-play"></i></button></div>
-      `;
+//     slideItem.innerHTML = `
 
-    sliderList.appendChild(slideItem);
-  });
-}
+//         <div class="slider-info">
+//         <img class="imgCarousal" src="${slide.artwork_url}" alt="${slide.title}"/>
+//         <h1 class="slider-title">${slide.title}</h1>
+//         <p class="slider-description">${truncatedDescription}</p>
+//         <button class="slider-button"><i class="fas fa-play"></i></button></div>
+//       `;
+
+//     sliderList.appendChild(slideItem);
+//   });
+// }
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
   for (let i = 0; i < 6; i++) {
@@ -96,9 +96,8 @@ function displayPlaceholders(rowId) {
 
 function replacePlaceholdersWithData(rowId, musicItems) {
   const row = document.getElementById(rowId);
-  row.innerHTML = ""; // Clear placeholders
+  row.innerHTML = "";
 
-  // Check if musicItems is an array
   if (Array.isArray(musicItems)) {
     musicItems.forEach((item, index) => {
       const tile = document.createElement("div");
@@ -129,10 +128,25 @@ function initializeMusicNavigation() {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
   const musicSections = [
-    "swiper-wrapper",
-    "latest-songs-row",
-    "album-row",
+    // "hero-container",
+    // "latest-songs-row",
+    // "album-row",
     // "most-played-songs-row",
+    {
+      id: "hero-container",
+      leftArrow: null,
+      rightArrow: null,
+    },
+    {
+      id: "latest-songs-row",
+      leftArrow: "left-arrow-movies",
+      rightArrow: "right-arrow-movies",
+    },
+    {
+      id: "album-row",
+      leftArrow: "left-arrow-tv",
+      rightArrow: "right-arrow-tv",
+    },
   ];
 
   if (musicSections.length > 0) {
@@ -169,11 +183,9 @@ function initializeMusicNavigation() {
 
   function navigateSections(step) {
     const currentRow = document.getElementById(
-      musicSections[selectedSectionIndex]
+      musicSections[selectedSectionIndex].id
     );
-    const currentTiles = currentRow.querySelectorAll(
-      ".music-tile, .swiper-slide"
-    );
+    const currentTiles = currentRow.querySelectorAll(".music-tile");
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -184,18 +196,26 @@ function initializeMusicNavigation() {
       musicSections.length;
     selectedItemIndex = 0; // Reset item index to 0 when moving to a new section
 
-    const newRow = document.getElementById(musicSections[selectedSectionIndex]);
-    const newTiles = newRow.querySelectorAll(".music-tile, .swiper-slide");
+    const newRow = document.getElementById(
+      musicSections[selectedSectionIndex].id
+    );
 
-    if (newTiles.length > 0) {
-      newTiles[selectedItemIndex].classList.add("selected");
-      scrollToSection(newRow);
+    if (musicSections[selectedSectionIndex].id === "hero-container") {
+      scrollToTop(); // Scroll to the top for the hero section
+    } else {
+      const newTiles = newRow.querySelectorAll(".music-tile");
+
+      if (newTiles.length > 0) {
+        newTiles[selectedItemIndex].classList.add("selected");
+        scrollToSection(newRow);
+        updateArrowVisibility(newRow, newTiles);
+      }
     }
   }
 
   function navigateItems(step) {
     const currentRow = document.getElementById(
-      musicSections[selectedSectionIndex]
+      musicSections[selectedSectionIndex].id
     );
     const currentTiles = currentRow.querySelectorAll(".music-tile");
 
@@ -206,6 +226,7 @@ function initializeMusicNavigation() {
       currentTiles[selectedItemIndex].classList.add("selected");
 
       scrollToTile(currentRow, currentTiles[selectedItemIndex]);
+      updateArrowVisibility(currentRow, currentTiles); // Updated here
     }
   }
 
@@ -231,6 +252,22 @@ function initializeMusicNavigation() {
     }
   }
 
+  function updateArrowVisibility(row, tiles) {
+    const currentSection = mediaSections[selectedSectionIndex];
+    const leftArrow = currentSection.leftArrow
+      ? document.getElementById(currentSection.leftArrow)
+      : null;
+    const rightArrow = currentSection.rightArrow
+      ? document.getElementById(currentSection.rightArrow)
+      : null;
+
+    const atStart = selectedItemIndex === 0;
+    const atEnd = selectedItemIndex === tiles.length - 1;
+
+    if (leftArrow) leftArrow.style.display = atStart ? "none" : "block";
+    if (rightArrow) rightArrow.style.display = atEnd ? "none" : "block";
+  }
+
   function scrollToSection(section) {
     section.scrollIntoView({ behavior: "smooth", block: "center" });
   }
@@ -242,6 +279,11 @@ function initializeMusicNavigation() {
 
     const scrollPosition = tileOffset - rowWidth / 2 + tileWidth / 2;
     row.scrollLeft = scrollPosition;
+  }
+
+  function scrollToTop() {
+    // Scroll the entire page up to the top for hero section
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }
 

@@ -110,11 +110,9 @@ document.addEventListener("DOMContentLoaded", function () {
       durationElement.textContent = formatTime(audioPlayer.duration);
     });
 
-    // Auto-play the track when the page loads
     audioPlayer
       .play()
       .then(() => {
-        // Update the button icon to 'Pause' if autoplay is successful
         playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
       })
       .catch((error) => {
