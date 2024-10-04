@@ -15,9 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const durationElement = document.getElementById("duration");
 
   const trackListElement = document.getElementById("track-list");
-  const albumTitleElement = document.getElementById("album-title");
-  const albumDescriptionElement = document.getElementById("album-description");
-  const albumSection = document.getElementById("album-section");
 
   let currentControl = "playPause"; // Start by focusing on the play/pause button
   let currentTrackIndex = 0; // Track currently selected song index
@@ -27,27 +24,46 @@ document.addEventListener("DOMContentLoaded", function () {
   const id = urlParams.get("id");
 
   if (id) {
+    const albumArtwork = document.getElementById("album-art");
+    const musicArtworkDiv = document.querySelector(".music-artwork");
+    const albumSection = document.getElementById("album-section");
+    const albumTitleElement = document.getElementById("album-title");
+    const albumDescriptionElement =
+      document.getElementById("album-description");
+    const trackListElement = document.getElementById("track-list");
+
+    // Show shimmer effect for artwork and track list by default
+    musicArtworkDiv.classList.remove("loaded");
+    albumSection.classList.add("hidden"); // Hide album section until data is loaded
+
+    // Add shimmer placeholders for the track list
+    trackListElement.innerHTML = "";
+    for (let i = 0; i < 5; i++) {
+      // Create 5 placeholder shimmer elements
+      const placeholder = document.createElement("div");
+      placeholder.classList.add("track-list-placeholder");
+      trackListElement.appendChild(placeholder);
+    }
+
     fetchAlbumById(id)
       .then((data) => {
-        albumSection.classList.remove("hidden");
-
-        // Set album title and description
+        // Populate album section
         albumTitleElement.textContent = data.title;
         albumDescriptionElement.textContent = data.description;
 
-        // Clear any previous track list
-        trackListElement.innerHTML = "";
+        // Remove the shimmer placeholders once data is available
+        trackListElement.innerHTML = ""; // Clear placeholder content
 
-        // Populate the track list
-        data.songs.forEach((song, index) => {
+        // Populate the track list with actual data
+        data.songs.forEach((song) => {
           const listItem = document.createElement("li");
           listItem.innerHTML = `
-            <div class="track-link" data-src="${song.stream_url}" data-title="${song.title}" data-artist="${data.artists[0].name}" data-artwork="${song.artwork_url}">
-              <img src="${song.artwork_url}" alt="${song.title} Artwork" class="track-artwork" style="width: 50px; height: 50px; margin-right: 10px;" />
-              <span>${song.title}</span>
-            </div>`;
+          <div class="track-link" data-src="${song.stream_url}" data-title="${song.title}" data-artist="${data.artists[0].name}" data-artwork="${song.artwork_url}">
+            <img src="${song.artwork_url}" alt="${song.title} Artwork" class="track-artwork" style="width: 50px; height: 50px; margin-right: 10px;" />
+            <span>${song.title}</span>
+          </div>`;
 
-          // Add event listener to each track item
+          // Add event listener to play track on click
           listItem.addEventListener("click", (e) => {
             e.preventDefault();
             playTrack(
@@ -58,11 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
             );
           });
 
-          // Append to the track list
           trackListElement.appendChild(listItem);
         });
 
-        // Play the first song automatically
+        // Load the first song automatically if available
         const firstSong = data.songs[0];
         if (firstSong) {
           playTrack(
@@ -72,6 +87,13 @@ document.addEventListener("DOMContentLoaded", function () {
             firstSong.artwork_url
           );
         }
+
+        // Once the album artwork is loaded, hide the shimmer
+        albumArtwork.onload = function () {
+          musicArtworkDiv.classList.add("loaded");
+          // Remove the hidden class to show the album section once data is loaded
+          albumSection.classList.remove("hidden");
+        };
 
         // Add keyboard navigation
         document.addEventListener("keydown", handleKeyboardShortcuts);

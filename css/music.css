@@ -126,7 +126,7 @@ h2 {
 }
 
 .music-row::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for better UI */
+  display: none !important;
 }
 
 .music-row {
@@ -137,10 +137,6 @@ h2 {
   width: 100%;
   padding: 20px;
   scroll-behavior: smooth;
-}
-
-.music-row::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for better UI */
 }
 
 .music-row-container::before,

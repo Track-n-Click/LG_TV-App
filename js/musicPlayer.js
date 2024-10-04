@@ -20,12 +20,26 @@ document.addEventListener("DOMContentLoaded", function () {
   let id = urlParams.get("id");
 
   if (id) {
+    const albumArtwork = document.getElementById("album-art");
+    const musicArtworkDiv = document.querySelector(".music-artwork");
+
+    // Show shimmer effect by default
+    musicArtworkDiv.classList.remove("loaded");
+
     fetchSongById(id)
       .then((data) => {
         trackTitleElement.textContent = data.title;
         audioPlayer.src = data.stream_url;
         trackArtistElement.textContent = data.artists[0].name;
+
+        // Set the album artwork placeholder before loading
         albumArtwork.src = data.artwork_url;
+
+        // Once the image is loaded, remove the shimmer effect
+        albumArtwork.onload = function () {
+          musicArtworkDiv.classList.add("loaded");
+        };
+
         // Update the duration once the metadata is loaded
         audioPlayer.addEventListener("loadedmetadata", function () {
           durationElement.textContent = formatTime(audioPlayer.duration);
