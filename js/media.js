@@ -1,8 +1,9 @@
 import { fetchTVChannels } from "./mediaService.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+  displayPlaceholders("channels-row");
+
   setTimeout(async () => {
-    displayPlaceholders("channels-row");
     const tvChannels = await fetchTVChannels();
     replacePlaceholdersWithData("channels-row", tvChannels, "tv");
 
@@ -12,7 +13,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
-  for (let i = 0; i < 7; i++) {
+  row.innerHTML = "";
+  const numOfPlaceholders = 6; // Set this to the number of columns or items you expect
+  for (let i = 0; i < numOfPlaceholders; i++) {
     const placeholder = document.createElement("div");
     placeholder.classList.add("placeholder-tile");
     placeholder.innerHTML = `
@@ -47,16 +50,14 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
 }
 
 function initializeMediaNavigation() {
-  let selectedSectionIndex = 0; // Start at the first section (e.g., title)
-  let selectedItemIndex = 0; // Start at the first item in the selected section
+  let selectedSectionIndex = 0;
+  let selectedItemIndex = 0;
 
-  const mediaSections = [{ id: "title" }, { id: "channels-row" }];
+  const mediaSections = [{ id: "channels-row" }]; // Define sections (e.g., TV channels)
 
   // Initialize the first row and item as selected
   if (mediaSections.length > 0) {
-    const firstRow = document.getElementById(
-      mediaSections[selectedSectionIndex].id
-    );
+    const firstRow = document.getElementById(mediaSections[selectedSectionIndex].id);
     if (firstRow && firstRow.children.length > 0) {
       firstRow.children[selectedItemIndex].classList.add("selected");
     }

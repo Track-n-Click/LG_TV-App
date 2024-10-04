@@ -4,22 +4,18 @@ import {
   fetchVideosSliders,
 } from "./mediaService.js";
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
+  displayPlaceholders("movie-row");
+  displayPlaceholders("tv-row");
+
   setTimeout(async () => {
-    displayPlaceholders("movie-row");
     const movies = await fetchMovies();
     replacePlaceholdersWithData("movie-row", movies, "movies");
 
-    displayPlaceholders("tv-row");
     const tvSeries = await fetchTVSeries();
     replacePlaceholdersWithData("tv-row", tvSeries, "series");
 
     initializeMediaNavigation();
-
-    // const sliders = await fetchVideosSliders();
-    // createSliders(sliders);
-
-    // initializeSwiperHero();
   }, 1000);
 });
 
@@ -74,22 +70,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
+  row.innerHTML = "";
   for (let i = 0; i < 7; i++) {
     const placeholder = document.createElement("div");
     placeholder.classList.add("placeholder-tile");
     placeholder.innerHTML = `
-        <div class="placeholder-img"></div>
-        <div class="placeholder-title"></div>
-      `;
+      <div class="placeholder-img"></div>
+      <div class="placeholder-title"></div>
+    `;
     row.appendChild(placeholder);
   }
 }
 
 function replacePlaceholdersWithData(rowId, mediaItems, type) {
   const row = document.getElementById(rowId);
-  row.innerHTML = ""; // Clear placeholders
-
-  console.log("Selected media type:", type);
+  row.innerHTML = "";
 
   mediaItems.forEach((item, index) => {
     const tile = document.createElement("div");
@@ -100,9 +95,9 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
     tile.setAttribute("data-type", type);
     tile.setAttribute("data-title", item.title || item.name);
     tile.innerHTML = `
-        <img src="${item.thumbnail}" alt="${item.title}">
-        <div class="title">${item.title || item.name}</div>
-      `;
+      <img src="${item.thumbnail}" alt="${item.title}">
+      <div class="title">${item.title || item.name}</div>
+    `;
     tile.addEventListener("click", () => {
       playSelectedVideo();
     });
