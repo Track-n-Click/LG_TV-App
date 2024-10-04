@@ -10,8 +10,8 @@
   --text-white: #fff;
   --text-light-gray: #acacac;
   --text-gray: #7b9db4;
-  --primary-color: #f50537;
-  --primary-color-dark: #5d2835;
+  --primary-color: #ffffff;
+  --primary-color-dark: #b0173d;
 }
 
 body,
@@ -145,12 +145,12 @@ html {
 .control-btn {
   background-color: transparent;
   border: none;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   color: var(--text-white);
   font-size: 25px;
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: 100%;
   transition: background-color 0.3s ease;
 }
 
@@ -159,16 +159,18 @@ html {
 }
 
 .control-btn.active {
-  color: var(--primary-color); 
+  color: var(--primary-color);
   background-color: var(--primary-color-dark);
 }
 
-#prev-btn:hover, #next-btn:hover {
+#prev-btn:hover,
+#next-btn:hover {
   color: var(--primary-color);
 }
 
-#prev-btn:focus, #next-btn:focus {
-  color: var(--primary-color); 
+#prev-btn:focus,
+#next-btn:focus {
+  color: var(--primary-color);
   background-color: var(--primary-color-dark);
 }
 
@@ -246,4 +248,3 @@ html {
   justify-items: center;
   align-items: center;
 }
-

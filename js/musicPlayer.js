@@ -1,3 +1,5 @@
+import { fetchSongById } from "./musicService.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   const audioPlayer = document.getElementById("audio-player");
   const playPauseBtn = document.getElementById("play-pause-btn");
@@ -15,38 +17,39 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentControl = "playPause"; // Start by focusing on the play/pause button
 
   const urlParams = new URLSearchParams(window.location.search);
-  let trackTitle = urlParams.get("title");
-  let trackSrc = urlParams.get("src");
-  let trackArtist = urlParams.get("artist");
-  let trackArtwork = urlParams.get("artwork");
+  let id = urlParams.get("id");
 
-  // Set track title and source if provided in URL parameters
-  if (trackTitle && trackSrc && trackArtist && trackArtwork) {
-    trackTitleElement.textContent = trackTitle;
-    audioPlayer.src = trackSrc;
-    trackArtistElement.textContent = trackArtist;
-    albumArtwork.src = trackArtwork;
+  if (id) {
+    fetchSongById(id)
+      .then((data) => {
+        trackTitleElement.textContent = data.title;
+        audioPlayer.src = data.stream_url;
+        trackArtistElement.textContent = data.artists[0].name;
+        albumArtwork.src = data.artwork_url;
+        // Update the duration once the metadata is loaded
+        audioPlayer.addEventListener("loadedmetadata", function () {
+          durationElement.textContent = formatTime(audioPlayer.duration);
+        });
 
-    // Update the duration once the metadata is loaded
-    audioPlayer.addEventListener("loadedmetadata", function () {
-      durationElement.textContent = formatTime(audioPlayer.duration);
-    });
+        // Auto-play the track when the page loads
+        audioPlayer
+          .play()
+          .then(() => {
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Set to pause icon on play
+          })
+          .catch((error) => {
+            console.log(
+              "Playback prevented due to user interaction policy.",
+              error
+            );
+          });
 
-    // Auto-play the track when the page loads
-    audioPlayer
-      .play()
-      .then(() => {
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Set to pause icon on play
+        // Initially highlight the play button
+        highlightControl();
       })
       .catch((error) => {
-        console.log(
-          "Playback prevented due to user interaction policy.",
-          error
-        );
+        console.error("Error fetching album details:", error);
       });
-
-    // Initially highlight the play button
-    highlightControl();
   }
 
   // Listen for the play and pause events to update the button icon accordingly
