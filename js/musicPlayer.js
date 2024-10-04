@@ -33,11 +33,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Auto-play the track when the page loads
-    audioPlayer.play().then(() => {
-      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Set to pause icon on play
-    }).catch((error) => {
-      console.log("Playback prevented due to user interaction policy.", error);
-    });
+    audioPlayer
+      .play()
+      .then(() => {
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Set to pause icon on play
+      })
+      .catch((error) => {
+        console.log(
+          "Playback prevented due to user interaction policy.",
+          error
+        );
+      });
 
     // Initially highlight the play button
     highlightControl();
@@ -96,6 +102,14 @@ document.addEventListener("DOMContentLoaded", function () {
         audioPlayer.volume = Math.max(audioPlayer.volume - 0.1, 0);
         volumeControl.value = audioPlayer.volume;
         break;
+      case "Escape":
+        event.preventDefault();
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          window.history.back();
+        }
+        break;
     }
   }
 
@@ -130,7 +144,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function forwardTrack() {
-    audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 10, audioPlayer.duration);
+    audioPlayer.currentTime = Math.min(
+      audioPlayer.currentTime + 10,
+      audioPlayer.duration
+    );
   }
 
   audioPlayer.addEventListener("timeupdate", updateProgress);
@@ -138,7 +155,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateProgress() {
     if (audioPlayer.duration) {
-      const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      const progressPercent =
+        (audioPlayer.currentTime / audioPlayer.duration) * 100;
       progressBar.style.width = `${progressPercent}%`;
       currentTimeElement.textContent = formatTime(audioPlayer.currentTime);
     }

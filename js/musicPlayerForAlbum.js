@@ -216,6 +216,14 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
         break;
+      case "Escape":
+        event.preventDefault();
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          window.history.back();
+        }
+        break;
     }
   }
 
