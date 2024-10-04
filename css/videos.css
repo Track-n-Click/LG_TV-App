@@ -617,7 +617,7 @@ h2 {
 
 .video-tile.selected {
   transform: scale(1.1);
-  border: 1px solid #ff00515a;
+  border: 2px solid #b4b4b45a;
 
   z-index: 10;
 }

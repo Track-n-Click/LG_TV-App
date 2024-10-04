@@ -106,6 +106,7 @@ function replacePlaceholdersWithData(rowId, musicItems) {
         tile.setAttribute("id", item.id);
       } else {
         tile.setAttribute("type", "music");
+        tile.setAttribute("song-id", item.id);
       }
       tile.classList.add("music-tile");
       tile.setAttribute("data-index", index);
@@ -238,13 +239,12 @@ function initializeMusicNavigation() {
     const musicArtwork = selectedTile.getAttribute("data-artwork");
     const type = selectedTile.getAttribute("type");
     const albumId = selectedTile.getAttribute("id");
+    const songId = selectedTile.getAttribute("song-id");
 
     if (type === "music") {
-      window.location.href = `musicPlayer.html?title=${encodeURIComponent(
-        musicTitle
-      )}&src=${encodeURIComponent(musicUrl)}&artist=${encodeURIComponent(
-        musicArtist
-      )}&artwork=${encodeURIComponent(musicArtwork)}`;
+      window.location.href = `musicPlayer.html?id=${encodeURIComponent(
+        songId
+      )}`;
     } else {
       window.location.href = `musicPlayerForAlbum.html?id=${encodeURIComponent(
         albumId
