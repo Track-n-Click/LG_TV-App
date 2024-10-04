@@ -71,7 +71,16 @@ document.addEventListener("DOMContentLoaded", () => {
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
   row.innerHTML = "";
-  for (let i = 0; i < 7; i++) {
+
+  // Get the window's inner width
+  const windowWidth = window.innerWidth;
+
+  // Calculate how many placeholders can fit in the row
+  const placeholderWidth = 180;
+  const placeholderCount = Math.floor(windowWidth / placeholderWidth);
+
+  // Create placeholders based on the calculated count
+  for (let i = 0; i < placeholderCount; i++) {
     const placeholder = document.createElement("div");
     placeholder.classList.add("placeholder-tile");
     placeholder.innerHTML = `
