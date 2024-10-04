@@ -573,7 +573,7 @@ h2 {
 }
 
 .video-row::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for better UI */
+  display: none !important; /* Hide scrollbar for better UI */
 }
 
 .video-row-container::before,

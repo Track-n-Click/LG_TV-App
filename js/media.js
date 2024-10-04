@@ -14,10 +14,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
   row.innerHTML = "";
-  const numOfPlaceholders = 6; // Set this to the number of columns or items you expect
-  for (let i = 0; i < numOfPlaceholders; i++) {
+
+  // Get the window's inner width
+  const windowWidth = window.innerWidth;
+
+  // Set the dynamic width for the placeholders (window width divided by 6)
+  const placeholderWidth = Math.floor(windowWidth / 6);
+
+  // Calculate how many placeholders can fit in the row
+  const placeholderCount = Math.floor(windowWidth / placeholderWidth);
+
+  // Create placeholders based on the calculated count
+  for (let i = 0; i < placeholderCount; i++) {
     const placeholder = document.createElement("div");
     placeholder.classList.add("placeholder-tile");
+
+    // Set the dynamic width for each placeholder
+    placeholder.style.width = `${placeholderWidth - 50}px`;
+
     placeholder.innerHTML = `
       <div class="placeholder-img"></div>
       <div class="placeholder-title"></div>
@@ -57,7 +71,9 @@ function initializeMediaNavigation() {
 
   // Initialize the first row and item as selected
   if (mediaSections.length > 0) {
-    const firstRow = document.getElementById(mediaSections[selectedSectionIndex].id);
+    const firstRow = document.getElementById(
+      mediaSections[selectedSectionIndex].id
+    );
     if (firstRow && firstRow.children.length > 0) {
       firstRow.children[selectedItemIndex].classList.add("selected");
     }

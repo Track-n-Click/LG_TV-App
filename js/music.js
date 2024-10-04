@@ -7,13 +7,15 @@ import {
 document.addEventListener("DOMContentLoaded", async () => {
   // Display placeholders and then fetch and display latest songs
   displayPlaceholders("latest-songs-row");
-  const latestSongs = await fetchLatestSongs();
-  replacePlaceholdersWithData("latest-songs-row", latestSongs);
-
-  // Display placeholders and then fetch and display albums
   displayPlaceholders("album-row");
-  const albums = await fetchAlbums();
-  replacePlaceholdersWithData("album-row", albums);
+
+  setTimeout(async () => {
+    const latestSongs = await fetchLatestSongs();
+    replacePlaceholdersWithData("latest-songs-row", latestSongs);
+
+    const albums = await fetchAlbums();
+    replacePlaceholdersWithData("album-row", albums);
+  }, 1000);
 
   // Display placeholders and then fetch and display most played songs
   // displayPlaceholders("most-played-songs-row");
@@ -82,14 +84,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 // }
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
-  for (let i = 0; i < 6; i++) {
-    // Display 6 placeholders per row
+  row.innerHTML = "";
+
+  // Get the window's inner width
+  const windowWidth = window.innerWidth;
+
+  // Calculate how many placeholders can fit in the row
+  const placeholderWidth = 180;
+  const placeholderCount = Math.floor(windowWidth / placeholderWidth);
+
+  // Create placeholders based on the calculated count
+  for (let i = 0; i < placeholderCount; i++) {
     const placeholder = document.createElement("div");
     placeholder.classList.add("placeholder-tile");
     placeholder.innerHTML = `
-            <div class="placeholder-img"></div>
-            <div class="placeholder-title"></div>
-        `;
+      <div class="placeholder-img"></div>
+      <div class="placeholder-title"></div>
+    `;
     row.appendChild(placeholder);
   }
 }
