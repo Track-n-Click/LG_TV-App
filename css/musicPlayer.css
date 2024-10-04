@@ -154,12 +154,26 @@ html {
   transition: background-color 0.3s ease;
 }
 
-#play-pause-btn {
-  font-size: 40px;
-}
-
 .control-btn:hover {
   color: var(--primary-color);
+}
+
+.control-btn.active {
+  color: var(--primary-color); 
+  background-color: var(--primary-color-dark);
+}
+
+#prev-btn:hover, #next-btn:hover {
+  color: var(--primary-color);
+}
+
+#prev-btn:focus, #next-btn:focus {
+  color: var(--primary-color); 
+  background-color: var(--primary-color-dark);
+}
+
+#play-pause-btn {
+  font-size: 40px;
 }
 
 #volume-control {
@@ -232,3 +246,4 @@ html {
   justify-items: center;
   align-items: center;
 }
+

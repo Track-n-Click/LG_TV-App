@@ -1,7 +1,7 @@
 import { fetchSliders } from "./mediaService.js";
 
 let selectedIndex = 0;
-let currentSection = "slider"; // Possible values: 'settings_profile', 'slider', 'grid'
+let currentSection = "grid"; // Possible values: 'settings_profile', 'slider', 'grid'
 let swiper;
 let currentSliderIndex = 0;
 

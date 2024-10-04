@@ -154,12 +154,28 @@ html {
   transition: background-color 0.3s ease;
 }
 
-#play-pause-btn {
-  font-size: 40px;
-}
-
 .control-btn:hover {
   color: var(--primary-color);
+}
+
+.control-btn.active {
+  color: var(--primary-color);
+  background-color: var(--primary-color-dark);
+}
+
+#prev-btn:hover,
+#next-btn:hover {
+  color: var(--primary-color);
+}
+
+#prev-btn:focus,
+#next-btn:focus {
+  color: var(--primary-color);
+  background-color: var(--primary-color-dark);
+}
+
+#play-pause-btn {
+  font-size: 40px;
 }
 
 #volume-control {
@@ -226,9 +242,19 @@ html {
 
 .track-link {
   display: flex;
-  width: 100%;
-  padding: 10px;
-  display: flex;
-  justify-items: center;
   align-items: center;
+  padding: 10px;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.track-link.active {
+  background-color: white;
+  color: red;
+}
+
+.track-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
