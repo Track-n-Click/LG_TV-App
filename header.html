@@ -26,8 +26,8 @@
       <h2>Welcome back!</h2>
       <p>Log in and catch up with your favorite things</p>
     </div>
-    <form id="login-form" class="modal-form">
-      <input type="text" id="email" name="email" required placeholder="Email" />
+    <form id="login-form" class="modal-form" novalidate>
+      <input type="text" id="email" name="email" required placeholder="Email" autocomplete="off" />
       <input
         type="password"
         id="password"
@@ -36,31 +36,16 @@
         placeholder="Password"
       />
       <button type="submit" class="modal-login-button">LOGIN</button>
-      <!-- <p class="modal-footer">Scan QR to connect with <span>AyozatTV</span></p> -->
     </form>
-  </div>
+    
 
-  <div class="keyboard-container">
-    <canvas id="keyboardCanvas"></canvas>
+    <!-- Add the on-screen keyboard here -->
+    <div id="on-screen-keyboard">
+      <div id="keyboard-row-0" class="keyboard-row"></div>
+      <div id="keyboard-row-1" class="keyboard-row"></div>
+      <div id="keyboard-row-2" class="keyboard-row"></div>
+      <div id="keyboard-row-3" class="keyboard-row"></div>
+      <div id="keyboard-row-4" class="keyboard-row"></div>
+    </div>
   </div>
 </div>
-
-
-<script>
-  // Load the header dynamically
-  fetch("keyboard/keyboard.html")
-    .then((response) => response.text())
-    .then((data) => {
-      document.getElementById("keyboardCanvas").innerHTML = data;
-      initializeHeader();
-    })
-    .catch((error) => console.error("Error loading header:", error));
-
-  // Initialize header related scripts
-  function initializeHeader() {
-    const script = document.createElement("script");
-    script.src = "js/header.js";
-    script.defer = true;
-    document.body.appendChild(script);
-  }
-</script>

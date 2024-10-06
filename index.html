@@ -152,17 +152,18 @@
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("header-placeholder").innerHTML = data;
-          initializeHeader();
+
+          // Load header.js after inserting header HTML
+          const script = document.createElement("script");
+          script.src = "js/header.js";
+          script.onload = () => {
+            console.log("Header script loaded");
+            initializeHeader();
+          };
+          document.body.appendChild(script);
         })
         .catch((error) => console.error("Error loading header:", error));
 
-      // Initialize header related scripts
-      function initializeHeader() {
-        const script = document.createElement("script");
-        script.src = "js/header.js";
-        script.defer = true;
-        document.body.appendChild(script);
-      }
     </script>
   </body>
 </html>
