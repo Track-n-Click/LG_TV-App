@@ -182,7 +182,7 @@ const videoData = {
       type: "hls",
     },
     {
-      id: "vpright",
+      id: "vpr1",
       title: "MILITARY TV",
       manifest: "https://cdn.rtmp1.vodhosting.com/hls/MilitaryChannel.m3u8",
       type: "hls",
@@ -253,7 +253,7 @@ function initializeVideos() {
       });
 
       player.src({
-        src: video.manifest,
+        src: video?.manifest,
         type: "application/x-mpegURL",
       });
 

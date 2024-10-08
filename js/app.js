@@ -82,12 +82,42 @@ function createSliderElement(slide, index) {
     <div class="slider-info">
       <h1 class="slider-title">${slide.title}</h1>
       <p class="slider-description">${slide.description}</p>
-      <button class="slider-button" data-index="${index}">Watch Now</button>
+      <button class="slider-button" data-index="${index}">${
+    slide.cta || "Watch Now"
+  }</button>
     </div>
   `;
+
+  // Redirect URL generation based on the type
   slideItem.querySelector(".slider-button").addEventListener("click", () => {
-    redirect("pages/media.html");
+    let redirectUrl;
+
+    switch (slide.type) {
+      case "Live TV":
+        redirectUrl = `pages/media.html`;
+        break;
+      case "Movie":
+        redirectUrl = `pages/videos.html`;
+        break;
+      case "TV Series":
+        redirectUrl = `pages/videos.html`;
+        break;
+      case "Podcast":
+        redirectUrl = `index.html`;
+        break;
+      case "Radio":
+        redirectUrl = `index.html`;
+        break;
+      case "Other":
+        redirectUrl = `pages/music.html`;
+        break;
+      default:
+        redirectUrl = "index.html";
+    }
+
+    window.location.href = redirectUrl;
   });
+
   return slideItem;
 }
 
