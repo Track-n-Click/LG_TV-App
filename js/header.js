@@ -5,9 +5,15 @@ document.addEventListener("DOMContentLoaded", () => {
 function initializeHeader() {
   setupNavbarScroll();
   setupProfileButtonListeners();
+  setupInputListeners(); 
 }
 
 let isModalOpen = false;
+let isKeyboardVisible = false;
+let selectedRow = 0;
+let selectedCol = 0;
+let activeInputIndex = 0;
+let selectedButton = "settings"; 
 
 function setupNavbarScroll() {
   let lastScrollTop = 0;
@@ -25,9 +31,7 @@ function setupNavbarScroll() {
 }
 
 function setupProfileButtonListeners() {
-  document
-    .getElementById("profile-button")
-    .addEventListener("click", openLoginModal);
+  document.getElementById("profile-button").addEventListener("click", openLoginModal);
 
   // Close the modal when clicking outside of it
   window.addEventListener("click", (event) => {
@@ -38,7 +42,9 @@ function setupProfileButtonListeners() {
 }
 
 function handleEscapeKey(event) {
-  if (
+  if (event.key === "Escape" && isKeyboardVisible) {
+    closeKeyboard(); 
+  } else if (
     event.key === "Escape" &&
     document.getElementById("login-modal").style.display === "block"
   ) {
@@ -47,27 +53,15 @@ function handleEscapeKey(event) {
 }
 
 async function openLoginModal() {
-    document.getElementById("login-modal").style.display = "block";
-    document.body.classList.add("no-scroll"); // Disable background scroll
-    setupLoginModalNavigation(); // Setup navigation within the modal
-    document.addEventListener("keydown", handleEscapeKey); // Add Escape key listener when modal opens
-    isModalOpen = true; // Set modal state to open
-    await loadKeyboard(); // Wait for the keyboard to load before continuing
-    focusInput(0); // Focus the first input after the keyboard loads
+  document.getElementById("login-modal").style.display = "block";
+  document.body.classList.add("no-scroll"); // Disable background scroll
+  setupLoginModalNavigation(); // Setup navigation within the modal
+  setupInputListeners(); // Make sure input listeners are set
+  generateKeyboard(); // Generate and display the keyboard
+  isModalOpen = true; // Set modal state to open
+  focusInput(0); // Focus the first input after the keyboard loads
 }
 
-async function loadKeyboard() {
-  try {
-      const response = await fetch('pages/keyboard/keyboard.html'); // Update path as needed
-      if (!response.ok) {
-          throw new Error('Network response was not ok');
-      }
-      const keyboardHTML = await response.text();
-      document.querySelector('.keyboard-container').innerHTML = keyboardHTML;
-  } catch (error) {
-      console.error('Failed to load keyboard:', error);
-  }
-}
 
 function closeLoginModal() {
   document.getElementById("login-modal").style.display = "none";
@@ -75,6 +69,7 @@ function closeLoginModal() {
   document.removeEventListener("keydown", handleEscapeKey); // Remove Escape key listener when modal closes
   removeModalNavigation(); // Remove navigation keydown listeners
   isModalOpen = false; // Set modal state to closed
+  closeKeyboard(); // Close the keyboard if modal is closed
 }
 
 // Focus on a specific input in the modal
@@ -84,6 +79,14 @@ function focusInput(index) {
     inputs[index].focus();
     inputs[index].scrollIntoView({ behavior: "smooth", block: "center" }); // Ensure input is visible
   }
+}
+
+// Setup listeners for the input fields to open the keyboard
+function setupInputListeners() {
+  const inputFields = document.querySelectorAll("#login-modal input");
+  inputFields.forEach((input, index) => {
+    input.addEventListener("focus", () => openKeyboard(index)); // Open keyboard on focus
+  });
 }
 
 // Setup keyboard navigation within the modal
@@ -102,14 +105,14 @@ function setupLoginModalNavigation() {
   // Focus the first element when the modal opens
   focusElement(currentIndex);
 
-  // Handle arrow key navigation
+  // Handle arrow key navigation within modal
   function handleKeyDown(event) {
+    if (isKeyboardVisible) return; // Ignore key events if keyboard is visible
+
     if (document.getElementById("login-modal").style.display === "block") {
       if (event.key === "ArrowUp" || event.key === "ArrowDown") {
         if (event.key === "ArrowUp") {
-          currentIndex =
-            (currentIndex - 1 + focusableElements.length) %
-            focusableElements.length;
+          currentIndex = (currentIndex - 1 + focusableElements.length) % focusableElements.length;
         } else if (event.key === "ArrowDown") {
           currentIndex = (currentIndex + 1) % focusableElements.length;
         }
@@ -130,9 +133,7 @@ function setupLoginModalNavigation() {
     document.removeEventListener("keydown", handleKeyDown);
   }
 
-  // Store function to remove the listener later
-  document.getElementById("login-modal").removeNavigationListener =
-    removeNavigationListener;
+  document.getElementById("login-modal").removeNavigationListener = removeNavigationListener;
 }
 
 // Removes keydown listeners for modal navigation
@@ -152,6 +153,8 @@ function focusElement(index) {
 
 // Handle actions when pressing the Enter key within the modal
 function handleEnterKeyForModal(element) {
+  if (isKeyboardVisible) return; // Disable form submission when keyboard is active
+
   if (element.id === "email" || element.id === "password") {
     element.focus(); // Focus the current input field
   } else if (element.classList.contains("modal-login-button")) {
@@ -164,7 +167,6 @@ function verifyLoginAndRedirect() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  // Perform basic login verification (replace with actual logic)
   if (email === "test@example.com" && password === "password") {
     alert("Login successful! Redirecting...");
     window.location.href = "index.html"; // Redirect to the app.html page
@@ -173,7 +175,137 @@ function verifyLoginAndRedirect() {
   }
 }
 
-// Select and deselect functions for settings and profile
+// ---- On-screen Keyboard Code ---- //
+const keyboardLayout = [
+  [{"key": "1"}, {"key": "2"}, {"key": "3"}, {"key": "4"}, {"key": "5"}, {"key": "6"}, {"key": "7"}, {"key": "8"}, {"key": "9"}, {"key": "0"}, {"key": "-", "label": "="}, {"key": "backspace"}],
+  [{"key": "tab"}, {"key": "q"}, {"key": "w"}, {"key": "e"}, {"key": "r"}, {"key": "t"}, {"key": "y"}, {"key": "u"}, {"key": "i"}, {"key": "o"}, {"key": "p"}, {"key": "["}, {"key": "]"}, {"key": "\\"}],
+  [{"key": "caps"}, {"key": "a"}, {"key": "s"}, {"key": "d"}, {"key": "f"}, {"key": "g"}, {"key": "h"}, {"key": "j"}, {"key": "k"}, {"key": "l"}, {"key": ";"}, {"key": "'", "label": "\""}, {"key": "enter"}],
+  [{"key": "shift"}, {"key": "z"}, {"key": "x"}, {"key": "c"}, {"key": "v"}, {"key": "b"}, {"key": "n"}, {"key": "m"}, {"key": ","}, {"key": "."}, {"key": "/"}, {"key": "shift"}],
+  [{"key": ".com"}, {"key": "@"}, {"key": "SPACE", "w": 600}]
+];
+
+function generateKeyboard() {
+  const keyboardContainer = document.getElementById("on-screen-keyboard");
+
+  keyboardContainer.innerHTML = ''; // Clear existing keyboard
+
+  keyboardLayout.forEach((row, rowIndex) => {
+    const rowDiv = document.createElement('div');
+    rowDiv.classList.add('keyboard-row');
+    rowDiv.setAttribute('data-row', rowIndex); // Set row attribute
+
+    row.forEach((key, keyIndex) => {
+      const keyDiv = document.createElement('div');
+      keyDiv.classList.add('keyboard-key');
+      keyDiv.setAttribute('data-key', key.key);
+      keyDiv.setAttribute('data-col', keyIndex); // Set column attribute
+      keyDiv.textContent = key.label || key.key; // If there's a label, use it; otherwise, use the key itself
+
+      // Special handling for wide keys like SPACE, ENTER, etc.
+      if (key.w) {
+        keyDiv.style.width = `${key.w}px`;
+      }
+
+      // Add unique styling for special keys like backspace, enter, etc.
+      if (["backspace", "enter", "shift", "tab", "caps"].includes(key.key)) {
+        keyDiv.classList.add('special-key');
+      }
+
+      rowDiv.appendChild(keyDiv);
+    });
+
+    keyboardContainer.appendChild(rowDiv);
+  });
+
+  isKeyboardVisible = true;
+  highlightKey(); // Highlight the first key
+}
+
+function highlightKey() {
+  // Remove current highlights
+  document.querySelectorAll('.keyboard-key').forEach(key => key.classList.remove('focused'));
+
+  const selectedKey = document.querySelector(`.keyboard-row[data-row="${selectedRow}"] .keyboard-key[data-col="${selectedCol}"]`);
+  if (selectedKey) {
+    selectedKey.classList.add('focused'); // Add highlight to the selected key
+  }
+}
+
+function pressKey() {
+  const selectedKey = document.querySelector(`.keyboard-row[data-row="${selectedRow}"] .keyboard-key[data-col="${selectedCol}"]`);
+  const inputField = document.querySelectorAll("#login-modal input")[activeInputIndex]; // The current input field
+
+  if (!selectedKey || !inputField) return false; // Make sure both the selected key and input field exist
+
+  if (selectedKey.dataset.key === 'backspace') {
+    inputField.value = inputField.value.slice(0, -1); // Delete the last character
+  } else if (selectedKey.dataset.key === 'enter') {
+    closeKeyboard(); // Close keyboard when Enter is pressed
+    return true;
+  } else if (selectedKey.dataset.key !== 'shift' && selectedKey.dataset.key !== 'caps') {
+    inputField.value += selectedKey.dataset.key; // Add the pressed key's value to the input
+  }
+  return false;
+}
+
+function openKeyboard(inputIndex) {
+  const keyboard = document.getElementById("on-screen-keyboard");
+  if (!isKeyboardVisible && keyboard) {
+    keyboard.style.display = "flex"; // Display the keyboard
+    isKeyboardVisible = true;
+    activeInputIndex = inputIndex; // Track the input field currently being focused
+    selectedRow = 0;
+    selectedCol = 0;
+    highlightKey(); // Focus the first key
+    document.addEventListener('keydown', navigateKeyboard); // Enable arrow key navigation for the keyboard
+  }
+}
+
+function closeKeyboard() {
+  const keyboard = document.getElementById("on-screen-keyboard");
+  if (keyboard) {
+    keyboard.style.display = "none";
+    isKeyboardVisible = false;
+    document.removeEventListener('keydown', navigateKeyboard); // Disable arrow key navigation for the keyboard
+  }
+}
+
+// Handle keyboard navigation
+function navigateKeyboard(event) {
+  if (!isKeyboardVisible) return; 
+
+  const numRows = document.querySelectorAll('.keyboard-row').length;
+  const numCols = document.querySelectorAll(`.keyboard-row[data-row="${selectedRow}"] .keyboard-key`).length;
+
+  switch (event.key) {
+    case "ArrowUp":
+      selectedRow = (selectedRow - 1 + numRows) % numRows; 
+      break;
+    case "ArrowDown":
+      selectedRow = (selectedRow + 1) % numRows; 
+      break;
+    case "ArrowLeft":
+      selectedCol = (selectedCol - 1 + numCols) % numCols; // Cycle left through the columns
+      break;
+    case "ArrowRight":
+      selectedCol = (selectedCol + 1) % numCols; // Cycle right through the columns
+      break;
+    case "Enter":
+      if (pressKey()) {
+        closeKeyboard(); // Close keyboard when "Enter" is pressed on the keyboard's "Enter" key
+      }
+      break;
+    case "Escape":
+      closeKeyboard(); // Close the keyboard when "Escape" is pressed
+      break;
+    default:
+      return;  // Ignore other keys
+  }
+  highlightKey(); // Update the visual highlight on the keyboard
+  event.preventDefault();  // Prevent default behavior
+}
+// ---- Settings and Profile Navigation Code ---- //
+
 function selectSettingsButton() {
   document.getElementById("settings-button").classList.add("selected");
 }
