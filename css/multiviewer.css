@@ -105,6 +105,7 @@ th {
   align-content: center;
   display: flex;
   justify-content: center;
+  margin-bottom: 50px;
 }
 
 .videoInfo {
@@ -126,17 +127,19 @@ th {
 }
 
 .vp {
-  border: 1px solid #fff;
+  /* border: 1px solid #fff; */
   min-height: 200px;
   padding: 0px;
   text-align: center;
   height: 280px;
+  /* padding: 30px; */
   /* Ensures the height fits the grid */
 }
 
 .info {
   /* background: url('../images/ayozat.png'); */
-  background-color: #fff;
+  /* background-color: #fff;*/
+  background-color: black;
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto 280px;
@@ -150,16 +153,25 @@ th {
   min-height: 280px;
 }
 
+#vpleft-title {
+  margin-top: 10px;
+}
+
+#vpright-title {
+  margin-top: 10px;
+}
+
 .viewport {
   display: none !important;
 }
 
 .ayozat-image {
-  max-height: 250px !important;
+  max-height: 220px !important;
   width: 100%;
   /* Make image take the full width of its container */
   height: auto;
   /* Maintain aspect ratio */
+  margin-top: 30px;
 
   object-fit: contain;
   /* Adjust image to fit within the container */
@@ -168,11 +180,14 @@ th {
 video {
   width: 100%;
   min-height: 200px;
-  border: 1px solid #777777;
+  border: 1px solid #383838;
+  border-radius: 10px;
+  padding: 30px;
+  z-index: 10;
 }
 
 .grid .title {
-  margin-top: 7px;
+  margin-top: -30px;
 }
 
 .overlay {
@@ -227,12 +242,16 @@ video {
 
 .shortcut {
   z-index: 15;
-  font-size: 8px;
+  font-size: 10px;
+  width: 20px;
+  height: 20px;
   position: absolute;
   right: 10px;
   top: 10px;
-  border: 1px solid;
+  /* border: 1px solid;s */
+  margin: auto;
   padding: 3px;
+  border-radius: 50%;
   background-color: #000;
 }
 
@@ -258,9 +277,10 @@ video {
 }
 
 .video-active {
-  border: 2px solid #00b7ff;
-  box-shadow: 0 0 10px rgba(0, 183, 255, 0.5);
-  z-index: 10;
+  border: 1px solid #ff0048;
+  z-index: 20;
+  border-radius: 10px;
+  transition: 200ms;
 }
 
 .vp:not(.video-active) {
@@ -269,7 +289,10 @@ video {
 }
 
 .video-active .title {
-  background-color: rgba(0, 183, 255, 0.7);
-  color: #fff;
+  color: #ff0048;
   font-weight: bold;
+}
+
+.video-active .shortcuts {
+  color: #ff0048;
 }
