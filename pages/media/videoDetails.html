@@ -17,67 +17,6 @@
   </head>
 
   <body>
-    <!-- NavBar -->
-    <div class="navbar">
-      <div class="navbar-container" id="navbar-container">
-        <div class="menu-list">
-          <div class="menu-list-item">
-            <div class="logo-container">
-              <a href="index.html">
-                <img
-                  class="logo"
-                  src="../../images/AyozatStreamwhite.png"
-                  alt="Logo"
-                />
-              </a>
-            </div>
-          </div>
-          <div class="right-nav">
-            <div class="menu-list-item">
-              <i class="fa-regular fa-user"></i>
-            </div>
-            <div class="menu-list-item">
-              <i class="fa-solid fa-bars"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-      <div class="modal-content">
-        <span class="close" id="close-modal">&times;</span>
-        <div class="modal-header">
-          <div class="modal-logo-container">
-            <img src="../../images/a_logo.png" alt="" class="modal-logo" />
-          </div>
-          <h2>Welcome back!</h2>
-          <p>Log in and catch up with your favorite things</p>
-        </div>
-        <form id="login-form" class="modal-form">
-          <input
-            type="text"
-            id="email"
-            name="email"
-            required
-            placeholder="Email"
-          />
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            placeholder="Password"
-          />
-          <button type="submit" class="modal-login-button">LOGIN</button>
-          <p class="modal-footer">
-            Scan QR to connect with <span>AyozatTV</span>
-          </p>
-        </form>
-      </div>
-    </div>
-
     <!-- Movie or Series Hero Slider -->
     <div class="swiper-main">
       <div class="swiper">
@@ -100,6 +39,26 @@
         </div>
         <div id="right-arrow-movies" class="nav-arrow right-arrow">
           <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+
+    <div id="details-section" class="media-details">
+      <h2 class="details-title">Info</h2>
+      <div class="details-container">
+        <div class="detail-box">
+          <h3>Stars</h3>
+          <ul class="stars-list detail-list"></ul>
+        </div>
+
+        <div class="detail-box">
+          <h3>Directors</h3>
+          <ul class="directors-list detail-list"></ul>
+        </div>
+
+        <div class="detail-box">
+          <h3>Producers</h3>
+          <ul class="producers-list detail-list"></ul>
         </div>
       </div>
     </div>

@@ -19,12 +19,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     details = await fetchVideoDetailsBySlug(movieSlug);
     console.log("movie", details);
+    setupDetailsSection(details);
     initializeMediaNavigation();
   } else if (seriesSlug) {
     details = await fetchSeriesDetailsBySlug(seriesSlug);
     console.log("series", details);
     const seasons = details.seasons;
     createSeasonsAndEpisodes(seasons);
+    setupDetailsSection(details);
     initializeMediaNavigation(details.seasons);
   } else {
     console.log("No valid slug found in the URL.");
@@ -32,9 +34,74 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   createSliders(details);
-
-  // initializeSwiperHero();
 });
+
+/**
+ * Function to set up the details section with actors, directors, producers, and genres.
+ * If any detail is missing, it will hide the relevant section.
+ * @param {Object} details
+ */
+function setupDetailsSection(details) {
+  const { actors = [], directors = [], producers = [] } = details;
+
+  // Reference the details section elements
+  const detailsSection = document.getElementById("details-section");
+  const starsElement = document.querySelector("#details-section .stars-list");
+  const directorsElement = document.querySelector(
+    "#details-section .directors-list"
+  );
+  const producersElement = document.querySelector(
+    "#details-section .producers-list"
+  );
+
+  // Setup actors (stars)
+  if (actors.length > 0) {
+    starsElement.innerHTML = actors
+      .map((actor) => {
+        return `
+          <li class="item">
+            <img src="${actor.artwork_url}" alt="${actor.name}" class="avatar"/>
+            <p href="${actor.permalink_url}" target="_blank" class="name">${actor.name}</p>
+          </li>`;
+      })
+      .join(""); // Join all the HTML strings into one
+  } else {
+    starsElement.parentElement.style.display = "none"; // Hide stars section if no data
+  }
+
+  // Setup directors
+  if (directors.length > 0) {
+    directorsElement.innerHTML = directors
+      .map((director) => {
+        return `
+          <li class="item">
+            <img src="${director.artwork_url}" alt="${director.name}" class="avatar"/>
+            <p href="${director.permalink_url}" target="_blank" class="name">${director.name}</p>
+          </li>`;
+      })
+      .join("");
+  } else {
+    directorsElement.parentElement.style.display = "none"; // Hide directors section if no data
+  }
+
+  // Setup producers
+  if (producers.length > 0) {
+    producersElement.innerHTML = producers
+      .map((producer) => {
+        return `
+          <li class="item">
+            <img src="${producer.artwork_url}" alt="${producer.name}" class="avatar"/>
+            <p href="${producer.permalink_url}" target="_blank" class="name">${producer.name}</p>
+          </li>`;
+      })
+      .join("");
+  } else {
+    producersElement.parentElement.style.display = "none";
+  }
+  if (!actors.length && !directors.length && !producers.length) {
+    detailsSection.style.display = "none";
+  }
+}
 
 function initializeSwiperHero() {
   var swiper = new Swiper(".swiper-container-hero", {
@@ -158,7 +225,9 @@ function initializeMediaNavigation(seasons) {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
   const mediaSections = [
-    { id: "navbar-container", leftArrow: "", rightArrow: "" },
+    // { id: "navbar-container", leftArrow: "", rightArrow: "" },
+
+    { id: "details-section", leftArrow: "", rightArrow: "" },
     { id: "swiper-wrapper", leftArrow: "", rightArrow: "" },
   ];
 
@@ -213,7 +282,7 @@ function initializeMediaNavigation(seasons) {
       mediaSections[selectedSectionIndex].id
     );
     const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .menu-list-item, .slider-button "
+      ".slider-button, .video-tile, .details-container"
     );
 
     if (currentTiles.length > 0) {
@@ -229,7 +298,7 @@ function initializeMediaNavigation(seasons) {
       mediaSections[selectedSectionIndex].id
     );
     const newTiles = newRow.querySelectorAll(
-      ".video-tile, .menu-list-item, .slider-button"
+      ".slider-button, .video-tile, .details-container"
     );
 
     if (newTiles.length > 0) {
@@ -244,7 +313,7 @@ function initializeMediaNavigation(seasons) {
       mediaSections[selectedSectionIndex].id
     );
     const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .menu-list-item, .slider-button"
+      ".video-tile, .slider-button"
     );
 
     if (currentTiles.length > 0) {
