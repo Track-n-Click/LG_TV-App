@@ -11,29 +11,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let details;
 
-  if (movieSlug) {
-    //remove the episode list
-    const videoGridContainer = document.getElementById("video-grid-container");
-    if (videoGridContainer) {
-      videoGridContainer.style.display = "none";
+  try {
+    if (movieSlug) {
+      const videoGridContainer = document.getElementById(
+        "video-grid-container"
+      );
+      if (videoGridContainer) {
+        videoGridContainer.style.display = "none";
+      }
+      details = await fetchVideoDetailsBySlug(movieSlug);
+      console.log("movie", details);
+      setupDetailsSection(details);
+      initializeMediaNavigation();
+    } else if (seriesSlug) {
+      details = await fetchSeriesDetailsBySlug(seriesSlug);
+      console.log("series", details);
+      const seasons = details.seasons;
+      createSeasonsAndEpisodes(seasons);
+      setupDetailsSection(details);
+      initializeMediaNavigation(details.seasons);
+    } else {
+      console.log("No valid slug found in the URL.");
+      return;
     }
-    details = await fetchVideoDetailsBySlug(movieSlug);
-    console.log("movie", details);
-    setupDetailsSection(details);
-    initializeMediaNavigation();
-  } else if (seriesSlug) {
-    details = await fetchSeriesDetailsBySlug(seriesSlug);
-    console.log("series", details);
-    const seasons = details.seasons;
-    createSeasonsAndEpisodes(seasons);
-    setupDetailsSection(details);
-    initializeMediaNavigation(details.seasons);
-  } else {
-    console.log("No valid slug found in the URL.");
-    return;
-  }
 
-  createSliders(details);
+    createSliders(details);
+  } catch (error) {
+    console.error("Error fetching video or series details:", error);
+    // Optionally handle UI updates for error state
+  }
 });
 
 /**
