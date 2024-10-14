@@ -1,21 +1,21 @@
-import {
-  fetchMovies,
-  fetchTVSeries,
-  fetchVideosSliders,
-} from "./mediaService.js";
+import { fetchMovies, fetchTVSeries } from "./mediaService.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   displayPlaceholders("movie-row");
   displayPlaceholders("tv-row");
 
   setTimeout(async () => {
-    const movies = await fetchMovies();
-    replacePlaceholdersWithData("movie-row", movies, "movies");
+    try {
+      const movies = await fetchMovies();
+      replacePlaceholdersWithData("movie-row", movies, "movies");
 
-    const tvSeries = await fetchTVSeries();
-    replacePlaceholdersWithData("tv-row", tvSeries, "series");
+      const tvSeries = await fetchTVSeries();
+      replacePlaceholdersWithData("tv-row", tvSeries, "series");
 
-    initializeMediaNavigation();
+      initializeMediaNavigation();
+    } catch (error) {
+      console.error("Failed to load media data:", error);
+    }
   }, 1000);
 });
 
