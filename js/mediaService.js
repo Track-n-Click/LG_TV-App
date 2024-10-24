@@ -1,29 +1,25 @@
 import axios from "https://cdn.skypack.dev/axios";
 
-const MOVIES_API_URL = "https://c-1y15z120-t12c.ayozat.com/api/movies/random";
-const TV_SERIES_API_URL =
-  "https://c-1y15z120-t12c.ayozat.com/api/tv-series/random";
-const TV_CHANNELS_API_URL =
-  "https://c-1y15z120-t12c.ayozat.com/api/tv-channels/featured";
+// Define the base API URL to make it easier to maintain
+// const API_BASE_URL = "https://c-1y15z120-t12c.ayozat.com/api";
+const API_BASE_URL = "https://dapi.ayozat.co.uk/api";
 
-const SLIDERS_API_URL = "https://c-1y15z120-t12c.ayozat.com/api/home/slider";
-const VIDEO_DETAILS_BY_SLUG_API_URL =
-  "https://c-1y15z120-t12c.ayozat.com/api/movies";
-
-const SERIES_DETAILS_BY_SLUG_API_URL =
-  "https://c-1y15z120-t12c.ayozat.com/api/tv-series";
-
-const SERIES_DETAILS_BY_STREAM_KEY_API_URL =
-  "https://c-1y15z120-t12c.ayozat.com/api/tv-series/episodes";
-
-const VIDEO_SLIDERS_API_URL =
-  "https://c-1y15z120-t12c.ayozat.com/api/video/slider";
+const config = {
+  MOVIES_API_URL: `${API_BASE_URL}/movies/random`,
+  TV_SERIES_API_URL: `${API_BASE_URL}/tv-series/random`,
+  TV_CHANNELS_API_URL: `${API_BASE_URL}/tv-channels/featured`,
+  SLIDERS_API_URL: `${API_BASE_URL}/home/slider`,
+  VIDEO_DETAILS_BY_SLUG_API_URL: `${API_BASE_URL}/movies`,
+  SERIES_DETAILS_BY_SLUG_API_URL: `${API_BASE_URL}/tv-series`,
+  SERIES_DETAILS_BY_STREAM_KEY_API_URL: `${API_BASE_URL}/tv-series/episodes`,
+  VIDEO_SLIDERS_API_URL: `${API_BASE_URL}/video/slider`,
+};
 
 export async function fetchSliders() {
   try {
     const response = await axios({
       method: "GET",
-      url: SLIDERS_API_URL,
+      url: config.SLIDERS_API_URL,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -39,7 +35,7 @@ export async function fetchMovies() {
   try {
     const response = await axios({
       method: "GET",
-      url: MOVIES_API_URL,
+      url: config.MOVIES_API_URL,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -55,7 +51,7 @@ export async function fetchTVSeries() {
   try {
     const response = await axios({
       method: "GET",
-      url: TV_SERIES_API_URL,
+      url: config.TV_SERIES_API_URL,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -71,7 +67,7 @@ export async function fetchTVChannels() {
   try {
     const response = await axios({
       method: "GET",
-      url: TV_CHANNELS_API_URL,
+      url: config.TV_CHANNELS_API_URL,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -87,7 +83,7 @@ export async function fetchVideoDetailsBySlug(slug) {
   try {
     const response = await axios({
       method: "GET",
-      url: `${VIDEO_DETAILS_BY_SLUG_API_URL}/${slug}`,
+      url: `${config.VIDEO_DETAILS_BY_SLUG_API_URL}/${slug}`,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -103,7 +99,7 @@ export async function fetchSeriesDetailsBySlug(slug) {
   try {
     const response = await axios({
       method: "GET",
-      url: `${SERIES_DETAILS_BY_SLUG_API_URL}/${slug}`,
+      url: `${config.SERIES_DETAILS_BY_SLUG_API_URL}/${slug}`,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -119,7 +115,7 @@ export async function fetchSeriesDetailsByStreamKey(streamKey) {
   try {
     const response = await axios({
       method: "GET",
-      url: `${SERIES_DETAILS_BY_STREAM_KEY_API_URL}/${streamKey}`,
+      url: `${config.SERIES_DETAILS_BY_STREAM_KEY_API_URL}/${streamKey}`,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
@@ -135,7 +131,7 @@ export async function fetchVideosSliders() {
   try {
     const response = await axios({
       method: "GET",
-      url: VIDEO_SLIDERS_API_URL,
+      url: config.VIDEO_SLIDERS_API_URL,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
