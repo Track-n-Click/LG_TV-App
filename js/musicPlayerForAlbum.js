@@ -319,6 +319,8 @@ document.addEventListener("DOMContentLoaded", function () {
       audioPlayer.pause();
       playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
     }
+    currentControl = "playPause";
+    highlightControl();
   }
 
   function rewindTrack() {
