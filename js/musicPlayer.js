@@ -152,8 +152,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       audioPlayer.pause(); // This will trigger the pause event listener to change the icon
     }
-    currentControl = "playPause"; // Ensure focus stays on the play/pause button
-    highlightControl(); // Re-highlight the play/pause button
+    currentControl = "playPause";
+    highlightControl();
   }
 
   function rewindTrack() {
