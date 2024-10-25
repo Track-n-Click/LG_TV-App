@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initializeHeader() {
   setupNavbarScroll();
   setupProfileButtonListeners();
-  setupInputListeners(); 
+  setupInputListeners();
 }
 
 let isModalOpen = false;
@@ -13,7 +13,7 @@ let isKeyboardVisible = false;
 let selectedRow = 0;
 let selectedCol = 0;
 let activeInputIndex = 0;
-let selectedButton = "settings"; 
+let selectedButton = "settings";
 
 function setupNavbarScroll() {
   let lastScrollTop = 0;
@@ -31,7 +31,9 @@ function setupNavbarScroll() {
 }
 
 function setupProfileButtonListeners() {
-  document.getElementById("profile-button").addEventListener("click", openLoginModal);
+  document
+    .getElementById("profile-button")
+    .addEventListener("click", openLoginModal);
 
   // Close the modal when clicking outside of it
   window.addEventListener("click", (event) => {
@@ -43,7 +45,7 @@ function setupProfileButtonListeners() {
 
 function handleEscapeKey(event) {
   if (event.key === "Escape" && isKeyboardVisible) {
-    closeKeyboard(); 
+    closeKeyboard();
   } else if (
     event.key === "Escape" &&
     document.getElementById("login-modal").style.display === "block"
@@ -61,7 +63,6 @@ async function openLoginModal() {
   isModalOpen = true; // Set modal state to open
   focusInput(0); // Focus the first input after the keyboard loads
 }
-
 
 function closeLoginModal() {
   document.getElementById("login-modal").style.display = "none";
@@ -112,7 +113,9 @@ function setupLoginModalNavigation() {
     if (document.getElementById("login-modal").style.display === "block") {
       if (event.key === "ArrowUp" || event.key === "ArrowDown") {
         if (event.key === "ArrowUp") {
-          currentIndex = (currentIndex - 1 + focusableElements.length) % focusableElements.length;
+          currentIndex =
+            (currentIndex - 1 + focusableElements.length) %
+            focusableElements.length;
         } else if (event.key === "ArrowDown") {
           currentIndex = (currentIndex + 1) % focusableElements.length;
         }
@@ -133,7 +136,8 @@ function setupLoginModalNavigation() {
     document.removeEventListener("keydown", handleKeyDown);
   }
 
-  document.getElementById("login-modal").removeNavigationListener = removeNavigationListener;
+  document.getElementById("login-modal").removeNavigationListener =
+    removeNavigationListener;
 }
 
 // Removes keydown listeners for modal navigation
@@ -177,28 +181,83 @@ function verifyLoginAndRedirect() {
 
 // ---- On-screen Keyboard Code ---- //
 const keyboardLayout = [
-  [{"key": "1"}, {"key": "2"}, {"key": "3"}, {"key": "4"}, {"key": "5"}, {"key": "6"}, {"key": "7"}, {"key": "8"}, {"key": "9"}, {"key": "0"}, {"key": "-", "label": "="}, {"key": "backspace"}],
-  [{"key": "tab"}, {"key": "q"}, {"key": "w"}, {"key": "e"}, {"key": "r"}, {"key": "t"}, {"key": "y"}, {"key": "u"}, {"key": "i"}, {"key": "o"}, {"key": "p"}, {"key": "["}, {"key": "]"}, {"key": "\\"}],
-  [{"key": "caps"}, {"key": "a"}, {"key": "s"}, {"key": "d"}, {"key": "f"}, {"key": "g"}, {"key": "h"}, {"key": "j"}, {"key": "k"}, {"key": "l"}, {"key": ";"}, {"key": "'", "label": "\""}, {"key": "enter"}],
-  [{"key": "shift"}, {"key": "z"}, {"key": "x"}, {"key": "c"}, {"key": "v"}, {"key": "b"}, {"key": "n"}, {"key": "m"}, {"key": ","}, {"key": "."}, {"key": "/"}, {"key": "shift"}],
-  [{"key": ".com"}, {"key": "@"}, {"key": "SPACE", "w": 600}]
+  [
+    { key: "1" },
+    { key: "2" },
+    { key: "3" },
+    { key: "4" },
+    { key: "5" },
+    { key: "6" },
+    { key: "7" },
+    { key: "8" },
+    { key: "9" },
+    { key: "0" },
+    { key: "-", label: "=" },
+    { key: "backspace" },
+  ],
+  [
+    { key: "tab" },
+    { key: "q" },
+    { key: "w" },
+    { key: "e" },
+    { key: "r" },
+    { key: "t" },
+    { key: "y" },
+    { key: "u" },
+    { key: "i" },
+    { key: "o" },
+    { key: "p" },
+    { key: "[" },
+    { key: "]" },
+    { key: "\\" },
+  ],
+  [
+    { key: "caps" },
+    { key: "a" },
+    { key: "s" },
+    { key: "d" },
+    { key: "f" },
+    { key: "g" },
+    { key: "h" },
+    { key: "j" },
+    { key: "k" },
+    { key: "l" },
+    { key: ";" },
+    { key: "'", label: '"' },
+    { key: "enter" },
+  ],
+  [
+    { key: "shift" },
+    { key: "z" },
+    { key: "x" },
+    { key: "c" },
+    { key: "v" },
+    { key: "b" },
+    { key: "n" },
+    { key: "m" },
+    { key: "," },
+    { key: "." },
+    { key: "/" },
+    { key: "shift" },
+  ],
+  [{ key: ".com" }, { key: "@" }, { key: "SPACE", w: 600 }],
 ];
 
 function generateKeyboard() {
   const keyboardContainer = document.getElementById("on-screen-keyboard");
 
-  keyboardContainer.innerHTML = ''; // Clear existing keyboard
+  keyboardContainer.innerHTML = ""; // Clear existing keyboard
 
   keyboardLayout.forEach((row, rowIndex) => {
-    const rowDiv = document.createElement('div');
-    rowDiv.classList.add('keyboard-row');
-    rowDiv.setAttribute('data-row', rowIndex); // Set row attribute
+    const rowDiv = document.createElement("div");
+    rowDiv.classList.add("keyboard-row");
+    rowDiv.setAttribute("data-row", rowIndex); // Set row attribute
 
     row.forEach((key, keyIndex) => {
-      const keyDiv = document.createElement('div');
-      keyDiv.classList.add('keyboard-key');
-      keyDiv.setAttribute('data-key', key.key);
-      keyDiv.setAttribute('data-col', keyIndex); // Set column attribute
+      const keyDiv = document.createElement("div");
+      keyDiv.classList.add("keyboard-key");
+      keyDiv.setAttribute("data-key", key.key);
+      keyDiv.setAttribute("data-col", keyIndex); // Set column attribute
       keyDiv.textContent = key.label || key.key; // If there's a label, use it; otherwise, use the key itself
 
       // Special handling for wide keys like SPACE, ENTER, etc.
@@ -208,7 +267,7 @@ function generateKeyboard() {
 
       // Add unique styling for special keys like backspace, enter, etc.
       if (["backspace", "enter", "shift", "tab", "caps"].includes(key.key)) {
-        keyDiv.classList.add('special-key');
+        keyDiv.classList.add("special-key");
       }
 
       rowDiv.appendChild(keyDiv);
@@ -223,26 +282,36 @@ function generateKeyboard() {
 
 function highlightKey() {
   // Remove current highlights
-  document.querySelectorAll('.keyboard-key').forEach(key => key.classList.remove('focused'));
+  document
+    .querySelectorAll(".keyboard-key")
+    .forEach((key) => key.classList.remove("focused"));
 
-  const selectedKey = document.querySelector(`.keyboard-row[data-row="${selectedRow}"] .keyboard-key[data-col="${selectedCol}"]`);
+  const selectedKey = document.querySelector(
+    `.keyboard-row[data-row="${selectedRow}"] .keyboard-key[data-col="${selectedCol}"]`
+  );
   if (selectedKey) {
-    selectedKey.classList.add('focused'); // Add highlight to the selected key
+    selectedKey.classList.add("focused"); // Add highlight to the selected key
   }
 }
 
 function pressKey() {
-  const selectedKey = document.querySelector(`.keyboard-row[data-row="${selectedRow}"] .keyboard-key[data-col="${selectedCol}"]`);
-  const inputField = document.querySelectorAll("#login-modal input")[activeInputIndex]; // The current input field
+  const selectedKey = document.querySelector(
+    `.keyboard-row[data-row="${selectedRow}"] .keyboard-key[data-col="${selectedCol}"]`
+  );
+  const inputField =
+    document.querySelectorAll("#login-modal input")[activeInputIndex]; // The current input field
 
   if (!selectedKey || !inputField) return false; // Make sure both the selected key and input field exist
 
-  if (selectedKey.dataset.key === 'backspace') {
+  if (selectedKey.dataset.key === "backspace") {
     inputField.value = inputField.value.slice(0, -1); // Delete the last character
-  } else if (selectedKey.dataset.key === 'enter') {
+  } else if (selectedKey.dataset.key === "enter") {
     closeKeyboard(); // Close keyboard when Enter is pressed
     return true;
-  } else if (selectedKey.dataset.key !== 'shift' && selectedKey.dataset.key !== 'caps') {
+  } else if (
+    selectedKey.dataset.key !== "shift" &&
+    selectedKey.dataset.key !== "caps"
+  ) {
     inputField.value += selectedKey.dataset.key; // Add the pressed key's value to the input
   }
   return false;
@@ -257,7 +326,9 @@ function openKeyboard(inputIndex) {
     selectedRow = 0;
     selectedCol = 0;
     highlightKey(); // Focus the first key
-    document.addEventListener('keydown', navigateKeyboard); // Enable arrow key navigation for the keyboard
+    document.addEventListener("keydown", navigateKeyboard); // Enable arrow key navigation for the keyboard
+    // Adjust modal top margin when keyboard opens
+    adjustModalForKeyboard(true);
   }
 }
 
@@ -266,23 +337,34 @@ function closeKeyboard() {
   if (keyboard) {
     keyboard.style.display = "none";
     isKeyboardVisible = false;
-    document.removeEventListener('keydown', navigateKeyboard); // Disable arrow key navigation for the keyboard
+    document.removeEventListener("keydown", navigateKeyboard); // Disable arrow key navigation for the keyboard
+    // Reset modal top margin when keyboard closes
+    adjustModalForKeyboard(false);
+  }
+}
+
+function adjustModalForKeyboard(isOpen) {
+  const modalContent = document.querySelector(".modal-content");
+  if (modalContent) {
+    modalContent.style.marginTop = isOpen ? "10px" : "150px";
   }
 }
 
 // Handle keyboard navigation
 function navigateKeyboard(event) {
-  if (!isKeyboardVisible) return; 
+  if (!isKeyboardVisible) return;
 
-  const numRows = document.querySelectorAll('.keyboard-row').length;
-  const numCols = document.querySelectorAll(`.keyboard-row[data-row="${selectedRow}"] .keyboard-key`).length;
+  const numRows = document.querySelectorAll(".keyboard-row").length;
+  const numCols = document.querySelectorAll(
+    `.keyboard-row[data-row="${selectedRow}"] .keyboard-key`
+  ).length;
 
   switch (event.key) {
     case "ArrowUp":
-      selectedRow = (selectedRow - 1 + numRows) % numRows; 
+      selectedRow = (selectedRow - 1 + numRows) % numRows;
       break;
     case "ArrowDown":
-      selectedRow = (selectedRow + 1) % numRows; 
+      selectedRow = (selectedRow + 1) % numRows;
       break;
     case "ArrowLeft":
       selectedCol = (selectedCol - 1 + numCols) % numCols; // Cycle left through the columns
@@ -299,10 +381,10 @@ function navigateKeyboard(event) {
       closeKeyboard(); // Close the keyboard when "Escape" is pressed
       break;
     default:
-      return;  // Ignore other keys
+      return; // Ignore other keys
   }
   highlightKey(); // Update the visual highlight on the keyboard
-  event.preventDefault();  // Prevent default behavior
+  event.preventDefault(); // Prevent default behavior
 }
 // ---- Settings and Profile Navigation Code ---- //
 
