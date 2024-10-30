@@ -1,8 +1,8 @@
 import axios from "https://cdn.skypack.dev/axios";
 
 // config.js
-// const API_BASE_URL = "https://c-1y15z120-t12c.ayozat.com/api";
-const API_BASE_URL = "https://dapi.ayozat.co.uk/api";
+const API_BASE_URL = "https://c-1y15z120-t12c.ayozat.com/api";
+// const API_BASE_URL = "https://dapi.ayozat.co.uk/api";
 
 const config = {
   ALBUMS_API_URL: `${API_BASE_URL}/random/albums`,
