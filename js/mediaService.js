@@ -15,6 +15,7 @@ const config = {
   VIDEO_SLIDERS_API_URL: `${API_BASE_URL}/video/slider`,
 };
 
+
 export async function fetchSliders() {
   try {
     const response = await axios({
