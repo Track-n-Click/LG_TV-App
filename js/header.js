@@ -59,7 +59,7 @@ async function openLoginModal() {
   document.body.classList.add("no-scroll"); // Disable background scroll
   setupLoginModalNavigation(); // Setup navigation within the modal
   setupInputListeners(); // Make sure input listeners are set
-  generateKeyboard(); // Generate and display the keyboard
+  // generateKeyboard(); // Generate and display the keyboard
   isModalOpen = true; // Set modal state to open
   focusInput(0); // Focus the first input after the keyboard loads
 }
@@ -179,7 +179,6 @@ function verifyLoginAndRedirect() {
   }
 }
 
-
 // ---- On-screen Keyboard Code ---- //
 const keyboardLayout = [
   [
@@ -246,7 +245,6 @@ const keyboardLayout = [
 
 function generateKeyboard() {
   const keyboardContainer = document.getElementById("on-screen-keyboard");
-
   keyboardContainer.innerHTML = ""; // Clear existing keyboard
 
   keyboardLayout.forEach((row, rowIndex) => {
@@ -276,6 +274,7 @@ function generateKeyboard() {
 
     keyboardContainer.appendChild(rowDiv);
   });
+  keyboardContainer.classList.add("show");
 
   isKeyboardVisible = true;
   highlightKey(); // Highlight the first key
@@ -321,7 +320,7 @@ function pressKey() {
 function openKeyboard(inputIndex) {
   const keyboard = document.getElementById("on-screen-keyboard");
   if (!isKeyboardVisible && keyboard) {
-    keyboard.style.display = "flex"; // Display the keyboard
+    keyboard.classList.remove("show");
     isKeyboardVisible = true;
     activeInputIndex = inputIndex; // Track the input field currently being focused
     selectedRow = 0;
@@ -336,7 +335,7 @@ function openKeyboard(inputIndex) {
 function closeKeyboard() {
   const keyboard = document.getElementById("on-screen-keyboard");
   if (keyboard) {
-    keyboard.style.display = "none";
+    keyboard.classList.remove("show");
     isKeyboardVisible = false;
     document.removeEventListener("keydown", navigateKeyboard); // Disable arrow key navigation for the keyboard
     // Reset modal top margin when keyboard closes
@@ -424,4 +423,93 @@ function scrollToElement(element) {
     block: "center",
     inline: "center",
   });
+}
+
+// calling login
+// Show the PIN or Credentials login form based on the selection
+document.getElementById("login-via-pin").addEventListener("click", () => {
+  document.getElementById("login-options").style.display = "none";
+  document.getElementById("pin-login-form").style.display = "block";
+  generateKeyboard(); // Generate and display the keyboard
+});
+
+document
+  .getElementById("login-via-credentials")
+  .addEventListener("click", () => {
+    document.getElementById("login-options").style.display = "none";
+    document.getElementById("credentials-login-form").style.display = "block";
+    generateKeyboard(); // Generate and display the keyboard
+  });
+
+// Function to go back to the login options
+function goBack() {
+  document.getElementById("pin-login-form").style.display = "none";
+  document.getElementById("credentials-login-form").style.display = "none";
+  document.getElementById("login-options").style.display = "flex";
+  closeKeyboard(); // Close the keyboard if modal is closed
+}
+
+// Function to submit PIN login using fetch
+const pinInput = document.getElementById("pin");
+const errorMessageContainer = document.getElementById("pin-error-message");
+
+// Function to validate PIN input
+function validatePinInput() {
+  const pin = pinInput.value;
+  console.log("pin", pin);
+  // Check if the PIN is valid (6 digits and only numbers)
+  if (pin !== '' && !/^\d+$/.test(pin)) {
+    errorMessageContainer.textContent =
+      "Please enter a valid 6-digit PIN (numbers only).";
+  } else {
+    errorMessageContainer.textContent = ""; // Clear error if valid
+  }
+}
+// Add event listener for input changes
+pinInput.addEventListener("input", validatePinInput);
+
+function submitPinLogin() {
+  const pin = document.getElementById("pin").value;
+  // Clear previous error messages
+  errorMessageContainer.textContent = "";
+
+  // Final check before submission
+  if (pin !== '' && !/^\d+$/.test(pin)) {
+    errorMessageContainer.textContent =
+      "Please enter a valid 6-digit PIN (numbers only).";
+    return; // Exit the function if the PIN is invalid
+  }
+  let data = JSON.stringify({ pin: pin });
+
+  fetch("https://dapi.ayozat.co.uk/api/auth/verify-pin", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: data,
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(JSON.stringify(data)))
+    .catch((error) => console.log(error));
+}
+
+// Function to submit Credentials login using fetch
+function submitCredentialsLogin() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  let data = JSON.stringify({ email: email, password: password });
+
+  fetch("https://dapi.ayozat.co.uk/api/auth/login", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: data,
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(JSON.stringify(data)))
+    .catch((error) => console.log(error));
 }

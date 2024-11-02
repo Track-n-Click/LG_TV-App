@@ -152,14 +152,17 @@ body::-webkit-scrollbar {
 
 .modal-form {
   display: flex;
-  width: 100%;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .modal-form input {
+  width: 100%;
+  max-width: 300px;
   padding: 15px;
-  margin-bottom: 10px;
+  margin: 10px auto;
   border: 1px solid var(--border-color-gray);
   border-radius: 5px;
   color: #ccc;
@@ -225,7 +228,7 @@ body::-webkit-scrollbar {
 }
 
 #on-screen-keyboard {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -239,6 +242,13 @@ body::-webkit-scrollbar {
   z-index: 1000;
   max-width: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.keyboard {
+  display: none; /* Initially hidden */
+}
+
+.show {
+  display: flex !important; /* Flex display when shown */
 }
 
 .keyboard-row {
@@ -265,4 +275,91 @@ body::-webkit-scrollbar {
   background-color: var(--primary-color);
   color: #ffffff;
   border: 2px solid var(--primary-color);
+}
+
+.login-options {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-login-option {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: 2px solid var(--primary-color);
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  width: 200px;
+  height: 120px;
+  transition: background-color 0.3s ease;
+  color: white;
+  padding: 20px 0px;
+  text-align: center;
+  font-size: 16px;
+  margin: auto;
+  outline: none;
+  font-weight: bold;
+}
+
+.modal-login-option:hover {
+  border: 2px solid #e0e0e0;
+}
+
+.option-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.option-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+.login-buttons-container {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+.modal-login-button-back {
+  background-color: var(--text-lightblue);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  display: block;
+  font-size: 16px;
+  margin: 4px auto;
+  cursor: none;
+  border-radius: 50px;
+  outline: none;
+}
+
+.modal-login-button-back:hover,
+.modal-login-button-back:focus {
+  background-color: var(--text-white);
+  color: var(--primary-color);
+  border-radius: 50px !important;
+  transform: none;
+}
+
+.pin-input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pin-box {
+  width: 20px;  /* Width of each box */
+  height: 20px; /* Height of each box */
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid var(--border-color-gray);
+  border-radius: 5px;
+  margin: 10px 10px !important;
 }

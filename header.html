@@ -26,7 +26,7 @@
       <h2>Welcome back!</h2>
       <p>Log in and catch up with your favorite things</p>
     </div>
-    <form id="login-form" class="modal-form" novalidate>
+    <!-- <form id="login-form" class="modal-form" novalidate>
       <input type="text" id="email" name="email" required placeholder="Email" autocomplete="off" />
       <input
         type="password"
@@ -36,11 +36,62 @@
         placeholder="Password"
       />
       <button type="submit" class="modal-login-button">LOGIN</button>
-    </form>
-    
+    </form> -->
+    <!-- Login Selection -->
+    <div id="login-options" class="login-options">
+      <!-- Button for PIN Login -->
+      <button id="login-via-pin" class="modal-login-option">
+        <div class="option-content">
+          <img src="/images/pin-code.png" alt="PIN Icon" class="option-icon" />
+          <span>Login via PIN</span>
+        </div>
+      </button>
+
+      <!-- Button for Credentials Login -->
+      <button id="login-via-credentials" class="modal-login-option">
+        <div class="option-content">
+          <img
+            src="/images/log-in.png"
+            alt="Password Icon"
+            class="option-icon"
+          />
+          <span>Login via Credentials</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- PIN Login Form -->
+    <div id="pin-login-form" class="modal-form" style="display: none">
+      <input
+        type="text"
+        id="pin"
+        placeholder="Enter 6-digit PIN"
+        maxlength="6"
+        required
+      />
+      <div id="pin-error-message" style="color: red; font-size: 14px;"></div>
+      <div class="login-buttons-container">
+        <button onclick="goBack()" class="modal-login-button-back">Back</button>
+        <button onclick="submitPinLogin()" class="modal-login-button">
+          Submit PIN
+        </button>
+      </div>
+    </div>
+
+    <!-- Credentials Login Form -->
+    <div id="credentials-login-form" class="modal-form" style="display: none">
+      <input type="text" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <div class="login-buttons-container">
+        <button onclick="goBack()" class="modal-login-button-back">Back</button>
+        <button onclick="submitCredentialsLogin()" class="modal-login-button">
+          Submit Credentials
+        </button>
+      </div>
+    </div>
 
     <!-- Add the on-screen keyboard here -->
-    <div id="on-screen-keyboard">
+    <div id="on-screen-keyboard" class="keyboard">
       <div id="keyboard-row-0" class="keyboard-row"></div>
       <div id="keyboard-row-1" class="keyboard-row"></div>
       <div id="keyboard-row-2" class="keyboard-row"></div>
