@@ -6,6 +6,7 @@ function initializeHeader() {
   setupNavbarScroll();
   setupProfileButtonListeners();
   setupInputListeners();
+  displayUserProfile();
 }
 
 let isModalOpen = false;
@@ -29,11 +30,61 @@ function setupNavbarScroll() {
     lastScrollTop = scrollTop;
   });
 }
+// save user data in local storage
+function saveUserData(userData) {
+  try {
+    if (typeof userData !== "object" || userData === null) {
+      throw new Error("Invalid user data. It must be a non-null object.");
+    }
+    localStorage.setItem("userData", JSON.stringify(userData));
+    console.log("User data saved to localStorage successfully.");
+  } catch (error) {
+    console.error("Failed to save user data to local storage:", error);
+  }
+}
+/**
+ * Loads user data from local storage and returns it as an object.
+ */
+function loadUserData() {
+  let userData = null;
+
+  try {
+    const storedData = localStorage.getItem("userData");
+    if (storedData === null || storedData === "undefined") {
+      console.warn("User data not found in localStorage.");
+      return userData;
+    }
+    userData = JSON.parse(storedData);
+  } catch (error) {
+    console.error("Failed to load user data from local storage:", error);
+  }
+  if (userData && typeof userData === "object") {
+    if (!userData.id) {
+      console.warn("User data is missing the ID property.");
+      return null;
+    }
+  } else {
+    console.warn("User data is invalid or not an object.");
+    return null;
+  }
+  return userData;
+}
 
 function setupProfileButtonListeners() {
   document
     .getElementById("profile-button")
-    .addEventListener("click", openLoginModal);
+    .addEventListener("click", function () {
+      const userData = loadUserData();
+
+      if (userData && userData.id) {
+        // User is logged in; redirect to profile page
+        window.location.href = "../pages/profilePage.html"; // Replace with the actual profile page URL
+      } else {
+        // User is not logged in; open login modal
+        openLoginModal();
+        console.log("login modal clicked");
+      }
+    });
 
   // Close the modal when clicking outside of it
   window.addEventListener("click", (event) => {
@@ -458,7 +509,7 @@ function validatePinInput() {
   const pin = pinInput.value;
   console.log("pin", pin);
   // Check if the PIN is valid (6 digits and only numbers)
-  if (pin !== '' && !/^\d+$/.test(pin)) {
+  if (pin !== "" && !/^\d+$/.test(pin)) {
     errorMessageContainer.textContent =
       "Please enter a valid 6-digit PIN (numbers only).";
   } else {
@@ -474,7 +525,7 @@ function submitPinLogin() {
   errorMessageContainer.textContent = "";
 
   // Final check before submission
-  if (pin !== '' && !/^\d+$/.test(pin)) {
+  if (pin !== "" && !/^\d+$/.test(pin)) {
     errorMessageContainer.textContent =
       "Please enter a valid 6-digit PIN (numbers only).";
     return; // Exit the function if the PIN is invalid
@@ -490,8 +541,18 @@ function submitPinLogin() {
     body: data,
   })
     .then((response) => response.json())
-    .then((data) => console.log(JSON.stringify(data)))
-    .catch((error) => console.log(error));
+    .then((data) => {
+      // console.log(JSON.stringify(data));
+      saveUserData(data.user);
+      displayUserProfile();
+      closeLoginModal();
+    })
+    .catch((error) => {
+      console.log(error);
+      displayLoginError(
+        "Login Failed. Please enter a valid 6-digit PIN and try again."
+      );
+    });
 }
 
 // Function to submit Credentials login using fetch
@@ -510,6 +571,39 @@ function submitCredentialsLogin() {
     body: data,
   })
     .then((response) => response.json())
-    .then((data) => console.log(JSON.stringify(data)))
-    .catch((error) => console.log(error));
+    .then((data) => {
+      // console.log(JSON.stringify(data));
+      saveUserData(data.user);
+      displayUserProfile();
+      closeLoginModal();
+    })
+    .catch((error) => {
+      console.log(error);
+      displayLoginError(
+        "Login Failed. Please check your credentials and try again."
+      );
+    });
 }
+function displayLoginError(messsage) {
+  const errorMessageContainer = document.getElementById("pin-error-message");
+  errorMessageContainer.textContent = messsage;
+}
+function displayUserProfile() {
+  const profileButton = document.getElementById("profile-button");
+  const profileImage = document.getElementById("profile-image");
+  const userIcon = document.getElementById("user-icon");
+
+  // Retrieve user data from local storage
+  const userData = loadUserData();
+
+  if (userData && userData.artwork_url) {
+    // assuming 'profileImageUrl' holds the image URL
+    profileImage.src = userData.artwork_url;
+    profileImage.style.display = "block";
+    userIcon.style.display = "none";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  displayUserProfile();
+});

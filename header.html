@@ -10,7 +10,13 @@
         <i class="fa-solid fa-gear"></i>
       </div>
       <div class="menu-list-item" id="profile-button">
-        <i class="fa-solid fa-user"></i>
+        <img
+          id="profile-image"
+          src=""
+          alt="Profile"
+          style="display: none; width: 30px; height: 30px; border-radius: 50%"
+        />
+        <i id="user-icon" class="fa-solid fa-user" style="display: block"></i>
       </div>
     </div>
   </div>
@@ -69,7 +75,7 @@
         maxlength="6"
         required
       />
-      <div id="pin-error-message" style="color: red; font-size: 14px;"></div>
+      <div id="pin-error-message" style="color: red; font-size: 14px"></div>
       <div class="login-buttons-container">
         <button onclick="goBack()" class="modal-login-button-back">Back</button>
         <button onclick="submitPinLogin()" class="modal-login-button">

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="../css/profilePage.css" />
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="profile-container">
+      <h1>Profile Page</h1>
+      <!-- Add logout button -->
+      <button id="logout-button">Logout</button>
+    </div>
+
+    <script>
+      // Logout function
+      function logout() {
+        // Remove user data from localStorage
+        localStorage.removeItem("userData");
+        // Redirect to the index page
+        window.location.href = "../index.html"; // Adjust the path as necessary
+      }
+
+      // Attach event listener to the logout button
+      document.getElementById("logout-button").addEventListener("click", logout);
+    </script>
+  </body>
+</html>
