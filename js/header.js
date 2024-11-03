@@ -481,7 +481,8 @@ function scrollToElement(element) {
 document.getElementById("login-via-pin").addEventListener("click", () => {
   document.getElementById("login-options").style.display = "none";
   document.getElementById("pin-login-form").style.display = "block";
-  generateKeyboard(); // Generate and display the keyboard
+  document.getElementById("qr-login-section").style.display = "block";
+
 });
 
 document
@@ -518,6 +519,18 @@ function validatePinInput() {
 }
 // Add event listener for input changes
 pinInput.addEventListener("input", validatePinInput);
+
+function showPinForm() {
+  document.getElementById("qr-login-section").style.display = "none";
+  document.getElementById("pin-login-section").style.display = "block";
+  generateKeyboard(); // Generate and display the keyboard
+}
+
+function showQrCode() {
+  document.getElementById("pin-login-section").style.display = "none";
+  document.getElementById("qr-login-section").style.display = "block";
+  closeKeyboard(); // Close the keyboard if modal is closed
+}
 
 function submitPinLogin() {
   const pin = document.getElementById("pin").value;

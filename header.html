@@ -67,7 +67,7 @@
     </div>
 
     <!-- PIN Login Form -->
-    <div id="pin-login-form" class="modal-form" style="display: none">
+    <!-- <div id="pin-login-form" class="modal-form" style="display: none">
       <input
         type="text"
         id="pin"
@@ -81,6 +81,44 @@
         <button onclick="submitPinLogin()" class="modal-login-button">
           Submit PIN
         </button>
+      </div>
+    </div> -->
+
+    <div id="pin-login-form" class="modal-form" style="display: none">
+      <div id="qr-login-section" class="modal-form" style="display: none; width: 100%">
+        <img
+          src="/images/qr-code.png"
+          alt="QR Code"
+          style="width: 200px; height: 200px; margin: 0 auto"
+        />
+        <p>Scan this QR code with your mobile to login.</p>
+        <button onclick="showPinForm()" class="modal-login-button">Next</button>
+        <p>
+          Having trouble using the QR code? Go to
+          <a href="https://ayozat.com" target="_blank">ayozat.com</a> and click
+          'Connect TV'.
+        </p>
+        <button onclick="goBack()" class="modal-login-button-back">Back</button>
+      </div>
+
+      <!-- PIN Entry Section -->
+      <div id="pin-login-section" class="modal-form" style="display: none">
+        <input
+          type="text"
+          id="pin"
+          placeholder="Enter 6-digit PIN"
+          maxlength="6"
+          required
+        />
+        <div id="pin-error-message" style="color: red; font-size: 14px"></div>
+        <div class="login-buttons-container">
+          <button onclick="showQrCode()" class="modal-login-button-back">
+            Back
+          </button>
+          <button onclick="submitPinLogin()" class="modal-login-button">
+            Submit PIN
+          </button>
+        </div>
       </div>
     </div>
 
