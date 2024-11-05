@@ -482,7 +482,6 @@ document.getElementById("login-via-pin").addEventListener("click", () => {
   document.getElementById("login-options").style.display = "none";
   document.getElementById("pin-login-form").style.display = "block";
   document.getElementById("qr-login-section").style.display = "block";
-
 });
 
 document
@@ -516,6 +515,10 @@ function validatePinInput() {
   } else {
     errorMessageContainer.textContent = ""; // Clear error if valid
   }
+
+  if (pin.length == 6) {
+    submitPinLogin();
+  }
 }
 // Add event listener for input changes
 pinInput.addEventListener("input", validatePinInput);
@@ -533,6 +536,8 @@ function showQrCode() {
 }
 
 function submitPinLogin() {
+  document.getElementById("pin-login-section").style.display = "none";
+  document.getElementById("loading-screen").style.display = "block";
   const pin = document.getElementById("pin").value;
   // Clear previous error messages
   errorMessageContainer.textContent = "";
@@ -553,23 +558,34 @@ function submitPinLogin() {
     },
     body: data,
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((data) => {
-      // console.log(JSON.stringify(data));
       saveUserData(data.user);
+      console.log(data);
       displayUserProfile();
       closeLoginModal();
     })
     .catch((error) => {
       console.log(error);
+      // Display a generic error message for failed login attempts
       displayLoginError(
+        "pin",
         "Login Failed. Please enter a valid 6-digit PIN and try again."
       );
+      document.getElementById("pin-login-section").style.display = "block";
+      document.getElementById("loading-screen").style.display = "none";
     });
 }
 
 // Function to submit Credentials login using fetch
 function submitCredentialsLogin() {
+  document.getElementById("pin-login-section").style.display = "none";
+  document.getElementById("loading-screen").style.display = "block";
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
@@ -583,7 +599,12 @@ function submitCredentialsLogin() {
     },
     body: data,
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((data) => {
       // console.log(JSON.stringify(data));
       saveUserData(data.data.user);
@@ -593,13 +614,23 @@ function submitCredentialsLogin() {
     .catch((error) => {
       console.log(error);
       displayLoginError(
+        "credentials",
         "Login Failed. Please check your credentials and try again."
       );
+      document.getElementById("pin-login-section").style.display = "block";
+      document.getElementById("loading-screen").style.display = "none";
     });
 }
-function displayLoginError(messsage) {
-  const errorMessageContainer = document.getElementById("pin-error-message");
-  errorMessageContainer.textContent = messsage;
+function displayLoginError(type, messsage) {
+  if (type === "pin") {
+    const errorMessageContainer = document.getElementById("pin-error-message");
+    errorMessageContainer.textContent = messsage;
+  } else if (type === "credentials") {
+    const errorMessageContainer = document.getElementById(
+      "credentials-error-message"
+    );
+    errorMessageContainer.textContent = messsage;
+  }
 }
 function displayUserProfile() {
   const profileButton = document.getElementById("profile-button");

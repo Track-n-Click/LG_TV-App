@@ -355,11 +355,17 @@ body::-webkit-scrollbar {
 }
 
 .pin-box {
-  width: 20px;  /* Width of each box */
+  width: 20px; /* Width of each box */
   height: 20px; /* Height of each box */
   text-align: center;
   font-size: 24px;
   border: 1px solid var(--border-color-gray);
   border-radius: 5px;
   margin: 10px 10px !important;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
