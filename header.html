@@ -90,21 +90,12 @@
         class="modal-form"
         style="display: none; width: 100%"
       >
-        <img
-          src="/images/qr_code.png"
-          alt="QR Code"
-          style="
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-            border-radius: 10px;
-          "
-        />
-        <p>Scan this QR code with your mobile to login.</p>
+        <img src="/images/qr_code.png" alt="QR Code" />
+        <h4>Scan this QR code with your mobile to login.</h4>
         <button onclick="showPinForm()" class="modal-login-button">Next</button>
         <p>
           Having trouble using the QR code? Go to
-          <a href="https://ayozat.com" target="_blank">ayozat.com</a> and click
+          <a href="https://ayozat.com" target="_blank">ayozat.com</a> </br>and click
           'Connect TV'.
         </p>
         <button onclick="goBack()" class="modal-login-button-back">Back</button>
@@ -116,7 +107,7 @@
           type="text"
           id="pin"
           placeholder="Enter 6-digit PIN"
-          maxlength="6"
+          
           required
         />
         <div id="pin-error-message" class="error-message"></div>
@@ -138,11 +129,12 @@
       <input type="text" id="email" placeholder="Email" required />
       <input type="password" id="password" placeholder="Password" required />
       <div id="credentials-error-message" class="error-message"></div>
-      <div class="login-buttons-container">
-        <button onclick="goBack()" class="modal-login-button-back">Back</button>
+      <div class="buttons-container">
+        
         <button onclick="submitCredentialsLogin()" class="modal-login-button">
           Submit Credentials
         </button>
+        <button onclick="goBack()" class="modal-login-button-back">Back</button>
       </div>
     </div>
 

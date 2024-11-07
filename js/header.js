@@ -107,21 +107,21 @@ function handleEscapeKey(event) {
 
 async function openLoginModal() {
   document.getElementById("login-modal").style.display = "block";
-  document.body.classList.add("no-scroll"); // Disable background scroll
-  setupLoginModalNavigation(); // Setup navigation within the modal
-  setupInputListeners(); // Make sure input listeners are set
-  // generateKeyboard(); // Generate and display the keyboard
-  isModalOpen = true; // Set modal state to open
-  focusInput(0); // Focus the first input after the keyboard loads
+  document.body.classList.add("no-scroll");
+  setupLoginModalNavigation();
+  setupInputListeners();
+  isModalOpen = true;
+  focusInput(0);
 }
 
 function closeLoginModal() {
   document.getElementById("login-modal").style.display = "none";
-  document.body.classList.remove("no-scroll"); // Enable background scroll
-  document.removeEventListener("keydown", handleEscapeKey); // Remove Escape key listener when modal closes
-  removeModalNavigation(); // Remove navigation keydown listeners
-  isModalOpen = false; // Set modal state to closed
-  closeKeyboard(); // Close the keyboard if modal is closed
+  document.body.classList.remove("no-scroll");
+  document.removeEventListener("keydown", handleEscapeKey);
+  removeModalNavigation();
+  isModalOpen = false;
+  closeKeyboard();
+  adjustModalForKeyboard(false);
 }
 
 // Focus on a specific input in the modal
@@ -208,12 +208,12 @@ function focusElement(index) {
 
 // Handle actions when pressing the Enter key within the modal
 function handleEnterKeyForModal(element) {
-  if (isKeyboardVisible) return; // Disable form submission when keyboard is active
+  if (isKeyboardVisible) return;
 
   if (element.id === "email" || element.id === "password") {
-    element.focus(); // Focus the current input field
+    element.focus();
   } else if (element.classList.contains("modal-login-button")) {
-    verifyLoginAndRedirect(); // Trigger login verification
+    submitCredentialsLogin();
   }
 }
 
@@ -328,7 +328,8 @@ function generateKeyboard() {
   keyboardContainer.classList.add("show");
 
   isKeyboardVisible = true;
-  highlightKey(); // Highlight the first key
+  adjustModalForKeyboard(true);
+  highlightKey();
 }
 
 function highlightKey() {
@@ -388,8 +389,7 @@ function closeKeyboard() {
   if (keyboard) {
     keyboard.classList.remove("show");
     isKeyboardVisible = false;
-    document.removeEventListener("keydown", navigateKeyboard); // Disable arrow key navigation for the keyboard
-    // Reset modal top margin when keyboard closes
+    document.removeEventListener("keydown", navigateKeyboard);
     adjustModalForKeyboard(false);
   }
 }
@@ -397,7 +397,7 @@ function closeKeyboard() {
 function adjustModalForKeyboard(isOpen) {
   const modalContent = document.querySelector(".modal-content");
   if (modalContent) {
-    modalContent.style.marginTop = isOpen ? "10px" : "150px";
+    modalContent.style.marginTop = isOpen ? "50px" : "150px";
   }
 }
 
@@ -489,7 +489,7 @@ document
   .addEventListener("click", () => {
     document.getElementById("login-options").style.display = "none";
     document.getElementById("credentials-login-form").style.display = "block";
-    generateKeyboard(); // Generate and display the keyboard
+    generateKeyboard();
   });
 
 // Function to go back to the login options
@@ -526,7 +526,7 @@ pinInput.addEventListener("input", validatePinInput);
 function showPinForm() {
   document.getElementById("qr-login-section").style.display = "none";
   document.getElementById("pin-login-section").style.display = "block";
-  generateKeyboard(); // Generate and display the keyboard
+  generateKeyboard();
 }
 
 function showQrCode() {
