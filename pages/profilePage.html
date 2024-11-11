@@ -9,11 +9,15 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <div class="profile-page">
-      <div class="profile-container">
+      <div class="profile-container" id="profile-container">
         <div class="profile-header">
           <div class="cover-photo">
             <div class="overlay-cover"></div>
@@ -46,17 +50,15 @@
             </div>
           </div>
         </div>
-  
-        
-  
-        <div class="button-container">
-          <a class="home-icon" href="/index.html" ></button>
+
+        <div class="button-container" id="button-container">
+          <!-- <a class="home-icon" href="/index.html" ></button>
             <i class="fa fa-home"></i>
-          </a>
+          </a> -->
           <button id="logout-button" class="logout-btn">Logout</button>
         </div>
       </div>
-  
+
       <div id="video-grid-container" class="media-content">
         <!-- Movie section -->
         <div id="movies" class="media-section">
@@ -73,7 +75,7 @@
             <i class="fa-solid fa-chevron-right"></i>
           </div>
         </div>
-  
+
         <!-- TV Series section -->
         <div id="tv" class="media-section">
           <h2>Favorite Series</h2>
@@ -85,17 +87,32 @@
               <!-- TV Series items will be injected here by media.js -->
             </div>
           </div>
-  
+
           <div id="right-arrow-tv" class="nav-arrow right-arrow">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <div id="latest-songs" class="music-section">
+          <h2>Favorite Songs</h2>
+          <div id="left-arrow-music" class="nav-arrow music-left-arrow">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <div class="music-row-container">
+            <div id="songs-row" class="music-row">
+              <!-- Movie items will be injected here by media.js -->
+            </div>
+          </div>
+          <div id="right-arrow-music" class="nav-arrow music-right-arrow">
             <i class="fa-solid fa-chevron-right"></i>
           </div>
         </div>
       </div>
     </div>
 
-
-
     <script type="module" src="../js/profileService.js"></script>
+    <!-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
     <script type="module" src="../js/profilePage.js"></script>
+    <!-- <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script> -->
   </body>
 </html>
