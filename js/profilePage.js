@@ -1,72 +1,89 @@
-import { fetchMovies, fetchTVSeries } from "./mediaService.js";
+import { fetchProfileData } from "./profileService.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+// profilePage.js
+document.addEventListener("DOMContentLoaded", async () => {
+  // Display placeholders
   displayPlaceholders("movie-row");
   displayPlaceholders("tv-row");
 
-  setTimeout(async () => {
+  // Get user data from localStorage
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userID = userData?.id;
+
+  if (userID) {
     try {
-      const movies = await fetchMovies();
+      // Fetch user profile data once
+      const userProfileData = await fetchProfileData(userID);
+      console.log("userProfileData", userProfileData);
+
+      // Bind data and replace placeholders
+      bindUserProfileData(userProfileData);
+
+      const movies = userProfileData?.favorite_movies;
       replacePlaceholdersWithData("movie-row", movies, "movies");
 
-      const tvSeries = await fetchTVSeries();
+      const tvSeries = userProfileData?.favorite_tv_series;
       replacePlaceholdersWithData("tv-row", tvSeries, "series");
 
+      // Initialize navigation only after data is loaded
       initializeMediaNavigation();
     } catch (error) {
       console.error("Failed to load media data:", error);
     }
-  }, 1000);
+  } else {
+    // Redirect if no user data
+    window.location.href = "../index.html";
+  }
+
+  // Logout functionality
+  document
+    .getElementById("logout-button")
+    .addEventListener("click", function () {
+      localStorage.removeItem("userData");
+      window.location.href = "../index.html";
+    });
 });
 
-// function initializeSwiperHero() {
-//   var swiper = new Swiper(".swiper-container-hero", {
-//     effect: "coverflow",
-//     grabCursor: false,
-//     centeredSlides: true,
-//     slidesPerView: 2,
-//     coverflowEffect: {
-//       rotate: 10,
-//       stretch: 10,
-//       depth: 110,
-//       modifier: 5,
-//       slideShadows: true,
-//     },
-//     loop: true,
-//     pagination: {
-//       el: ".swiper-pagination",
-//     },
-//     autoplay: {
-//       delay: 2000,
-//       disableOnInteraction: true,
-//     },
-//   });
-// }
+// Function to bind user profile data to the UI
+function bindUserProfileData(userProfileData) {
+  // Bind user data to the UI
+  document.getElementById("cover-photo").src =
+    userProfileData.artwork_url || "default-avatar.png";
+  document.getElementById("profile-image").src =
+    userProfileData.artwork_url || "default-avatar.png";
+  document.getElementById("profile-name").textContent = userProfileData.name;
+  document.getElementById("profile-bio").textContent =
+    userProfileData.bio.replace(/"/g, "");
+  document.getElementById("follower-count").textContent = `${
+    userProfileData.follower_count
+  } Follower${userProfileData.follower_count !== 1 ? "s" : ""}`;
+  document.getElementById(
+    "following-count"
+  ).textContent = `${userProfileData.following_count} Following`;
 
-// function createSliders(sliders) {
-//   const sliderList = document.querySelector(".swiper-wrapper");
+  // Set up social links
+  const instagramLink = document.getElementById("instagram-link");
+  const facebookLink = document.getElementById("facebook-link");
+  const websiteLink = document.getElementById("website-link");
 
-//   sliders.forEach((slide) => {
-//     const slideItem = document.createElement("div");
-//     slideItem.className = "swiper-slide";
+  if (userProfileData.instagram_url) {
+    instagramLink.href = `https://instagram.com/${userProfileData.instagram_url}`;
+  } else {
+    instagramLink.style.display = "none";
+  }
 
-//     // Slice the description to a desired length (e.g., 100 characters)
-//     const truncatedDescription =
-//       slide?.description?.length > 300
-//         ? slide?.description.slice(0, 300) + "..."
-//         : slide?.description;
+  if (userProfileData.facebook_url) {
+    facebookLink.href = `https://facebook.com/${userProfileData.facebook_url}`;
+  } else {
+    facebookLink.style.display = "none";
+  }
 
-//     slideItem.innerHTML = `
-//         <img class="imgCarousal" src="${slide.poster_image}" alt="${slide.title}"/>
-//         <div class="slider-info">
-//         <h1 class="slider-title">${slide.title}</h1>
-//         <p class="slider-description">${truncatedDescription}</p>
-//         <button class="slider-button">Watch Now</button></div>
-//       `;
-
-//     sliderList.appendChild(slideItem);
-//   });
-// }
+  if (userProfileData.website_url) {
+    websiteLink.href = `https://${userProfileData.website_url}`;
+  } else {
+    websiteLink.style.display = "none";
+  }
+}
 
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
@@ -104,7 +121,7 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
     tile.setAttribute("data-type", type);
     tile.setAttribute("data-title", item.title || item.name);
     tile.innerHTML = `
-      <img src="${item.thumbnail}" alt="${item.title}">
+      <img src="${item.thumbnail_url}" alt="${item.title}">
       <div class="title">${item.title || item.name}</div>
     `;
     tile.addEventListener("click", () => {
@@ -119,7 +136,7 @@ function initializeMediaNavigation() {
   let selectedItemIndex = 0;
   const mediaSections = [
     {
-      id: "hero-container",
+      id: "profile-container",
       leftArrow: null,
       rightArrow: null,
     },
@@ -134,6 +151,8 @@ function initializeMediaNavigation() {
       rightArrow: "right-arrow-tv",
     },
   ];
+
+  // console.log(mediaSections);
 
   if (mediaSections.length > 0) {
     const firstRow = document.getElementById(
@@ -187,7 +206,7 @@ function initializeMediaNavigation() {
       mediaSections[selectedSectionIndex].id
     );
 
-    if (mediaSections[selectedSectionIndex].id === "hero-container") {
+    if (mediaSections[selectedSectionIndex].id === "profile-container") {
       scrollToTop(); // Scroll to the top for the hero section
     } else {
       const newTiles = newRow.querySelectorAll(".video-tile");
@@ -274,7 +293,6 @@ function initializeMediaNavigation() {
   }
 
   function scrollToTop() {
-    // Scroll the entire page up to the top for hero section
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }

@@ -58,7 +58,7 @@ body {
 
 #hero h2 {
   color: white;
-  font-size: 40px;
+  font-size: 45px;
   text-align: center;
   position: relative;
   z-index: 1; /* Ensure the text is above the overlay */
@@ -67,7 +67,7 @@ body {
 
 #hero p {
   color: rgb(213, 213, 213);
-  font-size: 15px;
+  font-size: 18px;
   text-align: center;
   position: relative;
   z-index: 1; /* Ensure the text is above the overlay */
@@ -83,11 +83,10 @@ body {
   margin-top: 120px;
   color: white;
   position: relative;
-  z-index: 1; /* Ensure the text is above the overlay */
+  z-index: 1;
 }
 
 #grid2-container a {
-  /* color: white; */
   text-decoration: none !important;
 }
 
@@ -106,7 +105,7 @@ body {
 .game-title {
   text-align: center !important;
   padding: 15px 0;
-  font-size: 18px;
+  font-size: 20px;
   background-color: #555;
 }
 
@@ -123,11 +122,10 @@ body {
 }
 
 h2 {
-  font-size: 15pt;
+  font-size: 30pt;
   color: #ffffff;
-  /* text-align: left; */
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .video-row {
@@ -153,6 +151,79 @@ h2 {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
   height: 270px;
   text-align: center;
+  position: relative; /* Needed for overlay positioning */
+}
+
+.video-tile.selected {
+  transform: scale(1.2);
+  border: 2px solid #b4b4b45a;
+  z-index: 10;
+  transition: all 1s ease;
+}
+
+.video-tile img {
+  width: 100%;
+  height: 180px;
+  object-fit: fill;
+  border-radius: 10px;
+  overflow: hidden;
+  opacity: 0.9;
+  transition: opacity 2s ease;
+}
+
+.video-tile.selected img {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.video-tile .title {
+  font-size: 15pt;
+  font-weight: 600;
+  color: #ffffff98;
+  margin-top: 50px;
+  transition: color 2s ease, transform 4s ease;
+}
+
+.video-tile.selected .title {
+  color: #ff0051;
+}
+
+/* Overlay styles */
+.video-tile .overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.374), black);
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease-in-out;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.video-tile.selected .overlay {
+  display: flex;
+}
+
+/* Play icon */
+.play-icon {
+  width: 48px;
+  height: 48px;
+  margin-top: -100px !important;
+  fill: var(--text-white);
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  opacity: 0 !important;
+  transition: all 1s ease-in-out !important;
+}
+
+.video-tile.selected .play-icon {
+  opacity: 1 !important;
+  margin-top: 0 !important;
 }
 
 @media (max-width: 1600px) {
@@ -177,39 +248,6 @@ h2 {
   .video-row {
     grid-template-columns: repeat(2, minmax(80px, 1fr));
   }
-}
-
-.video-tile.selected {
-  transform: scale(1.1);
-  border: 2px solid #b4b4b45a;
-  z-index: 10;
-}
-
-.video-tile img {
-  width: 100%;
-  height: 180px;
-  object-fit: fill;
-  border-radius: 10px;
-  overflow: hidden;
-  opacity: 0.9;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.video-tile.selected img {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-.video-tile .title {
-  font-size: 10pt;
-  font-weight: bold;
-  color: #ffffff98;
-  margin-top: 20px;
-  transition: color 0.4s ease, transform 0.4s ease;
-}
-
-.video-tile.selected .title {
-  color: #ff0051;
 }
 
 .placeholder-tile {
