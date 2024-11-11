@@ -333,8 +333,17 @@ function replacePlaceholdersWithDataVideo(rowId, mediaItems, type) {
     tile.setAttribute("data-type", type);
     tile.setAttribute("data-title", item.title || item.name);
     tile.innerHTML = `
+      <div class="overlay">
+        <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
       <img src="${item.thumbnail_url}" alt="${item.title}">
-      <div class="title">${item.title || item.name}</div>
+      <div class="title">${
+        (item.title || item.name).length > 20
+          ? (item.title || item.name).substring(0, 20) + "..."
+          : item.title || item.name
+      }</div>
     `;
     tile.addEventListener("click", () => {
       select();
@@ -364,8 +373,13 @@ function replacePlaceholdersWithMusicData(rowId, mediaItems, type) {
       tile.setAttribute("data-artist", item.artists[0].name);
       tile.setAttribute("data-artwork", item.artwork_url);
       tile.innerHTML = `
+      
                 <img src="${item.artwork_url}" alt="${item.title}">
-                <div class="title">${item.title}</div>
+                <div class="title">${
+                  (item.title || item.name).length > 25
+                    ? (item.title || item.name).substring(0, 25) + "..."
+                    : item.title || item.name
+                }</div>
             `;
       row.appendChild(tile);
     });

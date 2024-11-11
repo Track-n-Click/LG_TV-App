@@ -104,8 +104,17 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
     tile.setAttribute("data-type", type);
     tile.setAttribute("data-title", item.title || item.name);
     tile.innerHTML = `
+      <div class="overlay">
+        <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
       <img src="${item.thumbnail}" alt="${item.title}">
-      <div class="title">${item.title || item.name}</div>
+      <div class="title">${
+        (item.title || item.name).length > 25
+          ? (item.title || item.name).substring(0, 25) + "..."
+          : item.title || item.name
+      }</div>
     `;
     tile.addEventListener("click", () => {
       playSelectedVideo();
