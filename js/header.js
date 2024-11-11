@@ -172,11 +172,37 @@ function setupLoginModalNavigation() {
         }
         focusElement(currentIndex);
         event.preventDefault(); // Prevent default scrolling
-      } else if (event.key === "Enter") {
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        handlePinCredentials(event)
+      }else if (event.key === "Enter") {        
         handleEnterKeyForModal(focusableElements[currentIndex]);
         event.preventDefault(); // Prevent default form submission
       }
     }
+  }
+
+  let index = 0; 
+  const loginMethods = [
+    document.getElementById("login-via-pin"),
+    document.getElementById("login-via-credentials")
+  ];
+
+  function handlePinCredentials(event) {
+    loginMethods[index]?.classList.remove("modal-login-option-selected");
+
+    if (event.key === "ArrowLeft" && index > 0) {
+      index -= 1;
+      console.log("Arrow left", index);
+    } else if (event.key === "ArrowRight" && index < loginMethods.length - 1) {
+      index += 1;
+      console.log("Arrow right", index);
+    }
+
+    const selectedComponent = loginMethods[index];
+    selectedComponent.classList.add("modal-login-option-selected");
+
+    focusElement(index); 
+    event.preventDefault(); 
   }
 
   // Attach the listener
