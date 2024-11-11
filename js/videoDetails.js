@@ -137,10 +137,20 @@ function createSliders(details) {
       }" alt="${details.title}"/>
       <div class="slider-info">
       <h1 class="slider-title">${details.title}</h1>
-      <p class="slider-description">${details.description}</p>
+      <p class="slider-description">${
+        details.description.length > 400
+          ? details.description.substring(0, 400) + "..."
+          : details.description
+      }</p>
       <button class="slider-button" id="slider-button" data-url="${
         details.url || details?.seasons[0]?.episodes[0].stream_key
-      }" data-type="${type}">Watch Now</button></div>
+      }" data-type="${type}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+      Watch Now</button>
+      </div>
+      
     `;
 
   sliderList.appendChild(slideItem);
@@ -181,8 +191,17 @@ function replacePlaceholdersWithData(rowId, mediaItems) {
     tile.setAttribute("data-url", item.stream_key);
     tile.setAttribute("data-type", "series");
     tile.innerHTML = `
+    <div class="overlay">
+        <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
       <img src="${item.thumbnail}" alt="${item.title}">
-      <div class="title">${item.title || item.name}</div>
+      <div class="title">${
+        (item.title || item.name).length > 25
+          ? (item.title || item.name).substring(0, 25) + "..."
+          : item.title || item.name
+      }</div>
     `;
     tile.addEventListener("click", () => {
       window.location.href = `player.html?title=${encodeURIComponent(

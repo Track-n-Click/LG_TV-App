@@ -6,6 +6,7 @@ function initializeHeader() {
   setupNavbarScroll();
   setupProfileButtonListeners();
   setupInputListeners();
+  displayUserProfile();
 }
 
 let isModalOpen = false;
@@ -29,11 +30,61 @@ function setupNavbarScroll() {
     lastScrollTop = scrollTop;
   });
 }
+// save user data in local storage
+function saveUserData(userData) {
+  try {
+    if (typeof userData !== "object" || userData === null) {
+      throw new Error("Invalid user data. It must be a non-null object.");
+    }
+    localStorage.setItem("userData", JSON.stringify(userData));
+    console.log("User data saved to localStorage successfully.");
+  } catch (error) {
+    console.error("Failed to save user data to local storage:", error);
+  }
+}
+/**
+ * Loads user data from local storage and returns it as an object.
+ */
+function loadUserData() {
+  let userData = null;
+
+  try {
+    const storedData = localStorage.getItem("userData");
+    if (storedData === null || storedData === "undefined") {
+      console.warn("User data not found in localStorage.");
+      return userData;
+    }
+    userData = JSON.parse(storedData);
+  } catch (error) {
+    console.error("Failed to load user data from local storage:", error);
+  }
+  if (userData && typeof userData === "object") {
+    if (!userData.id) {
+      console.warn("User data is missing the ID property.");
+      return null;
+    }
+  } else {
+    console.warn("User data is invalid or not an object.");
+    return null;
+  }
+  return userData;
+}
 
 function setupProfileButtonListeners() {
   document
     .getElementById("profile-button")
-    .addEventListener("click", openLoginModal);
+    .addEventListener("click", function () {
+      const userData = loadUserData();
+
+      if (userData && userData.id) {
+        // User is logged in; redirect to profile page
+        window.location.href = "../pages/profilePage.html"; // Replace with the actual profile page URL
+      } else {
+        // User is not logged in; open login modal
+        openLoginModal();
+        console.log("login modal clicked");
+      }
+    });
 
   // Close the modal when clicking outside of it
   window.addEventListener("click", (event) => {
@@ -56,21 +107,21 @@ function handleEscapeKey(event) {
 
 async function openLoginModal() {
   document.getElementById("login-modal").style.display = "block";
-  document.body.classList.add("no-scroll"); // Disable background scroll
-  setupLoginModalNavigation(); // Setup navigation within the modal
-  setupInputListeners(); // Make sure input listeners are set
-  generateKeyboard(); // Generate and display the keyboard
-  isModalOpen = true; // Set modal state to open
-  focusInput(0); // Focus the first input after the keyboard loads
+  document.body.classList.add("no-scroll");
+  setupLoginModalNavigation();
+  setupInputListeners();
+  isModalOpen = true;
+  focusInput(0);
 }
 
 function closeLoginModal() {
   document.getElementById("login-modal").style.display = "none";
-  document.body.classList.remove("no-scroll"); // Enable background scroll
-  document.removeEventListener("keydown", handleEscapeKey); // Remove Escape key listener when modal closes
-  removeModalNavigation(); // Remove navigation keydown listeners
-  isModalOpen = false; // Set modal state to closed
-  closeKeyboard(); // Close the keyboard if modal is closed
+  document.body.classList.remove("no-scroll");
+  document.removeEventListener("keydown", handleEscapeKey);
+  removeModalNavigation();
+  isModalOpen = false;
+  closeKeyboard();
+  adjustModalForKeyboard(false);
 }
 
 // Focus on a specific input in the modal
@@ -157,12 +208,12 @@ function focusElement(index) {
 
 // Handle actions when pressing the Enter key within the modal
 function handleEnterKeyForModal(element) {
-  if (isKeyboardVisible) return; // Disable form submission when keyboard is active
+  if (isKeyboardVisible) return;
 
   if (element.id === "email" || element.id === "password") {
-    element.focus(); // Focus the current input field
+    element.focus();
   } else if (element.classList.contains("modal-login-button")) {
-    verifyLoginAndRedirect(); // Trigger login verification
+    submitCredentialsLogin();
   }
 }
 
@@ -178,7 +229,6 @@ function verifyLoginAndRedirect() {
     alert("Invalid email or password. Please try again.");
   }
 }
-
 
 // ---- On-screen Keyboard Code ---- //
 const keyboardLayout = [
@@ -246,7 +296,6 @@ const keyboardLayout = [
 
 function generateKeyboard() {
   const keyboardContainer = document.getElementById("on-screen-keyboard");
-
   keyboardContainer.innerHTML = ""; // Clear existing keyboard
 
   keyboardLayout.forEach((row, rowIndex) => {
@@ -276,9 +325,11 @@ function generateKeyboard() {
 
     keyboardContainer.appendChild(rowDiv);
   });
+  keyboardContainer.classList.add("show");
 
   isKeyboardVisible = true;
-  highlightKey(); // Highlight the first key
+  adjustModalForKeyboard(true);
+  highlightKey();
 }
 
 function highlightKey() {
@@ -321,7 +372,7 @@ function pressKey() {
 function openKeyboard(inputIndex) {
   const keyboard = document.getElementById("on-screen-keyboard");
   if (!isKeyboardVisible && keyboard) {
-    keyboard.style.display = "flex"; // Display the keyboard
+    keyboard.classList.remove("show");
     isKeyboardVisible = true;
     activeInputIndex = inputIndex; // Track the input field currently being focused
     selectedRow = 0;
@@ -336,10 +387,9 @@ function openKeyboard(inputIndex) {
 function closeKeyboard() {
   const keyboard = document.getElementById("on-screen-keyboard");
   if (keyboard) {
-    keyboard.style.display = "none";
+    keyboard.classList.remove("show");
     isKeyboardVisible = false;
-    document.removeEventListener("keydown", navigateKeyboard); // Disable arrow key navigation for the keyboard
-    // Reset modal top margin when keyboard closes
+    document.removeEventListener("keydown", navigateKeyboard);
     adjustModalForKeyboard(false);
   }
 }
@@ -347,7 +397,7 @@ function closeKeyboard() {
 function adjustModalForKeyboard(isOpen) {
   const modalContent = document.querySelector(".modal-content");
   if (modalContent) {
-    modalContent.style.marginTop = isOpen ? "10px" : "150px";
+    modalContent.style.marginTop = isOpen ? "50px" : "150px";
   }
 }
 
@@ -425,3 +475,179 @@ function scrollToElement(element) {
     inline: "center",
   });
 }
+
+// calling login
+// Show the PIN or Credentials login form based on the selection
+document.getElementById("login-via-pin").addEventListener("click", () => {
+  document.getElementById("login-options").style.display = "none";
+  document.getElementById("pin-login-form").style.display = "block";
+  document.getElementById("qr-login-section").style.display = "block";
+});
+
+document
+  .getElementById("login-via-credentials")
+  .addEventListener("click", () => {
+    document.getElementById("login-options").style.display = "none";
+    document.getElementById("credentials-login-form").style.display = "block";
+    generateKeyboard();
+  });
+
+// Function to go back to the login options
+function goBack() {
+  document.getElementById("pin-login-form").style.display = "none";
+  document.getElementById("credentials-login-form").style.display = "none";
+  document.getElementById("login-options").style.display = "flex";
+  closeKeyboard(); // Close the keyboard if modal is closed
+}
+
+// Function to submit PIN login using fetch
+const pinInput = document.getElementById("pin");
+const errorMessageContainer = document.getElementById("pin-error-message");
+
+// Function to validate PIN input
+function validatePinInput() {
+  const pin = pinInput.value;
+  console.log("pin", pin);
+  // Check if the PIN is valid (6 digits and only numbers)
+  if (pin !== "" && !/^\d+$/.test(pin)) {
+    errorMessageContainer.textContent =
+      "Please enter a valid 6-digit PIN (numbers only).";
+  } else {
+    errorMessageContainer.textContent = ""; // Clear error if valid
+  }
+
+  if (pin.length == 6) {
+    submitPinLogin();
+  }
+}
+// Add event listener for input changes
+pinInput.addEventListener("input", validatePinInput);
+
+function showPinForm() {
+  document.getElementById("qr-login-section").style.display = "none";
+  document.getElementById("pin-login-section").style.display = "block";
+  generateKeyboard();
+}
+
+function showQrCode() {
+  document.getElementById("pin-login-section").style.display = "none";
+  document.getElementById("qr-login-section").style.display = "block";
+  closeKeyboard(); // Close the keyboard if modal is closed
+}
+
+function submitPinLogin() {
+  document.getElementById("pin-login-section").style.display = "none";
+  document.getElementById("loading-screen").style.display = "block";
+  const pin = document.getElementById("pin").value;
+  // Clear previous error messages
+  errorMessageContainer.textContent = "";
+
+  // Final check before submission
+  if (pin !== "" && !/^\d+$/.test(pin)) {
+    errorMessageContainer.textContent =
+      "Please enter a valid 6-digit PIN (numbers only).";
+    return; // Exit the function if the PIN is invalid
+  }
+  let data = JSON.stringify({ pin: pin });
+
+  fetch("https://dapi.ayozat.co.uk/api/auth/verify-pin", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: data,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      saveUserData(data.user);
+      console.log(data);
+      displayUserProfile();
+      closeLoginModal();
+    })
+    .catch((error) => {
+      console.log(error);
+      // Display a generic error message for failed login attempts
+      displayLoginError(
+        "pin",
+        "Login Failed. Please enter a valid 6-digit PIN and try again."
+      );
+      document.getElementById("pin-login-section").style.display = "block";
+      document.getElementById("loading-screen").style.display = "none";
+    });
+}
+
+// Function to submit Credentials login using fetch
+function submitCredentialsLogin() {
+  document.getElementById("pin-login-section").style.display = "none";
+  document.getElementById("loading-screen").style.display = "block";
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  let data = JSON.stringify({ email: email, password: password });
+
+  fetch("https://dapi.ayozat.co.uk/api/auth/login", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: data,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(JSON.stringify(data));
+      saveUserData(data.data.user);
+      displayUserProfile();
+      closeLoginModal();
+    })
+    .catch((error) => {
+      console.log(error);
+      displayLoginError(
+        "credentials",
+        "Login Failed. Please check your credentials and try again."
+      );
+      document.getElementById("pin-login-section").style.display = "block";
+      document.getElementById("loading-screen").style.display = "none";
+    });
+}
+function displayLoginError(type, messsage) {
+  if (type === "pin") {
+    const errorMessageContainer = document.getElementById("pin-error-message");
+    errorMessageContainer.textContent = messsage;
+  } else if (type === "credentials") {
+    const errorMessageContainer = document.getElementById(
+      "credentials-error-message"
+    );
+    errorMessageContainer.textContent = messsage;
+  }
+}
+function displayUserProfile() {
+  const profileButton = document.getElementById("profile-button");
+  const profileImage = document.getElementById("profile-image");
+  const userIcon = document.getElementById("user-icon");
+
+  // Retrieve user data from local storage
+  const userData = loadUserData();
+
+  if (userData && userData.artwork_url) {
+    // assuming 'profileImageUrl' holds the image URL
+    profileImage.src = userData.artwork_url;
+    profileImage.style.display = "block";
+    userIcon.style.display = "none";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  displayUserProfile();
+});

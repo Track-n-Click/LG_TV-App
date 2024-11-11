@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="../css/profilePage.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="profile-page">
+      <div class="profile-container" id="profile-container">
+        <div class="profile-header">
+          <div class="cover-photo">
+            <div class="overlay-cover"></div>
+            <img src="" alt="Cover Photo" id="cover-photo" />
+          </div>
+          <div class="profile-info">
+            <div class="profile Details">
+              <div class="profile-avatar">
+                <img id="profile-image" src="" alt="Profile Picture" />
+              </div>
+              <div class="social-links">
+                <a id="instagram-link" href="#" target="_blank"
+                  ><i class="fab fa-instagram"></i
+                ></a>
+                <a id="facebook-link" href="#" target="_blank"
+                  ><i class="fab fa-facebook"></i
+                ></a>
+                <a id="website-link" href="#" target="_blank"
+                  ><i class="fas fa-link"></i
+                ></a>
+              </div>
+            </div>
+            <div class="profile-details">
+              <h1 id="profile-name"></h1>
+              <p id="profile-bio" class="bio"></p>
+              <div class="stats">
+                <span id="follower-count">1 Follower</span> |
+                <span id="following-count">0 Following</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-container" id="button-container">
+          <!-- <a class="home-icon" href="/index.html" ></button>
+            <i class="fa fa-home"></i>
+          </a> -->
+          <button id="logout-button" class="logout-btn">Logout</button>
+        </div>
+      </div>
+
+      <div id="video-grid-container" class="media-content">
+        <!-- Movie section -->
+        <div id="movies" class="media-section">
+          <h2>Favorite Movies</h2>
+          <div id="left-arrow-movies" class="nav-arrow left-arrow">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <div class="video-row-container">
+            <div id="movie-row" class="video-row">
+              <!-- Movie items will be injected here by media.js -->
+            </div>
+          </div>
+          <div id="right-arrow-movies" class="nav-arrow right-arrow">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <!-- TV Series section -->
+        <div id="tv" class="media-section">
+          <h2>Favorite Series</h2>
+          <div id="left-arrow-tv" class="nav-arrow left-arrow">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <div class="video-row-container">
+            <div id="tv-row" class="video-row">
+              <!-- TV Series items will be injected here by media.js -->
+            </div>
+          </div>
+
+          <div id="right-arrow-tv" class="nav-arrow right-arrow">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <div id="latest-songs" class="music-section">
+          <h2>Favorite Songs</h2>
+          <div id="left-arrow-music" class="nav-arrow music-left-arrow">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <div class="music-row-container">
+            <div id="songs-row" class="music-row">
+              <!-- Movie items will be injected here by media.js -->
+            </div>
+          </div>
+          <div id="right-arrow-music" class="nav-arrow music-right-arrow">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../js/profileService.js"></script>
+    <!-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
+    <script type="module" src="../js/profilePage.js"></script>
+    <!-- <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script> -->
+  </body>
+</html>
