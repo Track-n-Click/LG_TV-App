@@ -373,7 +373,11 @@ function replacePlaceholdersWithMusicData(rowId, mediaItems, type) {
       tile.setAttribute("data-artist", item.artists[0].name);
       tile.setAttribute("data-artwork", item.artwork_url);
       tile.innerHTML = `
-      
+              <div class="overlay">
+                <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
                 <img src="${item.artwork_url}" alt="${item.title}">
                 <div class="title">${
                   (item.title || item.name).length > 25
