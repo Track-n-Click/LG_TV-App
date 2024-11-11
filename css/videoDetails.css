@@ -425,24 +425,28 @@ i {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: auto;
   gap: 8px; /* Space between icon and text */
-
   background-color: var(--primary-color);
   border: none;
-  color: white;
-  padding: 10px 20px;
+  color: var(--text-white);
+  padding: 8px 8px;
   font-size: 18px;
   text-align: center;
   cursor: pointer;
   border-radius: 50px;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease,
     border 0.3s ease;
-  margin-top: 10px;
 }
 
 .slider-button svg {
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
   margin-right: 5px !important;
+  color: var(--primary-color);
+  background-color: var(--text-white);
+  border-radius: 50%;
 }
 
 .slider-button.selected {
@@ -451,7 +455,7 @@ i {
 }
 
 .button-text {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1;
 }
 
