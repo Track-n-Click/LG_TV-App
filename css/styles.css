@@ -181,11 +181,11 @@ body.no-scroll {
 
 .grid-item.selected .title {
   color: #7b7b7b;
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .grid-item .title {
-  font-size: 12pt; /* Increased font size for larger tiles */
+  font-size: 18pt; /* Increased font size for larger tiles */
   font-weight: 500;
   margin-top: 10px;
   color: #ffffff;
@@ -306,14 +306,14 @@ body.no-scroll {
 }
 
 .slider-info h1 {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 600;
   margin-bottom: 5px;
 }
 
 .slider-info p {
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 15px;
+  font-weight: 300;
   margin-bottom: 10px;
 }
 
@@ -322,19 +322,35 @@ body.no-scroll {
 }
 
 .slider-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  gap: 8px; /* Space between icon and text */
   background-color: var(--primary-color);
   border: none;
-  color: white;
-  padding: 8px 20px;
+  color: var(--text-white);
+  padding: 8px; /* Adjust as needed */
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 12px;
-  margin: 4px 2px;
   cursor: pointer;
   border-radius: 50px;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease,
     border 0.3s ease;
+}
+
+.slider-button svg {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  margin-right: 5px !important;
+  color: var(--primary-color);
+  background-color: var(--text-white);
+  border-radius: 50%;
+}
+
+.slider-button div h3 {
+  font-size: 1.2em; /* Scale up the text size */
+  padding-right: 20px; /* Add left padding */
 }
 
 .slider-button.selected {

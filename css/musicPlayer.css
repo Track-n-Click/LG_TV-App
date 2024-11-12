@@ -146,11 +146,11 @@ html {
 
 #track-title,
 #artist-name {
-  margin: 10px 0;
+  margin: 18px 0;
 }
 
 #track-title {
-  font-size: 1.6em;
+  font-size: 25px;
 }
 
 #artist-name {

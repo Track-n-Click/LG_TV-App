@@ -75,46 +75,56 @@ function createSliders(sliders) {
 }
 
 function createSliderElement(slide, index) {
+  // Create the main slider item container
   const slideItem = document.createElement("div");
   slideItem.className = "swiper-slide";
+
+  // Truncate the description text to 100 characters with ellipsis
+  const truncatedDescription =
+    slide.description.length > 150
+      ? slide.description.slice(0, 150) + "..."
+      : slide.description;
+
+  // Set the inner HTML for the slide item
   slideItem.innerHTML = `
     <img class="imgCarousal" src="${slide.banner}" alt="${slide.title}" />
     <div class="slider-info">
       <h1 class="slider-title">${slide.title}</h1>
-      <p class="slider-description">${slide.description}</p>
-      <button class="slider-button" data-index="${index}">${
-    slide.cta || "Watch Now"
-  }</button>
+      <p class="slider-description">${truncatedDescription}</p>
+      <button class="slider-button" data-index="${index}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        <div><h3>${slide.cta || "Watch Now"}</h3></div>
+      </button>
     </div>
   `;
 
-  // Redirect URL generation based on the type
+  // Set up the redirect URL based on the slide type
   slideItem.querySelector(".slider-button").addEventListener("click", () => {
     let redirectUrl;
 
+    // Determine the redirection URL based on slide type
     switch (slide.type) {
       case "Live TV":
-        redirectUrl = `pages/media.html`;
+        redirectUrl = "pages/media.html";
         break;
       case "Movie":
-        redirectUrl = `pages/videos.html`;
-        break;
       case "TV Series":
-        redirectUrl = `pages/videos.html`;
+        redirectUrl = "pages/videos.html";
         break;
       case "Podcast":
-        redirectUrl = `index.html`;
-        break;
       case "Radio":
-        redirectUrl = `index.html`;
+        redirectUrl = "index.html";
         break;
       case "Other":
-        redirectUrl = `pages/music.html`;
+        redirectUrl = "pages/music.html";
         break;
       default:
         redirectUrl = "index.html";
     }
 
+    // Redirect the user to the determined URL
     window.location.href = redirectUrl;
   });
 

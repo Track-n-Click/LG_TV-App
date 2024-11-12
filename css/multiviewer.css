@@ -53,7 +53,7 @@ body {
 
 #hero h2 {
   color: white;
-  font-size: 40px;
+  font-size: 45px;
   text-align: center;
   position: relative;
   z-index: 1; /* Ensure the text is above the overlay */
@@ -62,7 +62,7 @@ body {
 
 #hero p {
   color: rgb(213, 213, 213);
-  font-size: 15px;
+  font-size: 18px;
   text-align: center;
   position: relative;
   z-index: 1; /* Ensure the text is above the overlay */
@@ -155,10 +155,12 @@ th {
 
 #vpleft-title {
   margin-top: 10px;
+  font-size: 18px;
 }
 
 #vpright-title {
   margin-top: 10px;
+  font-size: 18px;
 }
 
 .viewport {
@@ -218,10 +220,10 @@ video {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 5px;
+  margin-top: -10px;
   text-align: center;
   color: #fff;
-  font-size: 14px;
+  font-size: 18px;
   background-color: rgba(0, 0, 0, 0.7);
   /* Add background for better readability */
   padding: 5px;

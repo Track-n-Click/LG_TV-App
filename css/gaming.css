@@ -36,8 +36,20 @@ body {
 
 #game-hero h2 {
   color: white;
-  font-size: 50px;
-  width: 100%;
+  font-size: 45px;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* Ensure the text is above the overlay */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Adds a soft shadow to the text */
+}
+
+#game-hero p {
+  color: rgb(213, 213, 213);
+  font-size: 18px;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* Ensure the text is above the overlay */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Adds a soft shadow to the text */
 }
 
 #grid2-container {
@@ -126,7 +138,7 @@ body {
 
 h1 {
   margin-bottom: 30px;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .games-grid {
@@ -138,7 +150,7 @@ h1 {
 
 .game-card .game-title {
   padding: 15px 0;
-  font-size: 18px;
+  font-size: 20px;
   background-color: #555;
 }
 
