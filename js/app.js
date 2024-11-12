@@ -114,8 +114,10 @@ function createSliderElement(slide, index) {
         redirectUrl = "pages/videos.html";
         break;
       case "Podcast":
+        redirectUrl = "pages/radio.html";
+        break;
       case "Radio":
-        redirectUrl = "index.html";
+        redirectUrl = "pages/podcast.html";
         break;
       case "Other":
         redirectUrl = "pages/music.html";
