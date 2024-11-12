@@ -294,7 +294,7 @@ body.no-scroll {
 .slider-info {
   position: absolute;
   bottom: -10px;
-  width: 60%;
+  width: 80%;
   margin: auto;
   left: 0;
   right: 0;
@@ -307,13 +307,13 @@ body.no-scroll {
 
 .slider-info h1 {
   font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 5px;
+  font-weight: 800;
 }
 
 .slider-info p {
-  font-size: 15px;
-  font-weight: 300;
+  font-size: 18px;
+  font-weight: 200;
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
@@ -330,8 +330,7 @@ body.no-scroll {
   background-color: var(--primary-color);
   border: none;
   color: var(--text-white);
-  padding: 8px 8px;
-  font-size: 18px;
+  padding: 8px; /* Adjust as needed */
   text-align: center;
   cursor: pointer;
   border-radius: 50px;
@@ -349,12 +348,12 @@ body.no-scroll {
   border-radius: 50%;
 }
 
+.slider-button div h3 {
+  font-size: 1.2em; /* Scale up the text size */
+  padding-right: 20px; /* Add left padding */
+}
+
 .slider-button.selected {
   transform: scale(1.05);
   border: 2px solid white;
-}
-
-.button-text {
-  font-size: 18px;
-  line-height: 1;
 }

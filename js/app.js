@@ -95,7 +95,7 @@ function createSliderElement(slide, index) {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
           <path d="M8 5v14l11-7z"/>
         </svg>
-        <div>${slide.cta || "Watch Now"}</div>
+        <div><h3>${slide.cta || "Watch Now"}</h3></div>
       </button>
     </div>
   `;
@@ -114,8 +114,10 @@ function createSliderElement(slide, index) {
         redirectUrl = "pages/videos.html";
         break;
       case "Podcast":
+        redirectUrl = "pages/radio.html";
+        break;
       case "Radio":
-        redirectUrl = "index.html";
+        redirectUrl = "pages/podcast.html";
         break;
       case "Other":
         redirectUrl = "pages/music.html";

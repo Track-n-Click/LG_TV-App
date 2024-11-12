@@ -78,7 +78,7 @@ function setupProfileButtonListeners() {
 
       if (userData && userData.id) {
         // User is logged in; redirect to profile page
-        window.location.href = "../pages/profilePage.html"; // Replace with the actual profile page URL
+        window.location.href = "pages/profilePage.html"; // Replace with the actual profile page URL
       } else {
         // User is not logged in; open login modal
         openLoginModal();
@@ -270,7 +270,7 @@ const keyboardLayout = [
     { key: "9" },
     { key: "0" },
     { key: "-", label: "=" },
-    { key: "backspace" },
+    { key: "delete" },
   ],
   [
     { key: "tab" },
