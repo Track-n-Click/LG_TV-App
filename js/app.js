@@ -43,17 +43,17 @@ function initializeSwiperHero() {
     swiper.destroy(true, true);
   }
   swiper = new Swiper(".swiper-container-hero", {
-    effect: "coverflow",
+    // effect: "coverflow",
     grabCursor: false,
     centeredSlides: true,
-    slidesPerView: 2,
-    coverflowEffect: {
-      rotate: 10,
-      stretch: 10,
-      depth: 110,
-      modifier: 5,
-      slideShadows: true,
-    },
+    slidesPerView: 1,
+    // coverflowEffect: {
+    //   rotate: 10,
+    //   stretch: 10,
+    //   depth: 110,
+    //   modifier: 5,
+    //   slideShadows: true,
+    // },
     loop: true,
     pagination: {
       el: ".swiper-pagination",
