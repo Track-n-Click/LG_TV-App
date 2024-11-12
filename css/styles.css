@@ -294,7 +294,7 @@ body.no-scroll {
 .slider-info {
   position: absolute;
   bottom: -10px;
-  width: 60%;
+  width: 80%;
   margin: auto;
   left: 0;
   right: 0;
@@ -307,13 +307,13 @@ body.no-scroll {
 
 .slider-info h1 {
   font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 5px;
+  font-weight: 800;
 }
 
 .slider-info p {
-  font-size: 15px;
-  font-weight: 300;
+  font-size: 18px;
+  font-weight: 200;
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
