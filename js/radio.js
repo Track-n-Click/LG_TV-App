@@ -9,11 +9,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   displayPlaceholders("radio-you-might-like-row");
 
   setTimeout(async () => {
-    const latestSongs = await fetchMostTunedStations();
-    replacePlaceholdersWithData("latest-radio-channels-row", latestSongs);
+    const mostTunedStations = await fetchMostTunedStations();
+    replacePlaceholdersWithData("latest-radio-channels-row", mostTunedStations);
 
-    const albums = await fetchRandomStations();
-    replacePlaceholdersWithData("radio-you-might-like-row", albums);
+    const randomStations = await fetchRandomStations();
+    replacePlaceholdersWithData("radio-you-might-like-row", randomStations);
   }, 1000);
 
   // Display placeholders and then fetch and display most played songs
@@ -104,20 +104,15 @@ function displayPlaceholders(rowId) {
   }
 }
 
-function replacePlaceholdersWithData(rowId, musicItems) {
+function replacePlaceholdersWithData(rowId, radioStations) {
   const row = document.getElementById(rowId);
   row.innerHTML = "";
 
-  if (Array.isArray(musicItems)) {
-    musicItems.forEach((item, index) => {
+  if (Array.isArray(radioStations)) {
+    radioStations.forEach((item, index) => {
       const tile = document.createElement("div");
-      if (rowId === "radio-you-might-like-row") {
-        tile.setAttribute("type", "music");
-        tile.setAttribute("id", item.id);
-      } else {
-        tile.setAttribute("type", "music");
-        tile.setAttribute("song-id", item.id);
-      }
+      tile.setAttribute("type", "radio");
+      tile.setAttribute("radio-id", item.id);
       tile.classList.add("music-tile");
       tile.setAttribute("data-index", index);
       tile.setAttribute("data-title", item.title);
@@ -140,7 +135,7 @@ function replacePlaceholdersWithData(rowId, musicItems) {
       row.appendChild(tile);
     });
   } else {
-    console.error("Expected an array but received:", musicItems);
+    console.error("Expected an array but received:", radioStations);
   }
 }
 
