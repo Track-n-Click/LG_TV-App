@@ -430,11 +430,11 @@ i {
   background-color: var(--primary-color);
   border: none;
   color: var(--text-white);
-  padding: 8px 8px;
-  font-size: 18px;
+  padding: 5px 8px; /* Adjust as needed */
   text-align: center;
   cursor: pointer;
   border-radius: 50px;
+  margin-top: 30px;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease,
     border 0.3s ease;
 }
@@ -449,14 +449,15 @@ i {
   border-radius: 50%;
 }
 
+.slider-button h3 {
+  font-size: 1.2em; /* Scale up the text size */
+  padding-right: 20px; /* Add left padding */
+  text-transform: uppercase;
+}
+
 .slider-button.selected {
   transform: scale(1.05);
   border: 2px solid white;
-}
-
-.button-text {
-  font-size: 18px;
-  line-height: 1;
 }
 
 .id {
