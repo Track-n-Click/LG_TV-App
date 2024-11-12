@@ -244,7 +244,7 @@ const keyboardLayout = [
     { key: "9" },
     { key: "0" },
     { key: "-", label: "=" },
-    { key: "backspace" },
+    { key: "delete" },
   ],
   [
     { key: "tab" },
