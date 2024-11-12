@@ -119,6 +119,7 @@ function replacePlaceholdersWithData(rowId, radioStations) {
       tile.setAttribute("data-url", item.stream_url || item.url);
       tile.setAttribute("data-artist", "test");
       tile.setAttribute("data-artwork", item.artwork_url);
+      tile.setAttribute("data-slug", item.slug);
       tile.innerHTML = `
       <div class="overlay">
         <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
@@ -253,17 +254,14 @@ function initializeMusicNavigation() {
     const musicArtwork = selectedTile.getAttribute("data-artwork");
     const type = selectedTile.getAttribute("type");
     const albumId = selectedTile.getAttribute("id");
-    const songId = selectedTile.getAttribute("song-id");
+    const songId = selectedTile.getAttribute("radio-id");
+    const radio_slug = selectedTile.getAttribute("data-slug");
 
-    if (type === "music") {
-      window.location.href = `musicPlayer.html?id=${encodeURIComponent(
-        songId
+    if (type === "radio") {
+      window.location.href = `radioPlayer.html?slug=${encodeURIComponent(
+        radio_slug
       )}`;
-    } else {
-      window.location.href = `musicPlayerForAlbum.html?id=${encodeURIComponent(
-        albumId
-      )}`;
-    }
+    } 
   }
 
   function updateArrowVisibility(row, tiles) {

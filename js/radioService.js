@@ -6,7 +6,8 @@ const API_BASE_URL = "https://dapi.ayozat.co.uk/api";
 
 const config = {
   RANDOM_STATIONS_API_URL: `${API_BASE_URL}/random/radio-stations`,
-  MOST_TUNED_STATIONS_API_URL: `${API_BASE_URL}/most-tuned/radio-stations`
+  MOST_TUNED_STATIONS_API_URL: `${API_BASE_URL}/most-tuned/radio-stations`,
+  SONG_BY_ID_API_URL: `${API_BASE_URL}/radio-stations/show`,
 };
 
 export async function fetchRandomStations() {
@@ -18,6 +19,7 @@ export async function fetchRandomStations() {
         "Content-Type": "application/json; charset=utf-8",
       },
     });
+    console.log(response.data.randomRadioStations)
     return response.data.randomRadioStations;
   } catch (error) {
     console.error("Failed to fetch albums:", error);
@@ -34,9 +36,27 @@ export async function fetchMostTunedStations() {
         "Content-Type": "application/json; charset=utf-8",
       },
     });
+    console.log(response.data.mostTunedRadioStations)
     return response.data.mostTunedRadioStations;
   } catch (error) {
     console.error("Failed to fetch latest songs:", error);
+    return [];
+  }
+}
+
+export async function fetchRadioBySlug(slug) {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${config.SONG_BY_ID_API_URL}/${slug}`,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    });
+    // console.log(response.data)
+    return response.data.data;
+  } catch (error) {
+    console.error("Failed to fetch song details:", error);
     return [];
   }
 }
