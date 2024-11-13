@@ -125,8 +125,8 @@ body {
 .slider-info {
   position: absolute;
   top: 0;
-  width: 50%;
-  height: 85vh;
+  width: 40%;
+  height: 84vh;
   left: 0;
   right: 0;
   padding: 30px;
@@ -149,7 +149,7 @@ body {
   font-size: 19px;
   font-weight: 400;
   margin-bottom: 10px;
-  width: 80%;
+  width: 90%;
 }
 
 .swiper-slide-active .slider-info {
@@ -169,7 +169,7 @@ body {
   text-align: center;
   cursor: pointer;
   border-radius: 50px;
-  margin-top: 30px;
+  margin-top: 10px;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease,
     border 0.3s ease;
 }
@@ -329,9 +329,12 @@ h2 {
   align-items: center;
   gap: 10px;
   font-family: Arial, sans-serif;
-  width: 50%;
+  width: 70%;
   margin: 20px 0px;
-  margin-top: 50px;
+  border: var(--border-color-gray) 1px solid;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 30px;
 }
 
 .countdown-timer div {

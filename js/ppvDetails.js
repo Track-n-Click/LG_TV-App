@@ -39,6 +39,7 @@ function createSliders(details) {
   slideItem.innerHTML = `
         <div class="overlay"></div>
         <div class="overlay"></div>
+        
         <img class="imgCarousal" src="${details.bannerImage}" alt="${
     details.title
   }"/>
