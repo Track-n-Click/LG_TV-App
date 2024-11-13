@@ -366,6 +366,8 @@ function initializeMediaNavigation(seasons) {
       ? selectedButton.getAttribute("data-type")
       : selectedTile?.getAttribute("data-type");
 
+    console.log(type);
+
     if (type === "movie" && selectedButton) {
       const videoUrl = selectedButton.getAttribute("data-url");
       console.log("Movie URL:", videoUrl);

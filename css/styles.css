@@ -89,7 +89,7 @@ body.no-scroll {
 
 #grid-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 cards per row */
+  grid-template-columns: repeat(4, 1fr); /* 5 cards per row */
   gap: 20px;
   padding-top: 50px !important;
   width: 90%;
