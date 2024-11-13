@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const src = urlParams.get("src");
   const movieSrc = urlParams.get("movie-src");
   const seriesSrc = urlParams.get("series-src");
+  const ppvSrc = urlParams.get("ppv-src");
 
   if (window.remotePlayer) {
     try {
@@ -58,6 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
   } else if (videoSrc) {
     console.log("Video Source URL:", videoSrc);
     initializePlayer(videoSrc); // Directly initialize player if src or movie-src is present
+  } else if (ppvSrc) {
+    console.log("PPV Source URL:", ppvSrc);
+    initializePlayer(ppvSrc);
   } else {
     console.error("No video source found in URL parameters.");
   }

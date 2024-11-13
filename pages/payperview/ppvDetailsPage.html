@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PPV Details Page</title>
+    <link rel="stylesheet" href="../../css/ppvDetails.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Movie or Series Hero Slider -->
+    <div class="swiper-main">
+      <div class="swiper">
+        <div class="swiper-container swiper-container-hero">
+          <div class="swiper-wrapper swiper-hero" id="swiper-wrapper"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="video-grid-container" class="media-content">
+      <!-- Movie section -->
+      <div id="movies" class="media-section">
+        <div id="left-arrow-movies" class="nav-arrow left-arrow">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="video-row-container" id="seasons-container">
+          <!-- <div id="movie-row" class="video-row">
+          </div> -->
+        </div>
+        <div id="right-arrow-movies" class="nav-arrow right-arrow">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../../js/payperviewService.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script type="module" src="../../js/ppvDetails.js"></script>
+    <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+  </body>
+</html>
