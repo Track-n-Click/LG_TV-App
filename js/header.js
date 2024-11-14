@@ -163,7 +163,6 @@ function setupLoginModalNavigation() {
   selectedQrButton?.classList.add("modal-login-button-selected");
 
   let visibleLoginMethod = true;
-  let visiblePinModeSelectionMode = false;
   let visiblePinMode = false;
   let visibleCredentialsMode = false;
 
@@ -198,32 +197,12 @@ function setupLoginModalNavigation() {
               handleEnterForSelectLoginMethod();
               break;
           }
-        } else if (visiblePinModeSelectionMode) {
-          isKeyboardVisible = false;
-          switch (event.key) {
-            case "ArrowLeft":
-            case "ArrowRight":
-              handleQrSelectButton(event);
-              break;
-            case "Enter":
-              handleEnterForSelectQrButton();
-              break;
-          }
         } else if (visiblePinMode) {
           //
           if (isKeyboardVisible) {
             navigateKeyboard(event);
           } else {
             handleSelectEnterPinField(event);
-            // switch (event.key) {
-            //   case "ArrowUp":
-            //   case "ArrowDown":
-            //     handleSelectEnterPinField(event);
-            //     break;
-            //   case "Enter":
-            //     openKeyboard();
-            //     break;
-            // }
           }
         } else if (visibleCredentialsMode) {
           // alert("credentials");
@@ -251,38 +230,11 @@ function setupLoginModalNavigation() {
     if (selectedLoginMethod) {
       visibleLoginMethod = false;
       if (selectedLoginMethod.id === "login-via-pin") {
-        visiblePinModeSelectionMode = true;
+        visiblePinMode = true;
       } else if (selectedLoginMethod.id === "login-via-credentials") {
         visibleCredentialsMode = true;
       }
       selectedLoginMethod.click();
-    }
-  }
-
-  function handleQrSelectButton(event) {
-    selectedQrButton?.classList.remove("modal-login-button-selected");
-    if (event.key === "ArrowRight") {
-      pinModeQrButtonindex =
-        (pinModeQrButtonindex + 1) % pinModeQrButtons.length;
-    } else if (event.key === "ArrowLeft") {
-      pinModeQrButtonindex =
-        (pinModeQrButtonindex - 1 + pinModeQrButtons.length) %
-        pinModeQrButtons.length;
-    }
-
-    selectedQrButton = pinModeQrButtons[pinModeQrButtonindex];
-    selectedQrButton?.classList.add("modal-login-button-selected");
-  }
-
-  function handleEnterForSelectQrButton() {
-    if (selectedQrButton) {
-      visiblePinModeSelectionMode = false;
-      if (selectedQrButton.id === "pin-mode-next") {
-        visiblePinMode = true;
-      } else {
-        visibleLoginMethod = true;
-      }
-      selectedQrButton.click();
     }
   }
 
@@ -667,7 +619,7 @@ function scrollToElement(element) {
 document.getElementById("login-via-pin").addEventListener("click", () => {
   document.getElementById("login-options").style.display = "none";
   document.getElementById("pin-login-form").style.display = "block";
-  document.getElementById("qr-login-section").style.display = "block";
+  // document.getElementById("qr-login-section").style.display = "block";
 });
 
 document

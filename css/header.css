@@ -116,7 +116,7 @@ body::-webkit-scrollbar {
   margin: 9% auto;
   padding: 20px 20px;
   border: 1px solid var(--border-color-gray);
-  width: 30%;
+  width: 100%;
   border-radius: 10px;
   color: var(--text-white);
   overflow: hidden;
