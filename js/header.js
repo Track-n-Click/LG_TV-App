@@ -614,12 +614,24 @@ function scrollToElement(element) {
   });
 }
 
+//fuction to toggle modal size
+function toggleModalSize() {
+  const modalContent = document.querySelector(".modal-content");
+  const pinLoginForm = document.getElementById("pin-login-form");
+
+  if (pinLoginForm.style.display === "block") {
+    modalContent.style.width = "50%";
+  } else {
+    modalContent.style.width = "30%";
+  }
+}
+
 // calling login
 // Show the PIN or Credentials login form based on the selection
 document.getElementById("login-via-pin").addEventListener("click", () => {
   document.getElementById("login-options").style.display = "none";
   document.getElementById("pin-login-form").style.display = "block";
-  // document.getElementById("qr-login-section").style.display = "block";
+  toggleModalSize();
 });
 
 document
