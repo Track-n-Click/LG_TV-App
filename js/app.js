@@ -48,9 +48,9 @@ function initializeSwiperHero() {
     centeredSlides: true,
     slidesPerView: 2,
     coverflowEffect: {
-      rotate: 10,
-      stretch: 10,
-      depth: 110,
+      rotate: 0,
+      stretch: 8,
+      depth: 80,
       modifier: 5,
       slideShadows: true,
     },
