@@ -167,16 +167,28 @@ function setupLoginModalNavigation() {
   let visiblePinMode = false;
   let visibleCredentialsMode = false;
 
+  // enter pin fields
+  let pinFieldIndex = 0;
+  let pinFields = [
+    document.getElementById("pin"),
+    document.getElementById("pin-mode-input-back"),
+  ];
+  let selectedPinField = pinFields[pinFieldIndex];
+
   // Handle arrow key navigation within modal
   function handleKeyDown(event) {
-    if (isKeyboardVisible) return; // Ignore key events if keyboard is visible
+    // if (isKeyboardVisible) return; // Ignore key events if keyboard is visible
 
     if (document.getElementById("login-modal").style.display === "block") {
       if (event.key === "Escape") {
         // goBack();
         // window.history.back();
+        if (isKeyboardVisible) {
+          closeKeyboard();
+        }
       } else {
         if (visibleLoginMethod) {
+          isKeyboardVisible = false;
           switch (event.key) {
             case "ArrowLeft":
             case "ArrowRight":
@@ -187,6 +199,7 @@ function setupLoginModalNavigation() {
               break;
           }
         } else if (visiblePinModeSelectionMode) {
+          isKeyboardVisible = false;
           switch (event.key) {
             case "ArrowLeft":
             case "ArrowRight":
@@ -198,6 +211,20 @@ function setupLoginModalNavigation() {
           }
         } else if (visiblePinMode) {
           //
+          if (isKeyboardVisible) {
+            navigateKeyboard(event);
+          } else {
+            handleSelectEnterPinField(event);
+            // switch (event.key) {
+            //   case "ArrowUp":
+            //   case "ArrowDown":
+            //     handleSelectEnterPinField(event);
+            //     break;
+            //   case "Enter":
+            //     openKeyboard();
+            //     break;
+            // }
+          }
         } else if (visibleCredentialsMode) {
           // alert("credentials");
         }
@@ -256,6 +283,25 @@ function setupLoginModalNavigation() {
         visibleLoginMethod = true;
       }
       selectedQrButton.click();
+    }
+  }
+
+  function handleSelectEnterPinField(event) {
+    switch (event.key) {
+      case "ArrowUp":
+      case "ArrowDown":
+        if (event.key === "ArrowDown") {
+          pinFieldIndex = (pinFieldIndex + 1) % pinFields.length;
+        } else if (event.key === "ArrowUp") {
+          pinFieldIndex =
+            (pinFieldIndex - 1 + pinFields.length) % pinFields.length;
+        }
+
+        selectedPinField = pinFields[pinFieldIndex];
+        break;
+      case "Enter":
+        openKeyboard();
+        break;
     }
   }
 
@@ -508,18 +554,19 @@ function pressKey() {
   return false;
 }
 
-function openKeyboard(inputIndex) {
+function openKeyboard() {
   const keyboard = document.getElementById("on-screen-keyboard");
   if (!isKeyboardVisible && keyboard) {
-    keyboard.classList.remove("show");
-    isKeyboardVisible = true;
-    activeInputIndex = inputIndex; // Track the input field currently being focused
-    selectedRow = 0;
-    selectedCol = 0;
-    highlightKey(); // Focus the first key
-    document.addEventListener("keydown", navigateKeyboard); // Enable arrow key navigation for the keyboard
-    // Adjust modal top margin when keyboard opens
-    adjustModalForKeyboard(true);
+    generateKeyboard();
+    // keyboard.classList.remove("show");
+    // isKeyboardVisible = true;
+    // activeInputIndex = inputIndex; // Track the input field currently being focused
+    // selectedRow = 0;
+    // selectedCol = 0;
+    // highlightKey(); // Focus the first key
+    // document.addEventListener("keydown", navigateKeyboard); // Enable arrow key navigation for the keyboard
+    // // Adjust modal top margin when keyboard opens
+    // adjustModalForKeyboard(true);
   }
 }
 
