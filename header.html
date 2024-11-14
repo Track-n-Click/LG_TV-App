@@ -137,10 +137,20 @@
       <input type="password" id="password" placeholder="Password" required />
       <div id="credentials-error-message" class="error-message"></div>
       <div class="buttons-container">
-        <button onclick="submitCredentialsLogin()" class="modal-login-button">
+        <button
+          onclick="submitCredentialsLogin()"
+          class="modal-login-button"
+          id="credentials-submit-button"
+        >
           Submit Credentials
         </button>
-        <button onclick="goBack()" class="modal-login-button-back">Back</button>
+        <button
+          onclick="goBack()"
+          class="modal-login-button-back"
+          id="credentials-back-button"
+        >
+          Back
+        </button>
       </div>
     </div>
 
