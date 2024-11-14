@@ -180,8 +180,6 @@ function setupLoginModalNavigation() {
 
     if (document.getElementById("login-modal").style.display === "block") {
       if (event.key === "Escape") {
-        // goBack();
-        // window.history.back();
         if (isKeyboardVisible) {
           closeKeyboard();
         }
@@ -242,6 +240,12 @@ function setupLoginModalNavigation() {
     switch (event.key) {
       case "ArrowUp":
       case "ArrowDown":
+        if (selectedPinField.id === "pin") {
+          selectedPinField.blur();
+        } else {
+          selectedPinField?.classList.remove("modal-login-button-selected");
+        }
+
         if (event.key === "ArrowDown") {
           pinFieldIndex = (pinFieldIndex + 1) % pinFields.length;
         } else if (event.key === "ArrowUp") {
@@ -250,9 +254,24 @@ function setupLoginModalNavigation() {
         }
 
         selectedPinField = pinFields[pinFieldIndex];
+
+        if (selectedPinField.id === "pin") {
+          console.warn(selectedPinField.id);
+          selectedPinField?.classList.remove("modal-login-button-selected");
+          selectedPinField.focus();
+        } else {
+          console.warn(selectedPinField.id);
+          selectedPinField?.classList.add("modal-login-button-selected");
+        }
         break;
       case "Enter":
-        openKeyboard();
+        if (selectedPinField.id === "pin-mode-input-back") {
+          visiblePinMode = false;
+          visibleLoginMethod = true;
+          selectedPinField.click();
+        } else {
+          openKeyboard();
+        }
         break;
     }
   }
@@ -268,65 +287,6 @@ function setupLoginModalNavigation() {
   document.getElementById("login-modal").removeNavigationListener =
     removeNavigationListener;
 }
-// function setupLoginModalNavigation() {
-//   const focusableElements = [
-//     document.getElementById("email"),
-//     document.getElementById("password"),
-//     document.querySelector(".modal-login-button"),
-//   ];
-
-//   let currentIndex = 0; // Start with the first focusable element
-
-//   // Add focusable class to all elements
-//   focusableElements.forEach((element) => element.classList.add("focusable"));
-
-//   // Focus the first element when the modal opens
-//   focusElement(currentIndex);
-
-//   // selecting login methods
-//   let LoginMethodindex = 0;
-//   const loginMethods = [
-//     document.getElementById("login-via-pin"),
-//     document.getElementById("login-via-credentials"),
-//   ];
-//   let selectedLoginMethod = loginMethods[0];
-//   selectedLoginMethod?.classList.add("modal-login-option-selected");
-
-//   console.log("initite");
-
-//   // Handle arrow key navigation within modal
-//   function handleKeyDown(event) {
-//     if (isKeyboardVisible) return; // Ignore key events if keyboard is visible
-
-//     if (document.getElementById("login-modal").style.display === "block") {
-//       if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-//         if (event.key === "ArrowUp") {
-//           currentIndex =
-//             (currentIndex - 1 + focusableElements.length) %
-//             focusableElements.length;
-//         } else if (event.key === "ArrowDown") {
-//           currentIndex = (currentIndex + 1) % focusableElements.length;
-//         }
-//         focusElement(currentIndex);
-//         event.preventDefault(); // Prevent default scrolling
-//       }  else if (event.key === "Enter") {
-//         handleEnterKeyForModal(focusableElements[currentIndex]);
-//         event.preventDefault(); // Prevent default form submission
-//       }
-//     }
-//   }
-
-//   // Attach the listener
-//   document.addEventListener("keydown", handleKeyDown);
-
-//   // Function to remove the listener
-//   function removeNavigationListener() {
-//     document.removeEventListener("keydown", handleKeyDown);
-//   }
-
-//   document.getElementById("login-modal").removeNavigationListener =
-//     removeNavigationListener;
-// }
 
 // Removes keydown listeners for modal navigation
 function removeModalNavigation() {
@@ -453,7 +413,7 @@ function generateKeyboard() {
       }
 
       // Add unique styling for special keys like backspace, enter, etc.
-      if (["backspace", "enter", "shift", "tab", "caps"].includes(key.key)) {
+      if (["delete", "enter", "shift", "tab", "caps"].includes(key.key)) {
         keyDiv.classList.add("special-key");
       }
 
@@ -492,7 +452,7 @@ function pressKey() {
 
   if (!selectedKey || !inputField) return false; // Make sure both the selected key and input field exist
 
-  if (selectedKey.dataset.key === "backspace") {
+  if (selectedKey.dataset.key === "delete") {
     inputField.value = inputField.value.slice(0, -1); // Delete the last character
   } else if (selectedKey.dataset.key === "enter") {
     closeKeyboard(); // Close keyboard when Enter is pressed
