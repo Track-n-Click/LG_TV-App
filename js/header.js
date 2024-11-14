@@ -202,6 +202,12 @@ function setupLoginModalNavigation() {
         } else if (visiblePinMode) {
           if (isKeyboardVisible) {
             navigateKeyboard(event, selectedPinField);
+            if (
+              selectedPinField?.id === "pin" &&
+              selectedPinField?.value.length === 6
+            ) {
+              validatePinInput();
+            }
           } else {
             handleSelectEnterPinField(event);
           }
@@ -718,7 +724,6 @@ function validatePinInput() {
   }
 
   if (pin.length == 6) {
-    alert();
     submitPinLogin();
   }
 }
