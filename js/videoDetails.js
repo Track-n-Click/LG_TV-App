@@ -2,12 +2,13 @@ import {
   fetchVideoDetailsBySlug,
   fetchSeriesDetailsBySlug,
 } from "./mediaService.js";
-
+let movieSlug = null;
+let seriesSlug = null;
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const movieSlug = urlParams.get("movie-slug");
-  const seriesSlug = urlParams.get("series-slug");
+  movieSlug = urlParams.get("movie-slug");
+  seriesSlug = urlParams.get("series-slug");
 
   let details;
 
@@ -355,7 +356,6 @@ function initializeMediaNavigation(seasons) {
   function playSelectedVideo() {
     const selectedButton = document.querySelector(".slider-button.selected");
     const selectedTile = document.querySelector(".video-tile.selected");
-
     if (!selectedButton && !selectedTile) {
       console.error("No video button or tile is selected.");
       return;
@@ -373,7 +373,7 @@ function initializeMediaNavigation(seasons) {
       console.log("Movie URL:", videoUrl);
       window.location.href = `../player.html?movie-src=${encodeURIComponent(
         videoUrl
-      )}`;
+      )}&movie-slug=${movieSlug}`;
     } else if (type === "series") {
       const videoUrl =
         selectedButton?.getAttribute("data-url") ||
@@ -383,7 +383,7 @@ function initializeMediaNavigation(seasons) {
         console.log("Series URL:", videoUrl);
         window.location.href = `../player.html?series-src=${encodeURIComponent(
           videoUrl
-        )}`;
+        )}&series-slug=${seriesSlug}`;
       } else {
         console.error("No URL found for the series.");
       }
