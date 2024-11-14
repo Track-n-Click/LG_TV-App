@@ -356,13 +356,18 @@ h2 {
   flex-direction: column;
   align-items: center;
 }
+.music-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 h2 {
   font-size: 25pt;
   color: #ffffff;
   text-align: left;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .music-row-container {
@@ -382,11 +387,21 @@ h2 {
 }
 
 .music-row::-webkit-scrollbar {
-  display: none !important; /* Hide scrollbar for better UI */
+  display: none !important;
+}
+
+.music-row {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  overflow-x: auto;
+  width: 100%;
+  padding: 20px;
+  scroll-behavior: smooth;
 }
 
 .music-row-container::before,
-.usic-row-container::after {
+.music-row-container::after {
   content: "";
   position: absolute;
   top: 0;
@@ -474,7 +489,7 @@ h2 {
   pointer-events: none;
 }
 
-.muisc-tile.selected .overlay {
+.music-tile.selected .overlay {
   display: flex !important;
 }
 
@@ -493,34 +508,6 @@ h2 {
 .music-tile.selected .play-icon {
   opacity: 1 !important;
   margin-top: 0 !important;
-}
-
-.placeholder-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  border-radius: 15px;
-  background: #1d1d1d; /* Darker background to indicate loading */
-  width: 180px;
-  height: 270px;
-  text-align: center;
-  padding: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-  flex: 0 0 auto;
-}
-
-.music-right-arrow {
-  display: none;
-  right: 0;
-  margin-top: 150px;
-  margin-right: 40px;
-}
-
-.music-left-arrow {
-  left: 0;
-  margin-top: 150px;
-  margin-left: 40px;
 }
 
 .placeholder-tile {
@@ -567,4 +554,179 @@ h2 {
   background: linear-gradient(90deg, #414141bf 25%, #616161 50%, #414141bf 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
+}
+
+/* Radio CSS */
+.radio-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  font-size: 25pt;
+  color: #ffffff;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.radio-row-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden; /* Hide overflow to create the gradient effect */
+}
+
+.radio-row {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  overflow-x: auto;
+  padding: 20px;
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+.radio-row::-webkit-scrollbar {
+  display: none !important;
+}
+
+.radio-row {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  overflow-x: auto;
+  width: 100%;
+  padding: 20px;
+  scroll-behavior: smooth;
+}
+
+.radio-row-container::before,
+.radio-row-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  opacity: 0.9;
+  pointer-events: none; /* Prevent blocking clicks on content */
+  z-index: 1;
+}
+
+.radio-row-container::before {
+  left: 0;
+  background: linear-gradient(to right, black, transparent);
+}
+
+.radio-row-container::after {
+  right: 0;
+  background: linear-gradient(to left, black, transparent);
+}
+
+.radio-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  border-radius: 10px;
+  background: #191919c8;
+  transition: transform 0.4s ease;
+  cursor: pointer;
+  width: 180px;
+  height: 270px;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  flex: 0 0 auto; /* Ensure tiles don't shrink or grow */
+  transition: all 1s ease;
+}
+
+.radio-tile.selected {
+  transform: scale(1.1);
+  border: 2px solid #b4b4b45a;
+  z-index: 10;
+}
+
+.radio-tile img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  opacity: 0.9;
+  transition: opacity 2s ease;
+}
+
+.radio-tile.selected img {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.radio-tile .title {
+  font-size: 15pt;
+  font-weight: bold;
+  color: #ffffff98;
+  margin-top: 20px;
+  transition: color 0.4s ease, transform 0.4s ease;
+}
+
+.radio-tile.selected .title {
+  color: #ff0051;
+}
+
+/* Overlay styles */
+.radio-tile .overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.374), black);
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease-in-out;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.radio-tile.selected .overlay {
+  display: flex !important;
+}
+
+/* Play icon */
+.play-icon {
+  width: 48px;
+  height: 48px;
+  margin-top: -100px !important;
+  fill: var(--text-white);
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  opacity: 0 !important;
+  transition: all 1s ease-in-out !important;
+}
+
+.radio-tile.selected .play-icon {
+  opacity: 1 !important;
+  margin-top: 0 !important;
+}
+
+.nav-arrow {
+  color: #7b9db4;
+  display: flex;
+  position: absolute;
+  z-index: 20;
+}
+
+.right-arrow {
+  display: none;
+  right: 0;
+  margin-top: 210px;
+  margin-right: 40px;
+}
+
+.left-arrow {
+  left: 0;
+  margin-top: 210px;
+  margin-left: 40px;
 }

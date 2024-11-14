@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   displayPlaceholders("movie-row");
   displayPlaceholders("tv-row");
   displayPlaceholders("songs-row");
+  displayPlaceholders("radio-row");
   // displayPlaceholders("album-row");
 
   if (userID) {
@@ -29,6 +30,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const songs = userProfileData?.loved?.data;
       replacePlaceholdersWithMusicData("songs-row", songs);
+
+      const radios = userProfileData?.favorite_radio_stations;
+      replacePlaceholdersWithRadioData("radio-row", radios, "radio");
 
       // const albums = userProfileData?.albums;
       // replacePlaceholdersWithData("album-row", albums);
@@ -76,6 +80,11 @@ function initializeMediaNavigation() {
       leftArrow: "left-arrow-music",
       rightArrow: "right-arrow-music",
     },
+    {
+      id: "radio-row",
+      leftArrow: "left-arrow-radio",
+      rightArrow: "right-arrow-radio",
+    },
   ];
 
   document.addEventListener("keydown", (e) => {
@@ -107,7 +116,7 @@ function initializeMediaNavigation() {
     );
 
     const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .music-tile"
+      ".video-tile, .music-tile, .radio-tile"
     );
 
     if (currentTiles.length > 0) {
@@ -138,7 +147,9 @@ function initializeMediaNavigation() {
       scrollToTop(); // Scroll to the top for the hero section
     } else {
       // Apply .selected to the first video-tile in the new section
-      const newTiles = newRow.querySelectorAll(".video-tile, .music-tile");
+      const newTiles = newRow.querySelectorAll(
+        ".video-tile, .music-tile, .radio-tile"
+      );
       if (newTiles.length > 0) {
         newTiles[selectedItemIndex].classList.add("selected");
         scrollToSection(newRow);
@@ -152,7 +163,7 @@ function initializeMediaNavigation() {
       mediaSections[selectedSectionIndex].id
     );
     const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .music-tile"
+      ".video-tile, .music-tile, .radio-tile"
     );
 
     if (currentTiles.length > 0) {
@@ -187,6 +198,9 @@ function initializeMediaNavigation() {
     const type = selectedTile.getAttribute("type");
     const albumId = selectedTile.getAttribute("id");
     const songId = selectedTile.getAttribute("song-id");
+    const radio_slug = selectedTile.getAttribute("data-slug");
+
+    console.log(type);
 
     if (type === "music") {
       // Redirect to music player for individual song
@@ -200,26 +214,27 @@ function initializeMediaNavigation() {
         albumId
       )}`;
       return;
+    } else if (type === "radio") {
+      window.location.href = `radioPlayer.html?slug=${encodeURIComponent(
+        radio_slug
+      )}`;
+      return;
     }
 
     console.log("Selected video type:", mediaType);
 
     // Handle video redirection
-    if (mediaType === "tv") {
-      window.location.href = `player.html?title=${encodeURIComponent(
-        title
-      )}&src=${encodeURIComponent(videoUrl)}`;
-    } else if (mediaType === "movies") {
-      console.log("Redirecting to video details page...");
-      window.location.href = `media/videoDetails.html?movie-slug=${encodeURIComponent(
-        slug
-      )}`;
-    } else {
-      console.log("Redirecting to video details page...");
-      window.location.href = `media/videoDetails.html?series-slug=${encodeURIComponent(
-        slug
-      )}`;
-    }
+    // if (mediaType === "tv") {
+    //   window.location.href = `player.html?title=${encodeURIComponent(
+    //     title
+    //   )}&src=${encodeURIComponent(videoUrl)}`;
+    //   return;
+    // } else if (mediaType === "movies") {
+    //   window.location.href = `media/videoDetails.html?movie-slug=${encodeURIComponent(
+    //     slug
+    //   )}`;
+    //   return;
+    // }
   }
 
   function scrollToSection(section) {
@@ -372,6 +387,45 @@ function replacePlaceholdersWithMusicData(rowId, mediaItems, type) {
       tile.setAttribute("data-url", item.stream_url || item.url);
       tile.setAttribute("data-artist", item.artists[0].name);
       tile.setAttribute("data-artwork", item.artwork_url);
+      tile.innerHTML = `
+              <div class="overlay">
+                <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+                <img src="${item.artwork_url}" alt="${item.title}">
+                <div class="title">${
+                  (item.title || item.name).length > 25
+                    ? (item.title || item.name).substring(0, 25) + "..."
+                    : item.title || item.name
+                }</div>
+            `;
+      row.appendChild(tile);
+    });
+  } else {
+    console.error("Expected an array but received:", musicItems);
+  }
+}
+
+function replacePlaceholdersWithRadioData(rowId, mediaItems, type) {
+  const row = document.getElementById(rowId);
+  row.innerHTML = "";
+
+  console.log(mediaItems);
+
+  if (Array.isArray(mediaItems)) {
+    mediaItems.forEach((item, index) => {
+      const tile = document.createElement("div");
+      if (rowId === "radio-row") {
+        tile.setAttribute("type", "radio");
+        tile.setAttribute("id", item.id);
+      }
+      tile.classList.add("radio-tile");
+      tile.setAttribute("data-index", index);
+      tile.setAttribute("data-title", item.title);
+      tile.setAttribute("data-url", item.stream_url);
+      tile.setAttribute("data-artwork", item.artwork_url);
+      tile.setAttribute("data-slug", item.slug);
       tile.innerHTML = `
               <div class="overlay">
                 <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >

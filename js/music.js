@@ -17,71 +17,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     replacePlaceholdersWithData("album-row", albums);
   }, 1000);
 
-  // Display placeholders and then fetch and display most played songs
-  // displayPlaceholders("most-played-songs-row");
-  // const mostPlayedSongs = await fetchMostPlayedSongs();
-  // replacePlaceholdersWithData("most-played-songs-row", mostPlayedSongs);
-
-  // const sliders = await fetchMostPlayedSongs();
-  // createSliders(sliders);
-
-  // console.log(sliders);
-
-  // initializeSwiperHero();
-
-  // Initialize navigation
   initializeMusicNavigation();
 });
 
-// function initializeSwiperHero() {
-//   var swiper = new Swiper(".swiper-container-hero", {
-//     effect: "coverflow",
-//     grabCursor: false,
-//     centeredSlides: true,
-//     slidesPerView: 3,
-//     coverflowEffect: {
-//       rotate: 10,
-//       // stretch: 5,
-//       depth: 110,
-//       // modifier: 1,
-//       slideShadows: true,
-//     },
-//     loop: true,
-//     pagination: {
-//       el: ".swiper-pagination",
-//     },
-//     autoplay: {
-//       delay: 2000,
-//       disableOnInteraction: true,
-//     },
-//   });
-// }
-
-// function createSliders(sliders) {
-//   const sliderList = document.querySelector(".swiper-wrapper");
-
-//   sliders.forEach((slide) => {
-//     const slideItem = document.createElement("div");
-//     slideItem.className = "swiper-slide";
-
-//     // Slice the description to a desired length (e.g., 100 characters)
-//     const truncatedDescription =
-//       slide?.description?.length > 300
-//         ? slide.description.slice(0, 300) + "..."
-//         : slide.description;
-
-//     slideItem.innerHTML = `
-
-//         <div class="slider-info">
-//         <img class="imgCarousal" src="${slide.artwork_url}" alt="${slide.title}"/>
-//         <h1 class="slider-title">${slide.title}</h1>
-//         <p class="slider-description">${truncatedDescription}</p>
-//         <button class="slider-button"><i class="fas fa-play"></i></button></div>
-//       `;
-
-//     sliderList.appendChild(slideItem);
-//   });
-// }
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
   row.innerHTML = "";
@@ -149,10 +87,6 @@ function initializeMusicNavigation() {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
   const musicSections = [
-    // "hero-container",
-    // "latest-songs-row",
-    // "album-row",
-    // "most-played-songs-row",
     {
       id: "hero-container",
       leftArrow: null,
