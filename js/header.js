@@ -70,29 +70,29 @@ function loadUserData() {
   return userData;
 }
 
-function setupProfileButtonListeners() {
-  document
-    .getElementById("profile-button")
-    .addEventListener("click", function () {
-      const userData = loadUserData();
+// function setupProfileButtonListeners() {
+//   document
+//     .getElementById("profile-button")
+//     .addEventListener("click", function () {
+//       const userData = loadUserData();
 
-      if (userData && userData.id) {
-        // User is logged in; redirect to profile page
-        window.location.href = "pages/profilePage.html"; // Replace with the actual profile page URL
-      } else {
-        // User is not logged in; open login modal
-        openLoginModal();
-        console.log("login modal clicked");
-      }
-    });
+//       if (userData && userData.id) {
+//         // User is logged in; redirect to profile page
+//         window.location.href = "pages/profilePage.html"; // Replace with the actual profile page URL
+//       } else {
+//         // User is not logged in; open login modal
+//         openLoginModal();
+//         console.log("login modal clicked");
+//       }
+//     });
 
-  // Close the modal when clicking outside of it
-  window.addEventListener("click", (event) => {
-    if (event.target === document.getElementById("login-modal")) {
-      closeLoginModal();
-    }
-  });
-}
+//   // Close the modal when clicking outside of it
+//   window.addEventListener("click", (event) => {
+//     if (event.target === document.getElementById("login-modal")) {
+//       closeLoginModal();
+//     }
+//   });
+// }
 
 function handleEscapeKey(event) {
   if (event.key === "Escape" && isKeyboardVisible) {
@@ -106,12 +106,21 @@ function handleEscapeKey(event) {
 }
 
 async function openLoginModal() {
-  document.getElementById("login-modal").style.display = "block";
-  document.body.classList.add("no-scroll");
-  setupLoginModalNavigation();
-  // setupInputListeners();
-  isModalOpen = true;
-  // focusInput(0);
+  const userData = loadUserData();
+
+  if (userData && userData.id) {
+    // User is logged in; redirect to profile page
+    window.location.href = "pages/profilePage.html"; // Replace with the actual profile page URL
+  } else {
+    // User is not logged in; open login modal
+    document.getElementById("login-modal").style.display = "block";
+    document.body.classList.add("no-scroll");
+    setupLoginModalNavigation();
+    // setupInputListeners();
+    isModalOpen = true;
+    // focusInput(0);
+    console.log("login modal clicked");
+  }
 }
 
 function closeLoginModal() {
