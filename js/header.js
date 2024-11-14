@@ -184,6 +184,8 @@ function setupLoginModalNavigation() {
       if (event.key === "Escape") {
         if (isKeyboardVisible) {
           closeKeyboard();
+        } else {
+          closeLoginModal();
         }
       } else {
         if (visibleLoginMethod) {
@@ -198,7 +200,6 @@ function setupLoginModalNavigation() {
               break;
           }
         } else if (visiblePinMode) {
-          //
           if (isKeyboardVisible) {
             navigateKeyboard(event, selectedPinField);
           } else {
@@ -352,6 +353,10 @@ function setupLoginModalNavigation() {
           selectedCredentialsField?.classList.remove(
             "modal-login-button-selected"
           );
+          selectedCredentialsField.click();
+        } else if (
+          selectedCredentialsField.id === "credentials-submit-button"
+        ) {
           selectedCredentialsField.click();
         }
         break;
@@ -696,6 +701,10 @@ function goBack() {
 const pinInput = document.getElementById("pin");
 const errorMessageContainer = document.getElementById("pin-error-message");
 
+pinInput.addEventListener("change", function (e) {
+  console.warn(e.target.value);
+});
+
 // Function to validate PIN input
 function validatePinInput() {
   const pin = pinInput.value;
@@ -709,11 +718,12 @@ function validatePinInput() {
   }
 
   if (pin.length == 6) {
+    alert();
     submitPinLogin();
   }
 }
-// Add event listener for input changes
-pinInput.addEventListener("input", validatePinInput);
+// // Add event listener for input changes
+// pinInput.addEventListener("input", validatePinInput);
 
 function showPinForm() {
   document.getElementById("qr-login-section").style.display = "none";
