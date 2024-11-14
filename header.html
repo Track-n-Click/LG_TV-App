@@ -92,13 +92,17 @@
       >
         <img src="images/qr_code.png" alt="QR Code" />
         <h4>Scan this QR code with your mobile to login.</h4>
-        <button onclick="showPinForm()" class="modal-login-button">Next</button>
+        <div class="w-full flex justify-between items-center gap-2">
+          <button onclick="showPinForm()" class="modal-login-button" id="pin-mode-next">Next</button>
+          <button onclick="goBack()" class="modal-login-button-back" id="pin-mode-back">Back</button>
+        </div>
+        
         <p>
           Having trouble using the QR code? Go to
           <a href="https://ayozat.com" target="_blank">ayozat.com</a> </br>and click
           'Connect TV'.
         </p>
-        <button onclick="goBack()" class="modal-login-button-back">Back</button>
+        <!-- <button onclick="goBack()" class="modal-login-button-back">Back</button> -->
       </div>
 
       <!-- PIN Entry Section -->

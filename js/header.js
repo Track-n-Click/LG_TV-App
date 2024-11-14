@@ -143,66 +143,120 @@ function setupInputListeners() {
 
 // Setup keyboard navigation within the modal
 function setupLoginModalNavigation() {
-  const focusableElements = [
-    document.getElementById("email"),
-    document.getElementById("password"),
-    document.querySelector(".modal-login-button"),
+  console.warn("setupLoginModalNavigation initialized");
+  // login methods
+  let LoginMethodindex = 0;
+  const loginMethods = [
+    document.getElementById("login-via-pin"),
+    document.getElementById("login-via-credentials"),
   ];
+  let selectedLoginMethod = loginMethods[LoginMethodindex];
+  selectedLoginMethod?.classList.add("modal-login-option-selected");
 
-  let currentIndex = 0; // Start with the first focusable element
+  // pin mode
+  let pinModeQrButtonindex = 0;
+  const pinModeQrButtons = [
+    document.getElementById("pin-mode-next"),
+    document.getElementById("pin-mode-back"),
+  ];
+  let selectedQrButton = pinModeQrButtons[pinModeQrButtonindex];
+  selectedQrButton?.classList.add("modal-login-button-selected");
 
-  // Add focusable class to all elements
-  focusableElements.forEach((element) => element.classList.add("focusable"));
-
-  // Focus the first element when the modal opens
-  focusElement(currentIndex);
+  let visibleLoginMethod = true;
+  let visiblePinModeSelectionMode = false;
+  let visiblePinMode = false;
+  let visibleCredentialsMode = false;
 
   // Handle arrow key navigation within modal
   function handleKeyDown(event) {
     if (isKeyboardVisible) return; // Ignore key events if keyboard is visible
 
     if (document.getElementById("login-modal").style.display === "block") {
-      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-        if (event.key === "ArrowUp") {
-          currentIndex =
-            (currentIndex - 1 + focusableElements.length) %
-            focusableElements.length;
-        } else if (event.key === "ArrowDown") {
-          currentIndex = (currentIndex + 1) % focusableElements.length;
+      if (event.key === "Escape") {
+        // goBack();
+        // window.history.back();
+      } else {
+        if (visibleLoginMethod) {
+          switch (event.key) {
+            case "ArrowLeft":
+            case "ArrowRight":
+              handleLoginMethod(event);
+              break;
+            case "Enter":
+              handleEnterForSelectLoginMethod();
+              break;
+          }
+        } else if (visiblePinModeSelectionMode) {
+          switch (event.key) {
+            case "ArrowLeft":
+            case "ArrowRight":
+              handleQrSelectButton(event);
+              break;
+            case "Enter":
+              handleEnterForSelectQrButton();
+              break;
+          }
+        } else if (visiblePinMode) {
+          //
+        } else if (visibleCredentialsMode) {
+          // alert("credentials");
         }
-        focusElement(currentIndex);
-        event.preventDefault(); // Prevent default scrolling
-      } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-        handlePinCredentials(event)
-      }else if (event.key === "Enter") {        
-        handleEnterKeyForModal(focusableElements[currentIndex]);
-        event.preventDefault(); // Prevent default form submission
       }
     }
   }
 
-  let index = 0; 
-  const loginMethods = [
-    document.getElementById("login-via-pin"),
-    document.getElementById("login-via-credentials")
-  ];
+  // login model functions
+  function handleLoginMethod(event) {
+    selectedLoginMethod?.classList.remove("modal-login-option-selected");
 
-  function handlePinCredentials(event) {
-    loginMethods[index]?.classList.remove("modal-login-option-selected");
-
-    if (event.key === "ArrowLeft" && index > 0) {
-      index -= 1;
-      console.log("Arrow left", index);
-    } else if (event.key === "ArrowRight" && index < loginMethods.length - 1) {
-      index += 1;
-      console.log("Arrow right", index);
+    if (event.key === "ArrowRight") {
+      LoginMethodindex = (LoginMethodindex + 1) % loginMethods.length;
+    } else if (event.key === "ArrowLeft") {
+      LoginMethodindex =
+        (LoginMethodindex - 1 + loginMethods.length) % loginMethods.length;
     }
 
-    const selectedComponent = loginMethods[index];
-    selectedComponent.classList.add("modal-login-option-selected");
+    selectedLoginMethod = loginMethods[LoginMethodindex];
+    selectedLoginMethod?.classList.add("modal-login-option-selected");
+  }
 
-    focusElement(index); 
-    event.preventDefault(); 
+  function handleEnterForSelectLoginMethod() {
+    if (selectedLoginMethod) {
+      visibleLoginMethod = false;
+      if (selectedLoginMethod.id === "login-via-pin") {
+        visiblePinModeSelectionMode = true;
+      } else if (selectedLoginMethod.id === "login-via-credentials") {
+        visibleCredentialsMode = true;
+      }
+      selectedLoginMethod.click();
+    }
+  }
+
+  function handleQrSelectButton(event) {
+    selectedQrButton?.classList.remove("modal-login-button-selected");
+    if (event.key === "ArrowRight") {
+      pinModeQrButtonindex =
+        (pinModeQrButtonindex + 1) % pinModeQrButtons.length;
+    } else if (event.key === "ArrowLeft") {
+      pinModeQrButtonindex =
+        (pinModeQrButtonindex - 1 + pinModeQrButtons.length) %
+        pinModeQrButtons.length;
+    }
+
+    selectedQrButton = pinModeQrButtons[pinModeQrButtonindex];
+    selectedQrButton?.classList.add("modal-login-button-selected");
+  }
+
+  function handleEnterForSelectQrButton() {
+    if (selectedQrButton) {
+      visiblePinModeSelectionMode = false;
+      if (selectedQrButton.id === "pin-mode-next") {
+        visiblePinMode = true;
+      } else {
+        visibleLoginMethod = true;
+      }
+      selectedQrButton.click();
+    }
   }
 
   // Attach the listener
@@ -216,6 +270,65 @@ function setupLoginModalNavigation() {
   document.getElementById("login-modal").removeNavigationListener =
     removeNavigationListener;
 }
+// function setupLoginModalNavigation() {
+//   const focusableElements = [
+//     document.getElementById("email"),
+//     document.getElementById("password"),
+//     document.querySelector(".modal-login-button"),
+//   ];
+
+//   let currentIndex = 0; // Start with the first focusable element
+
+//   // Add focusable class to all elements
+//   focusableElements.forEach((element) => element.classList.add("focusable"));
+
+//   // Focus the first element when the modal opens
+//   focusElement(currentIndex);
+
+//   // selecting login methods
+//   let LoginMethodindex = 0;
+//   const loginMethods = [
+//     document.getElementById("login-via-pin"),
+//     document.getElementById("login-via-credentials"),
+//   ];
+//   let selectedLoginMethod = loginMethods[0];
+//   selectedLoginMethod?.classList.add("modal-login-option-selected");
+
+//   console.log("initite");
+
+//   // Handle arrow key navigation within modal
+//   function handleKeyDown(event) {
+//     if (isKeyboardVisible) return; // Ignore key events if keyboard is visible
+
+//     if (document.getElementById("login-modal").style.display === "block") {
+//       if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+//         if (event.key === "ArrowUp") {
+//           currentIndex =
+//             (currentIndex - 1 + focusableElements.length) %
+//             focusableElements.length;
+//         } else if (event.key === "ArrowDown") {
+//           currentIndex = (currentIndex + 1) % focusableElements.length;
+//         }
+//         focusElement(currentIndex);
+//         event.preventDefault(); // Prevent default scrolling
+//       }  else if (event.key === "Enter") {
+//         handleEnterKeyForModal(focusableElements[currentIndex]);
+//         event.preventDefault(); // Prevent default form submission
+//       }
+//     }
+//   }
+
+//   // Attach the listener
+//   document.addEventListener("keydown", handleKeyDown);
+
+//   // Function to remove the listener
+//   function removeNavigationListener() {
+//     document.removeEventListener("keydown", handleKeyDown);
+//   }
+
+//   document.getElementById("login-modal").removeNavigationListener =
+//     removeNavigationListener;
+// }
 
 // Removes keydown listeners for modal navigation
 function removeModalNavigation() {
