@@ -70,29 +70,29 @@ function loadUserData() {
   return userData;
 }
 
-// function setupProfileButtonListeners() {
-//   document
-//     .getElementById("profile-button")
-//     .addEventListener("click", function () {
-//       const userData = loadUserData();
+function setupProfileButtonListeners() {
+  document
+    .getElementById("profile-button")
+    .addEventListener("click", function () {
+      const userData = loadUserData();
 
-//       if (userData && userData.id) {
-//         // User is logged in; redirect to profile page
-//         window.location.href = "pages/profilePage.html"; // Replace with the actual profile page URL
-//       } else {
-//         // User is not logged in; open login modal
-//         openLoginModal();
-//         console.log("login modal clicked");
-//       }
-//     });
+      if (userData && userData.id) {
+        // User is logged in; redirect to profile page
+        window.location.href = "pages/profilePage.html"; // Replace with the actual profile page URL
+      } else {
+        // User is not logged in; open login modal
+        openLoginModal();
+        console.log("login modal clicked");
+      }
+    });
 
-//   // Close the modal when clicking outside of it
-//   window.addEventListener("click", (event) => {
-//     if (event.target === document.getElementById("login-modal")) {
-//       closeLoginModal();
-//     }
-//   });
-// }
+  // Close the modal when clicking outside of it
+  window.addEventListener("click", (event) => {
+    if (event.target === document.getElementById("login-modal")) {
+      closeLoginModal();
+    }
+  });
+}
 
 function handleEscapeKey(event) {
   if (event.key === "Escape" && isKeyboardVisible) {
