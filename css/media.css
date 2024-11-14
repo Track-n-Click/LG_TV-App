@@ -18,7 +18,7 @@ body {
 #hero-container {
   width: 90%;
   height: 300px;
-  background: url("../images/thumbs/media.jpg");
+  background: url("../images/thumbs/liveTv.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -156,7 +156,7 @@ h2 {
 }
 
 .video-tile.selected {
-  transform: scale(1.2);
+  transform: scale(1.1);
   border: 2px solid #b4b4b45a;
   z-index: 10;
   transition: all 1s ease;

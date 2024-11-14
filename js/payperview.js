@@ -1,16 +1,43 @@
-import { fetchMovies, fetchTVSeries } from "./mediaService.js";
+import { fetchAllPayperview } from "./payperviewService.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  displayPlaceholders("movie-row");
-  displayPlaceholders("tv-row");
+  displayPlaceholders("upcoming-payperview-row");
+  displayPlaceholders("past-payperview-row");
 
   setTimeout(async () => {
     try {
-      const movies = await fetchMovies();
-      replacePlaceholdersWithData("movie-row", movies, "movies");
+      // Fetch the data once
+      const allPayperview = await fetchAllPayperview();
 
-      const tvSeries = await fetchTVSeries();
-      replacePlaceholdersWithData("tv-row", tvSeries, "series");
+      // Get the current date and time
+      const now = new Date();
+
+      // Separate upcoming and past events based on end date
+
+      const upcomingEvents = allPayperview.filter(
+        (event) => new Date(event.end_date_time) > now
+      );
+      const pastEvents = allPayperview.filter(
+        (event) => new Date(event.end_date_time) <= now
+      );
+
+      // Check if there are any upcoming events
+      const payperviewSection = document.getElementById("payperview-upcoming");
+      if (upcomingEvents === undefined || upcomingEvents.length === 0) {
+        // Hide the payperview section if there are no upcoming events
+        payperviewSection.style.display = "none !important";
+      } else {
+        // Show the section and populate with upcoming events if any
+        payperviewSection.style.display = "flex";
+        replacePlaceholdersWithData(
+          "upcoming-payperview-row",
+          upcomingEvents,
+          "ppv"
+        );
+      }
+
+      // Populate past events
+      replacePlaceholdersWithData("past-payperview-row", pastEvents, "ppv");
 
       initializeMediaNavigation();
     } catch (error) {
@@ -46,9 +73,9 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
   const row = document.getElementById(rowId);
   row.innerHTML = "";
 
-  mediaItems.forEach((item, index) => {
+  mediaItems?.forEach((item, index) => {
     const tile = document.createElement("div");
-    tile.classList.add("video-tile");
+    tile.classList.add("ppv-tile");
     tile.setAttribute("data-index", index);
     tile.setAttribute("data-url", item.stream_url);
     tile.setAttribute("data-slug", item.slug);
@@ -84,14 +111,14 @@ function initializeMediaNavigation() {
       rightArrow: null,
     },
     {
-      id: "movie-row",
-      leftArrow: "left-arrow-movies",
-      rightArrow: "right-arrow-movies",
+      id: "past-payperview-row",
+      leftArrow: "left-arrow-payperview",
+      rightArrow: "right-arrow-payperview",
     },
     {
-      id: "tv-row",
-      leftArrow: "left-arrow-tv",
-      rightArrow: "right-arrow-tv",
+      id: "upcoming-payperview-row",
+      leftArrow: "left-arrow-payperview",
+      rightArrow: "right-arrow-payperview",
     },
   ];
 
@@ -132,7 +159,7 @@ function initializeMediaNavigation() {
     const currentRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
-    const currentTiles = currentRow.querySelectorAll(".video-tile");
+    const currentTiles = currentRow.querySelectorAll(".ppv-tile");
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -150,7 +177,7 @@ function initializeMediaNavigation() {
     if (mediaSections[selectedSectionIndex].id === "hero-container") {
       scrollToTop(); // Scroll to the top for the hero section
     } else {
-      const newTiles = newRow.querySelectorAll(".video-tile");
+      const newTiles = newRow.querySelectorAll(".ppv-tile");
       if (newTiles.length > 0) {
         newTiles[selectedItemIndex].classList.add("selected");
         scrollToSection(newRow);
@@ -163,7 +190,7 @@ function initializeMediaNavigation() {
     const currentRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
-    const currentTiles = currentRow.querySelectorAll(".video-tile");
+    const currentTiles = currentRow.querySelectorAll(".ppv-tile");
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -177,7 +204,7 @@ function initializeMediaNavigation() {
   }
 
   function playSelectedVideo() {
-    const selectedTile = document.querySelector(".video-tile.selected");
+    const selectedTile = document.querySelector(".ppv-tile.selected");
     if (!selectedTile) return;
 
     const videoUrl = selectedTile.getAttribute("data-url");
@@ -187,18 +214,9 @@ function initializeMediaNavigation() {
 
     console.log("Selected video type:", mediaType);
 
-    if (mediaType === "tv") {
-      window.location.href = `player.html?title=${encodeURIComponent(
-        title
-      )}&src=${encodeURIComponent(videoUrl)}`;
-    } else if (mediaType === "movies") {
-      console.log("Redirecting to video details page...");
-      window.location.href = `media/videoDetails.html?movie-slug=${encodeURIComponent(
-        slug
-      )}`;
-    } else {
-      console.log("Redirecting to video details page...");
-      window.location.href = `media/videoDetails.html?series-slug=${encodeURIComponent(
+    if (mediaType === "ppv") {
+      console.log("Redirecting to ppv details page...");
+      window.location.href = `payperview/ppvDetailsPage.html?ppv-slug=${encodeURIComponent(
         slug
       )}`;
     }
