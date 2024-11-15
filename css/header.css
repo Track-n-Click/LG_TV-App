@@ -82,7 +82,12 @@ body::-webkit-scrollbar {
   cursor: pointer;
   color: var(--text-white);
   font-size: 20px;
-  padding: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding: 10px; */
   transition: background-color 0.3s ease, color 0.3s ease;
   border-radius: 50%;
 }
@@ -95,6 +100,10 @@ body::-webkit-scrollbar {
 .menu-list-item:hover i,
 .menu-list-item.selected i {
   color: var(--primary-color); /* Hover and selected state */
+}
+
+.menu-list-item.selected {
+  border: var(--primary-color) 1px solid !important;
 }
 
 /* Modal styles */
@@ -138,7 +147,7 @@ body::-webkit-scrollbar {
   background-color: #ffffff;
   border-radius: 100%;
   padding: 10px;
-  margin-top: 30px;
+  margin-top: 10px;
   box-shadow: 0px 10px 50px rgba(255, 0, 0, 0.837);
 }
 
@@ -160,6 +169,20 @@ body::-webkit-scrollbar {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#pin-login-section {
+  border: var(--border-color-gray) 1px solid;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.modal-form-pin {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
 }
@@ -340,7 +363,7 @@ body::-webkit-scrollbar {
   font-size: large;
 }
 
-#qr-login-section p {
+#pin-entry-section p {
   margin: 8px auto;
   text-align: center;
   font-size: smaller;
@@ -423,4 +446,17 @@ body::-webkit-scrollbar {
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
+}
+
+.modal-login-button-selected {
+  background-color: var(--text-white);
+  color: var(--primary-color);
+  border-radius: 50px !important;
+  transform: none;
+}
+
+.modal-form-input-focus {
+  outline: none;
+  border: 2px solid var(--primary-color); /* Focus border color */
+  background-color: rgba(255, 255, 255, 0.1); /* Slight background change */
 }
