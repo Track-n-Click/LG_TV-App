@@ -3,7 +3,88 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Podcast</title>
+    <title>Podcast Page</title>
+    <link rel="stylesheet" href="../css/podcast.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
-  <body></body>
+  <body>
+    <!-- Home Hero Slider -->
+    <div id="hero-container">
+      <div id="hero">
+        <div id="overlay"></div>
+        <div class="hero-text">
+          <h2 id="title" class="hero-title">Podcast</h2>
+          <p id="description">
+            Discover and listen to podcast from <br />around the world.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div id="podcast-grid-container" class="podcast-content">
+      <!-- <div class="swiper-main">
+        <div class="swiper">
+          <div
+            class="swiper-container swiper-container-hero"
+            id="swiper-container"
+          >
+            <div class="swiper-back-dot"></div>
+            <div class="swiper-wrapper swiper-hero" id="swiper-wrapper"></div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+      </div> -->
+
+      <div id="latest-podcast-channels" class="podcast-section">
+        <h2>New Podcasts</h2>
+        <div id="left-arrow-podcast" class="nav-arrow left-arrow">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="podcast-row-container">
+          <div id="latest-podcast-channels-row" class="podcast-row">
+            <!-- Movie items will be injected here by media.js -->
+          </div>
+        </div>
+        <div id="right-arrow-podcast" class="nav-arrow right-arrow">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div id="albums" class="podcast-section">
+        <h2>All Podcasts</h2>
+        <div id="left-arrow-all-podcast" class="nav-arrow left-arrow">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="podcast-row-container">
+          <div id="podcast-all-row" class="podcast-row">
+            <!-- Music items will be injected here by media.js -->
+          </div>
+        </div>
+        <div id="right-arrow-all-podcast" class="nav-arrow right-arrow">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <!-- Most Played Songs section -->
+      <!-- <div id="most-played-songs" class="radio-section">
+        <h2>Most Played Songs</h2>
+        <div id="most-played-songs-row" class="radio-row">
+          
+        </div>
+      </div> -->
+    </div>
+
+    <script type="module" src="../js/podcastService.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script type="module" src="../js/podcast.js"></script>
+    <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+  </body>
 </html>
