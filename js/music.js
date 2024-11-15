@@ -207,7 +207,7 @@ function initializeMusicNavigation() {
   }
 
   function updateArrowVisibility(row, tiles) {
-    const currentSection = mediaSections[selectedSectionIndex];
+    const currentSection = musicSections[selectedSectionIndex];
     const leftArrow = currentSection.leftArrow
       ? document.getElementById(currentSection.leftArrow)
       : null;
