@@ -223,18 +223,18 @@ function initializeMediaNavigation() {
 
     console.log("Selected video type:", mediaType);
 
-    // Handle video redirection
-    // if (mediaType === "tv") {
-    //   window.location.href = `player.html?title=${encodeURIComponent(
-    //     title
-    //   )}&src=${encodeURIComponent(videoUrl)}`;
-    //   return;
-    // } else if (mediaType === "movies") {
-    //   window.location.href = `media/videoDetails.html?movie-slug=${encodeURIComponent(
-    //     slug
-    //   )}`;
-    //   return;
-    // }
+    //Handle video redirection
+    if (mediaType === "series") {
+      window.location.href = `media/videoDetails.html?series-slug=${encodeURIComponent(
+        slug
+      )}`;
+      return;
+    } else if (mediaType === "movies") {
+      window.location.href = `media/videoDetails.html?movie-slug=${encodeURIComponent(
+        slug
+      )}`;
+      return;
+    }
   }
 
   function scrollToSection(section) {

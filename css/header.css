@@ -82,7 +82,12 @@ body::-webkit-scrollbar {
   cursor: pointer;
   color: var(--text-white);
   font-size: 20px;
-  padding: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding: 10px; */
   transition: background-color 0.3s ease, color 0.3s ease;
   border-radius: 50%;
 }
@@ -95,6 +100,10 @@ body::-webkit-scrollbar {
 .menu-list-item:hover i,
 .menu-list-item.selected i {
   color: var(--primary-color); /* Hover and selected state */
+}
+
+.menu-list-item.selected {
+  border: var(--primary-color) 1px solid !important;
 }
 
 /* Modal styles */

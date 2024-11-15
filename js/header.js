@@ -857,10 +857,14 @@ function displayUserProfile() {
   const userData = loadUserData();
 
   if (userData && userData.artwork_url) {
-    // assuming 'profileImageUrl' holds the image URL
+    // Display profile image and hide user icon
     profileImage.src = userData.artwork_url;
     profileImage.style.display = "block";
     userIcon.style.display = "none";
+  } else {
+    // Hide profile image and show user icon
+    profileImage.style.display = "none";
+    userIcon.style.display = "block";
   }
 }
 
