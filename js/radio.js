@@ -90,13 +90,13 @@ function initializeMusicNavigation() {
     },
     {
       id: "latest-radio-channels-row",
-      leftArrow: "left-arrow-movies",
-      rightArrow: "right-arrow-movies",
+      leftArrow: "left-arrow-radio",
+      rightArrow: "right-arrow-radio",
     },
     {
       id: "radio-you-might-like-row",
-      leftArrow: "left-arrow-radio",
-      rightArrow: "right-arrow-radio",
+      leftArrow: "left-arrow-like-radio",
+      rightArrow: "right-arrow-like-radio",
     },
   ];
 
@@ -200,7 +200,7 @@ function initializeMusicNavigation() {
   }
 
   function updateArrowVisibility(row, tiles) {
-    const currentSection = mediaSections[selectedSectionIndex];
+    const currentSection = musicSections[selectedSectionIndex];
     const leftArrow = currentSection.leftArrow
       ? document.getElementById(currentSection.leftArrow)
       : null;

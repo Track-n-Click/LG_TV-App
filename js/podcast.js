@@ -1,20 +1,15 @@
-import {
-  fetchAlbums,
-  fetchLatestSongs,
-  fetchMostPlayedSongs,
-} from "./musicService.js";
+import { fetchLatestPodcasts, fetchAllPodcast } from "./podcastService.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Display placeholders and then fetch and display latest songs
-  displayPlaceholders("latest-songs-row");
-  displayPlaceholders("album-row");
+  displayPlaceholders("latest-podcast-channels-row");
+  displayPlaceholders("podcast-all-row");
 
   setTimeout(async () => {
-    const latestSongs = await fetchLatestSongs();
-    replacePlaceholdersWithData("latest-songs-row", latestSongs);
+    const latestPodcast = await fetchLatestPodcasts();
+    replacePlaceholdersWithData("latest-podcast-channels-row", latestPodcast);
 
-    const albums = await fetchAlbums();
-    replacePlaceholdersWithData("album-row", albums);
+    const allPodcasts = await fetchAllPodcast();
+    replacePlaceholdersWithData("podcast-all-row", allPodcasts);
   }, 1000);
 
   initializeMusicNavigation();
@@ -22,6 +17,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
+  if (!row) {
+    console.error(`Element with ID '${rowId}' not found.`);
+    return;
+  }
   row.innerHTML = "";
 
   // Get the window's inner width
@@ -36,50 +35,46 @@ function displayPlaceholders(rowId) {
     const placeholder = document.createElement("div");
     placeholder.classList.add("placeholder-tile");
     placeholder.innerHTML = `
-      <div class="placeholder-img"></div>
-      <div class="placeholder-title"></div>
-    `;
+          <div class="placeholder-img"></div>
+          <div class="placeholder-title"></div>
+        `;
     row.appendChild(placeholder);
   }
 }
 
-function replacePlaceholdersWithData(rowId, musicItems) {
+function replacePlaceholdersWithData(rowId, podcast) {
   const row = document.getElementById(rowId);
   row.innerHTML = "";
 
-  if (Array.isArray(musicItems)) {
-    musicItems.forEach((item, index) => {
+  if (Array.isArray(podcast)) {
+    podcast.forEach((item, index) => {
       const tile = document.createElement("div");
-      if (rowId === "album-row") {
-        tile.setAttribute("type", "album");
-        tile.setAttribute("id", item.id);
-      } else {
-        tile.setAttribute("type", "music");
-        tile.setAttribute("song-id", item.id);
-      }
+      tile.setAttribute("type", "podcast");
+      tile.setAttribute("podcast-id", item.id);
       tile.classList.add("music-tile");
       tile.setAttribute("data-index", index);
       tile.setAttribute("data-title", item.title);
       tile.setAttribute("data-url", item.stream_url || item.url);
-      tile.setAttribute("data-artist", item.artists[0].name);
+      tile.setAttribute("data-artist", "test");
       tile.setAttribute("data-artwork", item.artwork_url);
+      tile.setAttribute("data-slug", item.slug);
       tile.innerHTML = `
-      <div class="overlay">
-        <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-      </div>
-      <img src="${item.artwork_url}" alt="${item.title}">
-      <div class="title">${
-        (item.title || item.name).length > 25
-          ? (item.title || item.name).substring(0, 25) + "..."
-          : item.title || item.name
-      }</div>
-            `;
+          <div class="overlay">
+            <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+          <img src="${item.artwork_url}" alt="${item.title}">
+          <div class="title">${
+            (item.title || item.name).length > 25
+              ? (item.title || item.name).substring(0, 25) + "..."
+              : item.title || item.name
+          }</div>
+                `;
       row.appendChild(tile);
     });
   } else {
-    console.error("Expected an array but received:", musicItems);
+    console.error("Expected an array but received:", podcast);
   }
 }
 
@@ -87,20 +82,24 @@ function initializeMusicNavigation() {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
   const musicSections = [
+    // "hero-container",
+    // "latest-radio-channels-row",
+    // "radio-you-might-like-row",
+    // "most-played-songs-row",
     {
       id: "hero-container",
       leftArrow: null,
       rightArrow: null,
     },
     {
-      id: "latest-songs-row",
-      leftArrow: "left-arrow-movies",
-      rightArrow: "right-arrow-movies",
+      id: "latest-podcast-channels-row",
+      leftArrow: "left-arrow-podcast",
+      rightArrow: "right-arrow-podcast",
     },
     {
-      id: "album-row",
-      leftArrow: "left-arrow-tv",
-      rightArrow: "right-arrow-tv",
+      id: "podcast-all-row",
+      leftArrow: "left-arrow-all-podcast",
+      rightArrow: "right-arrow-all-podcast",
     },
   ];
 
@@ -192,15 +191,12 @@ function initializeMusicNavigation() {
     const musicArtist = selectedTile.getAttribute("data-artist");
     const musicArtwork = selectedTile.getAttribute("data-artwork");
     const type = selectedTile.getAttribute("type");
-    const albumId = selectedTile.getAttribute("id");
-    const songId = selectedTile.getAttribute("song-id");
+    const albumId = selectedTile.getAttribute("podcast-id");
+    const songId = selectedTile.getAttribute("radio-id");
+    const radio_slug = selectedTile.getAttribute("data-slug");
 
-    if (type === "music") {
-      window.location.href = `musicPlayer.html?id=${encodeURIComponent(
-        songId
-      )}`;
-    } else {
-      window.location.href = `musicPlayerForAlbum.html?id=${encodeURIComponent(
+    if (type === "podcast") {
+      window.location.href = `podcastPlayerForEpisode.html?id=${encodeURIComponent(
         albumId
       )}`;
     }
