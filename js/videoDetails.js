@@ -4,6 +4,7 @@ import {
 } from "./mediaService.js";
 let movieSlug = null;
 let seriesSlug = null;
+let detailsObj = null;
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -22,11 +23,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       details = await fetchVideoDetailsBySlug(movieSlug);
       console.log("movie", details);
+      detailsObj = details;
       setupDetailsSection(details);
       initializeMediaNavigation();
     } else if (seriesSlug) {
       details = await fetchSeriesDetailsBySlug(seriesSlug);
       console.log("series", details);
+      detailsObj = details;
       const seasons = details.seasons;
       createSeasonsAndEpisodes(seasons);
       setupDetailsSection(details);
@@ -371,9 +374,18 @@ function initializeMediaNavigation(seasons) {
     if (type === "movie" && selectedButton) {
       const videoUrl = selectedButton.getAttribute("data-url");
       console.log("Movie URL:", videoUrl);
-      window.location.href = `../player.html?movie-src=${encodeURIComponent(
+      const vastTagUrl = detailsObj?.vast_tag_url || "";
+      // const vastTagUrl = "https://ayotising.com/fc.php?script=rmVideo&zoneid=59&format=vast3 ";
+      console.log("VAST Tag URL:", vastTagUrl);
+
+      const queryString = `movie-src=${encodeURIComponent(
         videoUrl
-      )}&movie-slug=${movieSlug}`;
+      )}&movie-slug=${encodeURIComponent(
+        movieSlug
+      )}&vast-tag=${encodeURIComponent(vastTagUrl)}`;
+
+      const encodedQueryString = btoa(queryString);
+      window.location.href = `../player.html?data=${encodedQueryString}`;
     } else if (type === "series") {
       const videoUrl =
         selectedButton?.getAttribute("data-url") ||
@@ -381,9 +393,18 @@ function initializeMediaNavigation(seasons) {
 
       if (videoUrl) {
         console.log("Series URL:", videoUrl);
-        window.location.href = `../player.html?series-src=${encodeURIComponent(
+        const vastTagUrl = detailsObj?.vast_tag_url || "";
+        // const vastTagUrl = "https://ayotising.com/fc.php?script=rmVideo&zoneid=59&format=vast3 ";
+        console.log("VAST Tag URL:", vastTagUrl);
+
+        const queryString = `series-src=${encodeURIComponent(
           videoUrl
-        )}&series-slug=${seriesSlug}`;
+        )}&series-slug=${encodeURIComponent(
+          seriesSlug
+        )}&vast-tag=${encodeURIComponent(vastTagUrl)}`;
+
+        const encodedQueryString = btoa(queryString);
+        window.location.href = `../player.html?data=${encodedQueryString}`;
       } else {
         console.error("No URL found for the series.");
       }

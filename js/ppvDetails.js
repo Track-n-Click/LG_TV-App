@@ -342,10 +342,10 @@ function initializeMediaNavigation(seasons) {
       const decodedPpvUrl = decodePpvUrl(encodedPpvUrl);
 
       if (decodedPpvUrl) {
-        // Redirect to the player page with the decoded URL as a query parameter
-        window.location.href = `../player.html?ppv-src=${encodeURIComponent(
-          decodedPpvUrl
-        )}`;
+        const queryString = `ppv-src=${encodeURIComponent(decodedPpvUrl)}`;
+
+        const encodedQueryString = btoa(queryString);
+        window.location.href = `../player.html?data=${encodedQueryString}`;
       }
     } else {
       console.error(
