@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Radio Page</title>
     <link rel="stylesheet" href="../css/radio.css" />
+    <link rel="stylesheet" href="../css/header.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -17,6 +18,10 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
+
+     <!-- Placeholder for the dynamic header -->
+     <div id="header-placeholder"></div>
+
     <!-- Home Hero Slider -->
     <div id="hero-container">
       <div id="hero">
@@ -77,6 +82,27 @@
     <script type="module" src="../js/radioService.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script type="module" src="../js/radio.js"></script>
+    <script type="module" src="../js/header.js"></script>
     <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+
+    <!-- Dynamically Load Header Script -->
+    <script>
+      // Load the header dynamically
+      fetch("../header.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("header-placeholder").innerHTML = data;
+
+          // Load header.js after inserting header HTML
+          const script = document.createElement("script");
+          script.src = "../js/header.js";
+          script.onload = () => {
+            console.log("Header script loaded");
+            initializeHeader();
+          };
+          document.body.appendChild(script);
+        })
+        .catch((error) => console.error("Error loading header:", error));
+    </script>
   </body>
 </html>

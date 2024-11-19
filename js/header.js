@@ -871,3 +871,28 @@ function displayUserProfile() {
 document.addEventListener("DOMContentLoaded", function () {
   displayUserProfile();
 });
+
+function handlHeaderFromAnotherPage(key, selectedSectionId){
+  if(selectedSectionId !== "header-placeholder"){
+    deselectSettingsButton();
+    deselectProfileButton()
+  }  
+  else{
+    const element = document.querySelector('#login-modal');
+    const displayStyle = window.getComputedStyle(element).display;
+
+    if((key==="ArrowLeft" || key==="ArrowRight") && displayStyle !== "block"){
+      handleSettingsProfileNavigation(key)
+    }
+    else if(key==="Enter"){
+      if(document.getElementById("profile-button").classList.contains("selected")){
+        // alert("profile-button")
+        openLoginModal();
+      }
+      else{
+        alert("settings-button")
+      }
+      // openLoginModal()
+    }
+  }
+}

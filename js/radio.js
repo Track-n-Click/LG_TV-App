@@ -84,6 +84,11 @@ function initializeMusicNavigation() {
     // "radio-you-might-like-row",
     // "most-played-songs-row",
     {
+      id: "header-placeholder",
+      leftArrow: null,
+      rightArrow: null,
+    },
+    {
       id: "hero-container",
       leftArrow: null,
       rightArrow: null,
@@ -110,26 +115,36 @@ function initializeMusicNavigation() {
   }
 
   document.addEventListener("keydown", (e) => {
-    switch (e.key) {
-      case "ArrowUp":
-        navigateSections(-1);
-        break;
-      case "ArrowDown":
-        navigateSections(1);
-        break;
-      case "ArrowLeft":
-        navigateItems(-1);
-        break;
-      case "ArrowRight":
-        navigateItems(1);
-        break;
-      case "Enter":
-        playSelectedMusic();
-        break;
-      case "Escape":
-        goBack();
-        break;
+
+    if(musicSections[selectedSectionIndex].id === "header-placeholder"){
+      handlHeaderFromAnotherPage(e.key, musicSections[selectedSectionIndex].id);
     }
+
+    const element = document.querySelector('#login-modal');
+    const displayStyle = window.getComputedStyle(element).display;
+    if (displayStyle !== 'block') {
+      switch (e.key) {
+        case "ArrowUp":
+          navigateSections(-1);
+          break;
+        case "ArrowDown":
+          navigateSections(1);
+          break;
+        case "ArrowLeft": 
+        navigateItems(-1);        
+          break;
+        case "ArrowRight":
+          navigateItems(1);
+          break;
+        case "Enter":
+          alert()
+          playSelectedMusic();
+          break;
+        case "Escape":
+          goBack();
+          break;
+      }
+    } 
   });
 
   function navigateSections(step) {
@@ -163,6 +178,8 @@ function initializeMusicNavigation() {
       }
     }
   }
+
+  
 
   function navigateItems(step) {
     const currentRow = document.getElementById(
