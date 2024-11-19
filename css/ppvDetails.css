@@ -471,3 +471,14 @@ h2 {
   color: var(--placeholder-color-gray); /* Custom placeholder color */
   opacity: 0.7; /* Adjust placeholder transparency */
 }
+#qrcode-container{
+  background-color: white;
+  padding: 5px;
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

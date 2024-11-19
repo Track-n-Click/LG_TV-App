@@ -1,5 +1,7 @@
-import { fetchPPVDetailsBySlug } from "./payperviewService.js";
-import { fetchPurchasedEvent } from "./payperviewService.js";
+import {
+  fetchPPVDetailsBySlug,
+  fetchPurchasedEvent,
+} from "./payperviewService.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -20,11 +22,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       details = await fetchPPVDetailsBySlug(ppvSlug);
       console.log("ppv", details);
       //   setupDetailsSection(details);
-
       createSliders(details);
-
       //puchase Button Changed
-
       const playContainer = document.querySelector(".play-container");
       const sliderButton = document.querySelector(".slider-button");
 
@@ -53,7 +52,6 @@ function createSliders(details) {
     details.title
   }"/>
         <div class="slider-info">
-          
           <h1 class="slider-title">${details.title}</h1>
           <p class="category">${details?.category}</p>
           <p class="duration">Duration :
@@ -62,7 +60,7 @@ function createSliders(details) {
                 ? formatDuration(details?.duration)
                 : "Duration not available"
             }
-        </p>
+          </p>
           <p class="slider-description" >${(details.description.length > 350
             ? details.description.substring(0, 350) + "..."
             : details.description
@@ -72,7 +70,8 @@ function createSliders(details) {
             .replace(/&ldquo;/g, '"')
             .replace(/&rdquo;/g, '"')
             .replace(/&nbsp;/g, "")
-            .replace(/\n/g, "<br/>")}</p>
+            .replace(/\n/g, "<br/>")
+            .replace("<br>", "")}</p>
 
           <div class="countdown-timer">
           <div class="days">00</div>
@@ -97,7 +96,9 @@ function createSliders(details) {
           <h3>Reserve Now $${details.price}</h3>
           </button>
         </div>
-        </div>
+          <div id="qrcode-container"></div>
+          <p class="slider-description">Don't have a ticket yet? Grab yours now and secure your spot!</p>
+        
       `;
   sliderList.appendChild(slideItem);
 
@@ -118,6 +119,22 @@ function createSliders(details) {
     details.streaming_status,
     sliderButton
   );
+  // Select the container where the QR code will appear
+  const qrCodeContainer = document.getElementById("qrcode-container");
+
+  // Define the text or URL for the QR code
+  const qrCodeText = `https://dofe.ayozat.co.uk/ppv/details/${details.slug}`;
+
+  // Generate the QR code
+  var qrcode = new QRCode(qrCodeContainer, {
+    text: qrCodeText,
+    width: 75,
+    height: 75,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+  console.log(qrcode);
 }
 
 async function updatePurchaseButton(user, event, sliderButton, playContainer) {
