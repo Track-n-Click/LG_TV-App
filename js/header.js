@@ -289,11 +289,11 @@ function setupLoginModalNavigation() {
         selectedPinField = pinFields[pinFieldIndex];
 
         if (selectedPinField.id === "pin") {
-          console.warn(selectedPinField.id);
+          // console.warn(selectedPinField.id);
           selectedPinField?.classList.remove("modal-login-button-selected");
           selectedPinField.focus();
         } else {
-          console.warn(selectedPinField.id);
+          // console.warn(selectedPinField.id);
           selectedPinField?.classList.add("modal-login-button-selected");
         }
         break;
@@ -872,27 +872,9 @@ document.addEventListener("DOMContentLoaded", function () {
   displayUserProfile();
 });
 
-function handlHeaderFromAnotherPage(key, selectedSectionId){
-  if(selectedSectionId !== "header-placeholder"){
-    deselectSettingsButton();
-    deselectProfileButton()
-  }  
-  else{
-    const element = document.querySelector('#login-modal');
-    const displayStyle = window.getComputedStyle(element).display;
-
-    if((key==="ArrowLeft" || key==="ArrowRight") && displayStyle !== "block"){
-      handleSettingsProfileNavigation(key)
-    }
-    else if(key==="Enter"){
-      if(document.getElementById("profile-button").classList.contains("selected")){
-        // alert("profile-button")
-        openLoginModal();
-      }
-      else{
-        alert("settings-button")
-      }
-      // openLoginModal()
-    }
+// Redirect to a specified page
+function redirect(page) {
+  if (page) {
+    window.location.href = page; // Redirect to the specified page
   }
 }

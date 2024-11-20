@@ -115,37 +115,51 @@ function initializeMusicNavigation() {
   }
 
   document.addEventListener("keydown", (e) => {
-
-    if(musicSections[selectedSectionIndex].id === "header-placeholder"){
-      handlHeaderFromAnotherPage(e.key, musicSections[selectedSectionIndex].id);
+    console.warn("selected section: ", musicSections[selectedSectionIndex].id)
+    // Check if the modal is open
+    if (isModalOpen) {
+      return; // Skip further processing if the modal is open
     }
 
-    const element = document.querySelector('#login-modal');
-    const displayStyle = window.getComputedStyle(element).display;
-    if (displayStyle !== 'block') {
-      switch (e.key) {
-        case "ArrowUp":
-          navigateSections(-1);
-          break;
-        case "ArrowDown":
-          navigateSections(1);
-          break;
-        case "ArrowLeft": 
-        navigateItems(-1);        
-          break;
-        case "ArrowRight":
-          navigateItems(1);
-          break;
-        case "Enter":
-          alert()
-          playSelectedMusic();
-          break;
-        case "Escape":
+    switch (e.key) {
+      case "ArrowUp":
+        navigateSections(-1);
+        break;
+      case "ArrowDown":
+        navigateSections(1);
+        break;
+      case "ArrowLeft": 
+      navigateItems(-1);        
+        break;
+      case "ArrowRight":
+        navigateItems(1);
+        break;
+      case "Enter":
+        handleEnterKey();
+        break;
+      case "Escape":
+        if(musicSections[selectedSectionIndex].id !== "header-placeholder"){
           goBack();
-          break;
+        }
+        break;
+    }
+  })
+
+  function handleEnterKey(){
+    // handle login navigation
+    if(musicSections[selectedSectionIndex].id === "header-placeholder"){
+      if (
+        document.getElementById("profile-button").classList.contains("selected")
+      ) {
+        openLoginModal();
+      } else if (document.getElementById("settings-button").classList.contains("selected")) {
+        redirect("settings.html");
       }
-    } 
-  });
+    }
+    else{
+      playSelectedMusic();
+    }
+  }
 
   function navigateSections(step) {
     const currentRow = document.getElementById(
@@ -166,9 +180,16 @@ function initializeMusicNavigation() {
       musicSections[selectedSectionIndex].id
     );
 
+    deselectProfileButton();
+    deselectSettingsButton();
+
     if (musicSections[selectedSectionIndex].id === "hero-container") {
       scrollToTop(); // Scroll to the top for the hero section
-    } else {
+    } else if (musicSections[selectedSectionIndex].id === "header-placeholder") {
+      selectSettingsButton();
+      // deselectProfileButton();
+    }
+    else {
       const newTiles = newRow.querySelectorAll(".radio-tile");
 
       if (newTiles.length > 0) {
@@ -181,20 +202,28 @@ function initializeMusicNavigation() {
 
   
 
+  
+
   function navigateItems(step) {
-    const currentRow = document.getElementById(
-      musicSections[selectedSectionIndex].id
-    );
-    const currentTiles = currentRow.querySelectorAll(".radio-tile");
-
-    if (currentTiles.length > 0) {
-      currentTiles[selectedItemIndex].classList.remove("selected");
-      selectedItemIndex =
-        (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
-      currentTiles[selectedItemIndex].classList.add("selected");
-
-      scrollToTile(currentRow, currentTiles[selectedItemIndex]);
-      updateArrowVisibility(currentRow, currentTiles); // Updated here
+    if(musicSections[selectedSectionIndex].id==="header-placeholder"){
+      // handle login navigation
+      handleSettingsProfileNavigation(step===1 ? "ArrowRight" : "ArrowLeft");
+    }
+    else{
+      const currentRow = document.getElementById(
+        musicSections[selectedSectionIndex].id
+      );
+      const currentTiles = currentRow.querySelectorAll(".radio-tile");
+  
+      if (currentTiles.length > 0) {
+        currentTiles[selectedItemIndex].classList.remove("selected");
+        selectedItemIndex =
+          (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
+        currentTiles[selectedItemIndex].classList.add("selected");
+  
+        scrollToTile(currentRow, currentTiles[selectedItemIndex]);
+        updateArrowVisibility(currentRow, currentTiles); // Updated here
+      }
     }
   }
 
