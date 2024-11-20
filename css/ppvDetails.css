@@ -169,7 +169,7 @@ body {
   text-align: center;
   cursor: pointer;
   border-radius: 50px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease,
     border 0.3s ease;
 }
@@ -179,9 +179,17 @@ body {
   height: 40px;
   flex-shrink: 0;
   margin-right: 5px !important;
+  border-radius: 50%;
+}
+
+.slider-button .play-icon {
   color: var(--primary-color);
   background-color: var(--text-white);
-  border-radius: 50%;
+}
+
+.slider-button .shop-icon {
+  color: var(--text-white);
+  background-color: var(--primary-color);
 }
 
 .slider-button h3 {
@@ -384,10 +392,10 @@ h2 {
   background-color: #242d418a;
   color: var(--text-white) !important;
   border-radius: 20px;
-  padding: 10px 20px;
+  padding: 0 12px;
 
   h3 {
-    font-size: medium;
+    font-size: 14px;
   }
 
   p {
@@ -413,4 +421,64 @@ h2 {
   color: var(--text-lightblue);
   border-radius: 5px;
   margin-top: 20px;
+}
+
+.play-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  align-items: start;
+  height: 100px;
+}
+
+.field-and-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-container {
+  display: flex;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.verification-container {
+  display: flex;
+  height: 60px;
+  border-radius: 20px !important;
+  color: var(--text-white) !important;
+  border: var(--border-color-gray) 1px solid;
+}
+
+#ticketNumberInput {
+  background-color: var(
+    --background-color-custom
+  ); /* Replace with your custom background color */
+  border: none;
+  color: var(--text-white); /* Ensures the text color is white */
+  padding: 5px 10px; /* Add some padding for better aesthetics */
+  border-radius: 10px; /* Rounded edges for the input field */
+  font-size: 14px; /* Adjust font size for better readability */
+}
+
+#ticketNumberInput::placeholder {
+  color: var(--placeholder-color-gray); /* Custom placeholder color */
+  opacity: 0.7; /* Adjust placeholder transparency */
+}
+#qrcode-container{
+  background-color: white;
+  padding: 5px;
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

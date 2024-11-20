@@ -269,17 +269,22 @@ body.no-scroll {
   transform: translate(-50%, -50%);
   width: 70%;
   height: 70%;
-  background: radial-gradient(circle, var(--text-white) 0%, transparent 40%);
-  opacity: 0.3; /* Adjust transparency as needed */
+  background: radial-gradient(
+    circle,
+    var(--text-lightblue) 0%,
+    transparent 40%
+  );
+  opacity: 0.3;
   border-radius: 100%;
-  z-index: -1; /* Position it behind the swiper */
+  z-index: -1;
 }
 
 .imgCarousal {
   width: 100%;
-  height: 60%;
+  height: 55%;
   object-fit: cover;
-  -webkit-box-reflect: below 5px
+  opacity: 0.8;
+  -webkit-box-reflect: below 10px
     linear-gradient(transparent, transparent 90%, rgba(0, 0, 0, 0.5));
   border-radius: 10px;
   border: var(--border-color-gray) solid 1px;
@@ -319,6 +324,10 @@ body.no-scroll {
 
 .swiper-slide-active .slider-info {
   opacity: 1; /* Make it visible when the slide is active */
+}
+
+.swiper-slide-active .imgCarousal {
+  opacity: 1;
 }
 
 .slider-button {

@@ -228,7 +228,7 @@ h2 {
   pointer-events: none;
 }
 
-.muisc-tile.selected .overlay {
+.music-tile.selected .overlay {
   display: flex !important;
 }
 

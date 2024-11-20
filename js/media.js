@@ -184,10 +184,17 @@ function initializeMediaNavigation() {
 
     const videoUrl = selectedTile.getAttribute("data-url");
     const title = selectedTile.getAttribute("data-title");
+    const vastTagUrl = "https://ayotising.com/fc.php?script=rmVideo&zoneid=59&format=vast3";
+    console.log("VAST Tag URL:", vastTagUrl);
 
-    window.location.href = `player.html?title=${encodeURIComponent(
+    const queryString = `title=${encodeURIComponent(
       title
-    )}&src=${encodeURIComponent(videoUrl)}`;
+    )}&src=${encodeURIComponent(
+      videoUrl
+    )}&vast-tag=${encodeURIComponent(vastTagUrl)}`;
+
+    const encodedQueryString = btoa(queryString);
+    window.location.href = `player.html?data=${encodedQueryString}`;
   }
 }
 

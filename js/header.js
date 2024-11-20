@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initializeHeader() {
   setupNavbarScroll();
   setupProfileButtonListeners();
-  setupInputListeners();
+  // setupInputListeners();
   displayUserProfile();
 }
 
@@ -106,12 +106,21 @@ function handleEscapeKey(event) {
 }
 
 async function openLoginModal() {
-  document.getElementById("login-modal").style.display = "block";
-  document.body.classList.add("no-scroll");
-  setupLoginModalNavigation();
-  setupInputListeners();
-  isModalOpen = true;
-  focusInput(0);
+  const userData = loadUserData();
+
+  if (userData && userData.id) {
+    // User is logged in; redirect to profile page
+    window.location.href = "pages/profilePage.html"; // Replace with the actual profile page URL
+  } else {
+    // User is not logged in; open login modal
+    document.getElementById("login-modal").style.display = "block";
+    document.body.classList.add("no-scroll");
+    setupLoginModalNavigation();
+    // setupInputListeners();
+    isModalOpen = true;
+    // focusInput(0);
+    console.log("login modal clicked");
+  }
 }
 
 function closeLoginModal() {
@@ -125,84 +134,248 @@ function closeLoginModal() {
 }
 
 // Focus on a specific input in the modal
-function focusInput(index) {
-  const inputs = document.querySelectorAll("#login-modal input");
-  if (inputs[index]) {
-    inputs[index].focus();
-    inputs[index].scrollIntoView({ behavior: "smooth", block: "center" }); // Ensure input is visible
-  }
-}
+// function focusInput(index) {
+//   const inputs = document.querySelectorAll("#login-modal input");
+//   if (inputs[index]) {
+//     inputs[index].focus();
+//     inputs[index].scrollIntoView({ behavior: "smooth", block: "center" }); // Ensure input is visible
+//   }
+// }
 
 // Setup listeners for the input fields to open the keyboard
-function setupInputListeners() {
-  const inputFields = document.querySelectorAll("#login-modal input");
-  inputFields.forEach((input, index) => {
-    input.addEventListener("focus", () => openKeyboard(index)); // Open keyboard on focus
-  });
-}
+// function setupInputListeners() {
+//   const inputFields = document.querySelectorAll("#login-modal input");
+//   inputFields.forEach((input, index) => {
+//     input.addEventListener("focus", () => openKeyboard(index)); // Open keyboard on focus
+//   });
+// }
 
 // Setup keyboard navigation within the modal
 function setupLoginModalNavigation() {
-  const focusableElements = [
+  console.warn("setupLoginModalNavigation initialized");
+
+  let visibleLoginMethod = true;
+  let visiblePinMode = false;
+  let visibleCredentialsMode = false;
+
+  // login methods
+  let LoginMethodindex = 0;
+  const loginMethods = [
+    document.getElementById("login-via-pin"),
+    document.getElementById("login-via-credentials"),
+  ];
+  let selectedLoginMethod = loginMethods[LoginMethodindex];
+  selectedLoginMethod?.classList.add("modal-login-option-selected");
+
+  // pin mode
+  let pinFieldIndex = 0;
+  let pinFields = [
+    document.getElementById("pin"),
+    document.getElementById("pin-mode-input-back"),
+  ];
+  let selectedPinField = pinFields[pinFieldIndex];
+
+  // credentials mode
+  let credentialsFieldIndex = 0;
+  let credentialsFields = [
     document.getElementById("email"),
     document.getElementById("password"),
-    document.querySelector(".modal-login-button"),
+    document.getElementById("credentials-submit-button"),
+    document.getElementById("credentials-back-button"),
   ];
-
-  let currentIndex = 0; // Start with the first focusable element
-
-  // Add focusable class to all elements
-  focusableElements.forEach((element) => element.classList.add("focusable"));
-
-  // Focus the first element when the modal opens
-  focusElement(currentIndex);
+  let selectedCredentialsField = credentialsFields[credentialsFieldIndex];
 
   // Handle arrow key navigation within modal
   function handleKeyDown(event) {
-    if (isKeyboardVisible) return; // Ignore key events if keyboard is visible
+    // if (isKeyboardVisible) return; // Ignore key events if keyboard is visible
 
     if (document.getElementById("login-modal").style.display === "block") {
-      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-        if (event.key === "ArrowUp") {
-          currentIndex =
-            (currentIndex - 1 + focusableElements.length) %
-            focusableElements.length;
-        } else if (event.key === "ArrowDown") {
-          currentIndex = (currentIndex + 1) % focusableElements.length;
+      if (event.key === "Escape") {
+        if (isKeyboardVisible) {
+          closeKeyboard();
+        } else {
+          closeLoginModal();
         }
-        focusElement(currentIndex);
-        event.preventDefault(); // Prevent default scrolling
-      } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-        handlePinCredentials(event)
-      }else if (event.key === "Enter") {        
-        handleEnterKeyForModal(focusableElements[currentIndex]);
-        event.preventDefault(); // Prevent default form submission
+      } else {
+        if (visibleLoginMethod) {
+          isKeyboardVisible = false;
+          switch (event.key) {
+            case "ArrowLeft":
+            case "ArrowRight":
+              handleLoginMethod(event);
+              break;
+            case "Enter":
+              handleEnterForSelectLoginMethod();
+              break;
+          }
+        } else if (visiblePinMode) {
+          if (isKeyboardVisible) {
+            navigateKeyboard(event, selectedPinField);
+            if (
+              selectedPinField?.id === "pin" &&
+              selectedPinField?.value.length === 6
+            ) {
+              validatePinInput();
+            }
+          } else {
+            handleSelectEnterPinField(event);
+          }
+        } else if (visibleCredentialsMode) {
+          if (isKeyboardVisible) {
+            navigateKeyboard(event, selectedCredentialsField);
+          } else {
+            handleSelectEnterCredentialsField(event);
+          }
+        }
       }
     }
   }
 
-  let index = 0; 
-  const loginMethods = [
-    document.getElementById("login-via-pin"),
-    document.getElementById("login-via-credentials")
-  ];
+  // login model functions
+  function handleLoginMethod(event) {
+    selectedLoginMethod?.classList.remove("modal-login-option-selected");
 
-  function handlePinCredentials(event) {
-    loginMethods[index]?.classList.remove("modal-login-option-selected");
-
-    if (event.key === "ArrowLeft" && index > 0) {
-      index -= 1;
-      console.log("Arrow left", index);
-    } else if (event.key === "ArrowRight" && index < loginMethods.length - 1) {
-      index += 1;
-      console.log("Arrow right", index);
+    if (event.key === "ArrowRight") {
+      LoginMethodindex = (LoginMethodindex + 1) % loginMethods.length;
+    } else if (event.key === "ArrowLeft") {
+      LoginMethodindex =
+        (LoginMethodindex - 1 + loginMethods.length) % loginMethods.length;
     }
 
-    const selectedComponent = loginMethods[index];
-    selectedComponent.classList.add("modal-login-option-selected");
+    selectedLoginMethod = loginMethods[LoginMethodindex];
+    selectedLoginMethod?.classList.add("modal-login-option-selected");
+  }
 
-    focusElement(index); 
-    event.preventDefault(); 
+  function handleEnterForSelectLoginMethod() {
+    if (selectedLoginMethod) {
+      visibleLoginMethod = false;
+      if (selectedLoginMethod.id === "login-via-pin") {
+        selectedPinField = pinFields[0];
+        selectedPinField.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+        selectedPinField.style.border = "2px solid var(--primary-color)";
+
+        visiblePinMode = true;
+      } else if (selectedLoginMethod.id === "login-via-credentials") {
+        selectedCredentialsField = credentialsFields[0];
+        selectedCredentialsField.style.backgroundColor =
+          "rgba(255, 255, 255, 0.1)";
+        selectedCredentialsField.style.border =
+          "2px solid var(--primary-color)";
+        visibleCredentialsMode = true;
+      }
+      selectedLoginMethod.click();
+    }
+  }
+
+  function handleSelectEnterPinField(event) {
+    switch (event.key) {
+      case "ArrowUp":
+      case "ArrowDown":
+        if (selectedPinField.id === "pin") {
+          selectedPinField.style.backgroundColor = "";
+          selectedPinField.style.border = "";
+          selectedPinField.blur();
+        } else {
+          selectedPinField?.classList.remove("modal-login-button-selected");
+        }
+
+        if (event.key === "ArrowDown") {
+          pinFieldIndex = (pinFieldIndex + 1) % pinFields.length;
+        } else if (event.key === "ArrowUp") {
+          pinFieldIndex =
+            (pinFieldIndex - 1 + pinFields.length) % pinFields.length;
+        }
+
+        selectedPinField = pinFields[pinFieldIndex];
+
+        if (selectedPinField.id === "pin") {
+          console.warn(selectedPinField.id);
+          selectedPinField?.classList.remove("modal-login-button-selected");
+          selectedPinField.focus();
+        } else {
+          console.warn(selectedPinField.id);
+          selectedPinField?.classList.add("modal-login-button-selected");
+        }
+        break;
+      case "Enter":
+        if (selectedPinField.id === "pin-mode-input-back") {
+          visiblePinMode = false;
+          visibleLoginMethod = true;
+          document.getElementById("pin").value = "";
+          selectedPinField?.classList.remove("modal-login-button-selected");
+          selectedPinField.click();
+        } else {
+          openKeyboard();
+        }
+        break;
+    }
+  }
+
+  function handleSelectEnterCredentialsField(event) {
+    switch (event.key) {
+      case "ArrowUp":
+      case "ArrowDown":
+        if (
+          selectedCredentialsField.id === "email" ||
+          selectedCredentialsField.id === "password"
+        ) {
+          selectedCredentialsField.blur();
+          selectedCredentialsField.style.backgroundColor = "";
+          selectedCredentialsField.style.border = "";
+        } else {
+          selectedCredentialsField?.classList.remove(
+            "modal-login-button-selected"
+          );
+        }
+
+        if (event.key === "ArrowDown") {
+          credentialsFieldIndex =
+            (credentialsFieldIndex + 1) % credentialsFields.length;
+        } else if (event.key === "ArrowUp") {
+          credentialsFieldIndex =
+            (credentialsFieldIndex - 1 + credentialsFields.length) %
+            credentialsFields.length;
+        }
+
+        selectedCredentialsField = credentialsFields[credentialsFieldIndex];
+
+        if (
+          selectedCredentialsField.id === "email" ||
+          selectedCredentialsField.id === "password"
+        ) {
+          selectedCredentialsField.style.backgroundColor =
+            "rgba(255, 255, 255, 0.1)";
+          selectedCredentialsField.style.border =
+            "2px solid var(--primary-color)";
+        } else {
+          selectedCredentialsField?.classList.add(
+            "modal-login-button-selected"
+          );
+        }
+        break;
+      case "Enter":
+        if (
+          selectedCredentialsField.id === "email" ||
+          selectedCredentialsField.id === "password"
+        ) {
+          selectedCredentialsField.focus();
+          openKeyboard();
+        } else if (selectedCredentialsField.id === "credentials-back-button") {
+          visibleCredentialsMode = false;
+          visibleLoginMethod = true;
+          document.getElementById("email").value = "";
+          document.getElementById("password").value = "";
+          selectedCredentialsField?.classList.remove(
+            "modal-login-button-selected"
+          );
+          selectedCredentialsField.click();
+        } else if (
+          selectedCredentialsField.id === "credentials-submit-button"
+        ) {
+          selectedCredentialsField.click();
+        }
+        break;
+    }
   }
 
   // Attach the listener
@@ -225,23 +398,23 @@ function removeModalNavigation() {
 }
 
 // Focuses the specified element
-function focusElement(index) {
-  const element = document.querySelectorAll(".focusable")[index];
-  if (element) {
-    element.focus();
-  }
-}
+// function focusElement(index) {
+//   const element = document.querySelectorAll(".focusable")[index];
+//   if (element) {
+//     element.focus();
+//   }
+// }
 
-// Handle actions when pressing the Enter key within the modal
-function handleEnterKeyForModal(element) {
-  if (isKeyboardVisible) return;
+// // Handle actions when pressing the Enter key within the modal
+// function handleEnterKeyForModal(element) {
+//   if (isKeyboardVisible) return;
 
-  if (element.id === "email" || element.id === "password") {
-    element.focus();
-  } else if (element.classList.contains("modal-login-button")) {
-    submitCredentialsLogin();
-  }
-}
+//   if (element.id === "email" || element.id === "password") {
+//     element.focus();
+//   } else if (element.classList.contains("modal-login-button")) {
+//     submitCredentialsLogin();
+//   }
+// }
 
 // Function to verify login and redirect
 function verifyLoginAndRedirect() {
@@ -342,7 +515,7 @@ function generateKeyboard() {
       }
 
       // Add unique styling for special keys like backspace, enter, etc.
-      if (["backspace", "enter", "shift", "tab", "caps"].includes(key.key)) {
+      if (["delete", "enter", "shift", "tab", "caps"].includes(key.key)) {
         keyDiv.classList.add("special-key");
       }
 
@@ -372,16 +545,16 @@ function highlightKey() {
   }
 }
 
-function pressKey() {
+function pressKey(inputField) {
   const selectedKey = document.querySelector(
     `.keyboard-row[data-row="${selectedRow}"] .keyboard-key[data-col="${selectedCol}"]`
   );
-  const inputField =
-    document.querySelectorAll("#login-modal input")[activeInputIndex]; // The current input field
+  // const inputField =
+  //   document.querySelectorAll("#login-modal input")[activeInputIndex]; // The current input field
 
   if (!selectedKey || !inputField) return false; // Make sure both the selected key and input field exist
 
-  if (selectedKey.dataset.key === "backspace") {
+  if (selectedKey.dataset.key === "delete") {
     inputField.value = inputField.value.slice(0, -1); // Delete the last character
   } else if (selectedKey.dataset.key === "enter") {
     closeKeyboard(); // Close keyboard when Enter is pressed
@@ -395,18 +568,19 @@ function pressKey() {
   return false;
 }
 
-function openKeyboard(inputIndex) {
+function openKeyboard() {
   const keyboard = document.getElementById("on-screen-keyboard");
   if (!isKeyboardVisible && keyboard) {
-    keyboard.classList.remove("show");
-    isKeyboardVisible = true;
-    activeInputIndex = inputIndex; // Track the input field currently being focused
-    selectedRow = 0;
-    selectedCol = 0;
-    highlightKey(); // Focus the first key
-    document.addEventListener("keydown", navigateKeyboard); // Enable arrow key navigation for the keyboard
-    // Adjust modal top margin when keyboard opens
-    adjustModalForKeyboard(true);
+    generateKeyboard();
+    // keyboard.classList.remove("show");
+    // isKeyboardVisible = true;
+    // activeInputIndex = inputIndex; // Track the input field currently being focused
+    // selectedRow = 0;
+    // selectedCol = 0;
+    // highlightKey(); // Focus the first key
+    // document.addEventListener("keydown", navigateKeyboard); // Enable arrow key navigation for the keyboard
+    // // Adjust modal top margin when keyboard opens
+    // adjustModalForKeyboard(true);
   }
 }
 
@@ -428,7 +602,7 @@ function adjustModalForKeyboard(isOpen) {
 }
 
 // Handle keyboard navigation
-function navigateKeyboard(event) {
+function navigateKeyboard(event, inputField) {
   if (!isKeyboardVisible) return;
 
   const numRows = document.querySelectorAll(".keyboard-row").length;
@@ -450,7 +624,7 @@ function navigateKeyboard(event) {
       selectedCol = (selectedCol + 1) % numCols; // Cycle right through the columns
       break;
     case "Enter":
-      if (pressKey()) {
+      if (pressKey(inputField)) {
         closeKeyboard(); // Close keyboard when "Enter" is pressed on the keyboard's "Enter" key
       }
       break;
@@ -502,12 +676,24 @@ function scrollToElement(element) {
   });
 }
 
+//fuction to toggle modal size
+function toggleModalSize() {
+  const modalContent = document.querySelector(".modal-content");
+  const pinLoginForm = document.getElementById("pin-login-form");
+
+  if (pinLoginForm.style.display === "block") {
+    modalContent.style.width = "50%";
+  } else {
+    modalContent.style.width = "30%";
+  }
+}
+
 // calling login
 // Show the PIN or Credentials login form based on the selection
 document.getElementById("login-via-pin").addEventListener("click", () => {
   document.getElementById("login-options").style.display = "none";
   document.getElementById("pin-login-form").style.display = "block";
-  document.getElementById("qr-login-section").style.display = "block";
+  toggleModalSize();
 });
 
 document
@@ -515,7 +701,7 @@ document
   .addEventListener("click", () => {
     document.getElementById("login-options").style.display = "none";
     document.getElementById("credentials-login-form").style.display = "block";
-    generateKeyboard();
+    // generateKeyboard();
   });
 
 // Function to go back to the login options
@@ -529,6 +715,10 @@ function goBack() {
 // Function to submit PIN login using fetch
 const pinInput = document.getElementById("pin");
 const errorMessageContainer = document.getElementById("pin-error-message");
+
+pinInput.addEventListener("change", function (e) {
+  console.warn(e.target.value);
+});
 
 // Function to validate PIN input
 function validatePinInput() {
@@ -546,8 +736,8 @@ function validatePinInput() {
     submitPinLogin();
   }
 }
-// Add event listener for input changes
-pinInput.addEventListener("input", validatePinInput);
+// // Add event listener for input changes
+// pinInput.addEventListener("input", validatePinInput);
 
 function showPinForm() {
   document.getElementById("qr-login-section").style.display = "none";
@@ -667,10 +857,14 @@ function displayUserProfile() {
   const userData = loadUserData();
 
   if (userData && userData.artwork_url) {
-    // assuming 'profileImageUrl' holds the image URL
+    // Display profile image and hide user icon
     profileImage.src = userData.artwork_url;
     profileImage.style.display = "block";
     userIcon.style.display = "none";
+  } else {
+    // Hide profile image and show user icon
+    profileImage.style.display = "none";
+    userIcon.style.display = "block";
   }
 }
 

@@ -13,71 +13,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     replacePlaceholdersWithData("radio-you-might-like-row", randomStations);
   }, 1000);
 
-  // Display placeholders and then fetch and display most played songs
-  // displayPlaceholders("most-played-songs-row");
-  // const mostPlayedSongs = await fetchMostPlayedSongs();
-  // replacePlaceholdersWithData("most-played-songs-row", mostPlayedSongs);
-
-  // const sliders = await fetchMostPlayedSongs();
-  // createSliders(sliders);
-
-  // console.log(sliders);
-
-  // initializeSwiperHero();
-
-  // Initialize navigation
   initializeMusicNavigation();
 });
 
-// function initializeSwiperHero() {
-//   var swiper = new Swiper(".swiper-container-hero", {
-//     effect: "coverflow",
-//     grabCursor: false,
-//     centeredSlides: true,
-//     slidesPerView: 3,
-//     coverflowEffect: {
-//       rotate: 10,
-//       // stretch: 5,
-//       depth: 110,
-//       // modifier: 1,
-//       slideShadows: true,
-//     },
-//     loop: true,
-//     pagination: {
-//       el: ".swiper-pagination",
-//     },
-//     autoplay: {
-//       delay: 2000,
-//       disableOnInteraction: true,
-//     },
-//   });
-// }
-
-// function createSliders(sliders) {
-//   const sliderList = document.querySelector(".swiper-wrapper");
-
-//   sliders.forEach((slide) => {
-//     const slideItem = document.createElement("div");
-//     slideItem.className = "swiper-slide";
-
-//     // Slice the description to a desired length (e.g., 100 characters)
-//     const truncatedDescription =
-//       slide?.description?.length > 300
-//         ? slide.description.slice(0, 300) + "..."
-//         : slide.description;
-
-//     slideItem.innerHTML = `
-
-//         <div class="slider-info">
-//         <img class="imgCarousal" src="${slide.artwork_url}" alt="${slide.title}"/>
-//         <h1 class="slider-title">${slide.title}</h1>
-//         <p class="slider-description">${truncatedDescription}</p>
-//         <button class="slider-button"><i class="fas fa-play"></i></button></div>
-//       `;
-
-//     sliderList.appendChild(slideItem);
-//   });
-// }
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
   row.innerHTML = "";
@@ -110,7 +48,7 @@ function replacePlaceholdersWithData(rowId, radioStations) {
       const tile = document.createElement("div");
       tile.setAttribute("type", "radio");
       tile.setAttribute("radio-id", item.id);
-      tile.classList.add("music-tile");
+      tile.classList.add("radio-tile");
       tile.setAttribute("data-index", index);
       tile.setAttribute("data-title", item.title);
       tile.setAttribute("data-url", item.stream_url || item.url);
@@ -198,7 +136,7 @@ function initializeMusicNavigation() {
     const currentRow = document.getElementById(
       musicSections[selectedSectionIndex].id
     );
-    const currentTiles = currentRow.querySelectorAll(".music-tile");
+    const currentTiles = currentRow.querySelectorAll(".radio-tile");
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -216,7 +154,7 @@ function initializeMusicNavigation() {
     if (musicSections[selectedSectionIndex].id === "hero-container") {
       scrollToTop(); // Scroll to the top for the hero section
     } else {
-      const newTiles = newRow.querySelectorAll(".music-tile");
+      const newTiles = newRow.querySelectorAll(".radio-tile");
 
       if (newTiles.length > 0) {
         newTiles[selectedItemIndex].classList.add("selected");
@@ -230,7 +168,7 @@ function initializeMusicNavigation() {
     const currentRow = document.getElementById(
       musicSections[selectedSectionIndex].id
     );
-    const currentTiles = currentRow.querySelectorAll(".music-tile");
+    const currentTiles = currentRow.querySelectorAll(".radio-tile");
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -244,7 +182,7 @@ function initializeMusicNavigation() {
   }
 
   function playSelectedMusic() {
-    const selectedTile = document.querySelector(".music-tile.selected");
+    const selectedTile = document.querySelector(".radio-tile.selected");
     const musicUrl = selectedTile.getAttribute("data-url");
     const musicTitle = selectedTile.getAttribute("data-title");
     const musicArtist = selectedTile.getAttribute("data-artist");
