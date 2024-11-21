@@ -1,0 +1,166 @@
+<div class="navbar">
+  <div class="navbar-container" id="navbar-container">
+    <div class="logo-container">
+      <a href="index.html">
+        <!-- <img class="logo" src="../images/AyozatStreamwhite.png" alt="Logo" /> -->
+      </a>
+    </div>
+    <div class="right-nav">
+      <div class="menu-list-item" id="settings-button">
+        <i class="fa-solid fa-gear"></i>
+      </div>
+      <div class="menu-list-item" id="profile-button">
+        <img
+          id="profile-image"
+          src=""
+          alt="Profile"
+          style="display: none; width: 30px; height: 30px; border-radius: 50%"
+        />
+        <i id="user-icon" class="fa-solid fa-user" style="display: block"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div id="login-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-logo-container">
+        <img src="images/a_logo.png" alt="Logo" class="modal-logo" />
+      </div>
+      <h2>Welcome back!</h2>
+      <p>Log in and catch up with your favorite things</p>
+    </div>
+    <!-- <form id="login-form" class="modal-form" novalidate>
+      <input type="text" id="email" name="email" required placeholder="Email" autocomplete="off" />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+        placeholder="Password"
+      />
+      <button type="submit" class="modal-login-button">LOGIN</button>
+    </form> -->
+    <!-- Login Selection -->
+    <div id="login-options" class="login-options">
+      <!-- Button for PIN Login -->
+      <button id="login-via-pin" class="modal-login-option">
+        <div class="option-content">
+          <img src="images/pin-code.png" alt="PIN Icon" class="option-icon" />
+          <span>Login via PIN</span>
+        </div>
+      </button>
+
+      <!-- Button for Credentials Login -->
+      <button id="login-via-credentials" class="modal-login-option">
+        <div class="option-content">
+          <img
+            src="images/log-in.png"
+            alt="Password Icon"
+            class="option-icon"
+          />
+          <span>Login via Credentials</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- PIN Login Form -->
+    <!-- <div id="pin-login-form" class="modal-form" style="display: none">
+      <input
+        type="text"
+        id="pin"
+        placeholder="Enter 6-digit PIN"
+        maxlength="6"
+        required
+      />
+      <div id="pin-error-message" class='error-message'></div>
+      <div class="login-buttons-container">
+        <button onclick="goBack()" class="modal-login-button-back">Back</button>
+        <button onclick="submitPinLogin()" class="modal-login-button">
+          Submit PIN
+        </button>
+      </div>
+    </div> -->
+
+    <div id="pin-login-form" class="modal-form" style="display: none">
+      <!-- PIN Entry Section -->
+      <div id="pin-login-section" class="modal-form">
+        <div class="flex justify-evenly w-[100%]">
+          <!-- qr -->
+          <div id="qr-login-section" class="modal-form" style="width: 40%">
+            <img src="images/qr_code.png" alt="QR Code" />
+            <h4>Scan this QR code with your mobile to login.</h4>
+
+            <!-- <button onclick="goBack()" class="modal-login-button-back">Back</button> -->
+          </div>
+
+          <!-- enter pin -->
+          <div id="pin-entry-section" class="modal-form-pin" style="width: 40%">
+            <input
+              type="text"
+              id="pin"
+              placeholder="Enter 6-digit PIN"
+              required
+            />
+            <div id="pin-error-message" class="error-message"></div>
+            <div class="login-buttons-container">
+              <button
+                onclick="goBack()"
+                class="modal-login-button-back"
+                id="pin-mode-input-back"
+              >
+                Back
+              </button>
+            </div>
+
+            <p>
+              Having trouble using the QR code? Go to
+              <a href="https://ayozat.com" target="_blank">ayozat.com</a> and
+              click 'Connect TV'.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="loading-screen"
+      style="display: none; text-align: center; padding: 20px"
+    >
+      <img src="/images/Ripple.svg" alt="Loading..." class="spinner" />
+    </div>
+    <!-- Credentials Login Form -->
+    <div id="credentials-login-form" class="modal-form" style="display: none">
+      <input type="text" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <div id="credentials-error-message" class="error-message"></div>
+      <div class="buttons-container">
+        <button
+          onclick="submitCredentialsLogin()"
+          class="modal-login-button"
+          id="credentials-submit-button"
+        >
+          Submit Credentials
+        </button>
+        <button
+          onclick="goBack()"
+          class="modal-login-button-back"
+          id="credentials-back-button"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+
+    <!-- Add the on-screen keyboard here -->
+    <div id="on-screen-keyboard" class="keyboard">
+      <div id="keyboard-row-0" class="keyboard-row"></div>
+      <div id="keyboard-row-1" class="keyboard-row"></div>
+      <div id="keyboard-row-2" class="keyboard-row"></div>
+      <div id="keyboard-row-3" class="keyboard-row"></div>
+      <div id="keyboard-row-4" class="keyboard-row"></div>
+    </div>
+  </div>
+</div>

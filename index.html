@@ -1,52 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <title>AYOZAT</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alexandria&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
 
-<head>
-	<title>new app</title>
-	<style type="text/css">
-		body {
-			width: 100%;
-			height: 100%;
-			background-color: #202020;
-		}
+  <body>
+    <div id="loader">
+      <img src="images/a_logo.png" alt="Loading..." />
+      <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+      </div>
+    </div>
 
-		div {
-			position: absolute;
-			height: 100%;
-			width: 100%;
-			display: table;
-		}
+    <!-- Placeholder for the dynamic header -->
+    <div id="header-placeholder"></div>
 
-		h1 {
-			display: table-cell;
-			vertical-align: middle;
-			text-align: center;
-			color: #FFFFFF;
-		}
+    <!-- Main content starts here -->
+    <div id="main">
+      <div id="hero-container">
+        <!-- Home Hero Slider -->
+        <div class="swiper-main">
+          <div class="swiper">
+            <div class="swiper-container swiper-container-hero">
+              <div class="swiper-back-dot"></div>
+              <div class="swiper-wrapper swiper-hero" id="swiper-wrapper"></div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-	</style>
-</head>
+      <div id="grid-container">
+        <div class="grid-item" data-page="pages/media.html">
+          <div class="overlay"></div>
+          <div class="thumb">
+            <img src="images/thumbs/liveTv.jpg" alt="Media" />
+          </div>
 
-<script src="webOSTVjs-1.2.4/webOSTV.js" charset="utf-8"></script>
-<script src="webOSTVjs-1.2.4/webOSTV-dev.js" charset="utf-8"></script>
-<script type="text/javascript">
-	//sample code for calling LS2 API
-	webOS.service.request("luna://com.palm.systemservice", {
-		method: "clock/getTime",
-		parameters: {},
-		onSuccess: function (args) {
-			console.log("UTC:", args.utc);
-		},
-		onFailure: function (args) {
-			console.log("Failed to getTime");
-		}
-	});
-</script>
+          <div class="text">
+            <i class="fa-solid fa-tv"></i>
+            <div class="title">Live TV</div>
+          </div>
+        </div>
 
-<body>
-	<div>
-		<h1>Hello, World!</h1>
-	</div>
-</body>
+        <div class="grid-item" data-page="pages/videos.html">
+          <div class="overlay"></div>
+          <div class="thumb">
+            <img src="images/thumbs/videos.jpg" alt="Videos" />
+          </div>
 
+          <div class="text">
+            <i class="fa-solid fa-photo-film"></i>
+            <div class="title">Videos</div>
+          </div>
+        </div>
+
+        <div class="grid-item" data-page="pages/music.html">
+          <div class="overlay"></div>
+          <div class="thumb">
+            <img src="images/thumbs/music2.jpg" alt="Music" />
+          </div>
+
+          <div class="text">
+            <i class="fa-solid fa-music"></i>
+            <div class="title">Music</div>
+          </div>
+        </div>
+        <div class="grid-item" data-page="pages/podcast.html">
+          <div class="overlay"></div>
+          <div class="thumb">
+            <img src="images/thumbs/podcasts.jpg" alt="Podcast" />
+          </div>
+
+          <div class="text">
+            <i class="fa-solid fa-envelope"></i>
+            <div class="title">Podcast</div>
+          </div>
+        </div>
+        <div class="grid-item" data-page="pages/radio.html">
+          <div class="overlay"></div>
+          <div class="thumb">
+            <img src="images/thumbs/radio.jpg" alt="Radio" />
+          </div>
+
+          <div class="text">
+            <i class="fa-solid fa-university"></i>
+            <div class="title">Radio</div>
+          </div>
+        </div>
+        <div class="grid-item" data-page="pages/payperview.html">
+          <div class="overlay"></div>
+          <div class="thumb">
+            <img src="images/thumbs/video.jpg" alt="payperview" />
+          </div>
+
+          <div class="text">
+            <i class="fa-solid fa-briefcase"></i>
+            <div class="title">PayPerView</div>
+          </div>
+        </div>
+        <div class="grid-item" data-page="pages/multiviewer.html">
+          <div class="overlay"></div>
+          <div class="thumb">
+            <img src="images/thumbs/multiviewer.jpg" alt="Multi-viewer" />
+          </div>
+          <div class="text">
+            <i class="fa-solid fa-tv"></i>
+            <div class="title">Multi-viewer</div>
+          </div>
+        </div>
+        <div class="grid-item" data-page="pages/gaming.html">
+          <div class="overlay"></div>
+          <div class="thumb">
+            <img src="images/thumbs/gaming.jpg" alt="Gaming" />
+          </div>
+
+          <div class="text">
+            <i class="fa-solid fa-dice"></i>
+            <div class="title">Gaming</div>
+          </div>
+        </div>
+
+        <!-- Add more grid items as needed -->
+      </div>
+    </div>
+
+    <!-- Load JS Modules -->
+    <script type="module" src="js/app.js" defer></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Dynamically Load Header Script -->
+    <script>
+      // Load the header dynamically
+      fetch("header.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("header-placeholder").innerHTML = data;
+
+          // Load header.js after inserting header HTML
+          const script = document.createElement("script");
+          script.src = "js/header.js";
+          script.onload = () => {
+            console.log("Header script loaded");
+            initializeHeader();
+          };
+          document.body.appendChild(script);
+        })
+        .catch((error) => console.error("Error loading header:", error));
+    </script>
+  </body>
 </html>

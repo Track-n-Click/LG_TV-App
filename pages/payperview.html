@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payperview Page</title>
+    <link rel="stylesheet" href="../css/payperview.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+  </head>
+
+  <body>
+    <div id="hero-container">
+      <div id="hero">
+        <div id="overlay"></div>
+        <div class="hero-text">
+          <h2 id="title" class="hero-title">PerPerView</h2>
+          <p id="description">
+            Discover and watch payperview events from <br />around the world.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="ppv-grid-container" class="media-content">
+      <!-- Movie section -->
+
+      <div id="payperview-upcoming" class="payperview-section">
+        <h2>Upcoming Events</h2>
+        <div id="left-arrow-payperview" class="nav-arrow left-arrow">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="payperview-row-container">
+          <div id="upcoming-payperview-row" class="payperview-row">
+            <!-- Payperview items will be injected here by media.js -->
+          </div>
+        </div>
+        <div id="right-arrow-payperview" class="nav-arrow right-arrow">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div id="payperview-past" class="payperview-section">
+        <h2>Past Events</h2>
+        <div id="left-arrow-payperview" class="nav-arrow left-arrow">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="payperview-row-container">
+          <div id="past-payperview-row" class="payperview-row">
+            <!-- Payperview items will be injected here by media.js -->
+          </div>
+        </div>
+        <div id="right-arrow-payperview" class="nav-arrow right-arrow">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../js/payperviewService.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script type="module" src="../js/payperview.js"></script>
+    <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+  </body>
+</html>

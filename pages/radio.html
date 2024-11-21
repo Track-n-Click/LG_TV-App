@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radio Page</title>
+    <link rel="stylesheet" href="../css/radio.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <!-- Home Hero Slider -->
+    <div id="hero-container">
+      <div id="hero">
+        <div id="overlay"></div>
+        <div class="hero-text">
+          <h2 id="title" class="hero-title">Radio</h2>
+          <p id="description">
+            Discover and listen to radio from <br />around the world.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div id="radio-grid-container" class="radio-content">
+      <!-- <div class="swiper-main">
+        <div class="swiper">
+          <div
+            class="swiper-container swiper-container-hero"
+            id="swiper-container"
+          >
+            <div class="swiper-back-dot"></div>
+            <div class="swiper-wrapper swiper-hero" id="swiper-wrapper"></div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+      </div> -->
+
+      <div id="latest-radio-channels" class="radio-section">
+        <h2>Most Tuned Radio Stations</h2>
+        <div id="left-arrow-radio" class="nav-arrow left-arrow">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="radio-row-container">
+          <div id="latest-radio-channels-row" class="radio-row">
+            <!-- Movie items will be injected here by media.js -->
+          </div>
+        </div>
+        <div id="right-arrow-radio" class="nav-arrow right-arrow">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div id="might-like" class="radio-section">
+        <h2>You Might Like</h2>
+        <div id="left-arrow-like-radio" class="nav-arrow left-arrow">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="radio-row-container">
+          <div id="radio-you-might-like-row" class="radio-row">
+            <!-- Music items will be injected here by media.js -->
+          </div>
+        </div>
+        <div id="right-arrow-like-radio" class="nav-arrow right-arrow">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../js/radioService.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script type="module" src="../js/radio.js"></script>
+    <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
+  </body>
+</html>
