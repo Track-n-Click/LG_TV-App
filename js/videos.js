@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const tvSeries = await fetchTVSeries();
       replacePlaceholdersWithData("tv-row", tvSeries, "series");
 
+      // console.log("Tv", tvSeries);
+
       initializeMediaNavigation();
     } catch (error) {
       console.error("Failed to load media data:", error);
@@ -54,6 +56,10 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
     tile.setAttribute("data-slug", item.slug);
     tile.setAttribute("data-type", type);
     tile.setAttribute("data-title", item.title || item.name);
+    tile.setAttribute("data-id", item.id);
+    tile.setAttribute("data-thumbnail", item.thumbnail);
+    tile.setAttribute("data-description", item.description);
+    tile.setAttribute("data-poster", item.poster || item.thumbnail);
     tile.innerHTML = `
       <div class="overlay">
         <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
@@ -75,11 +81,11 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
 }
 
 function initializeMediaNavigation() {
-  let selectedSectionIndex = 0;
+  let selectedSectionIndex = 1;
   let selectedItemIndex = 0;
   const mediaSections = [
     {
-      id: "hero-container",
+      id: "swiper-wrapper",
       leftArrow: null,
       rightArrow: null,
     },
@@ -95,13 +101,19 @@ function initializeMediaNavigation() {
     },
   ];
 
+  // Automatically select the first tile in the first section (e.g., "movie-row")
   if (mediaSections.length > 0) {
     const firstRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
-    console.log(firstRow);
-    if (firstRow && firstRow.children.length > 0) {
-      firstRow.children[selectedItemIndex].classList.add("selected");
+
+    if (firstRow) {
+      const firstTile = firstRow.querySelector(".video-tile");
+
+      if (firstTile) {
+        firstTile.classList.add("selected");
+        updateHeroSection(firstTile); // Update hero section with the first tile's data
+      }
     }
   }
 
@@ -147,13 +159,14 @@ function initializeMediaNavigation() {
       mediaSections[selectedSectionIndex].id
     );
 
-    if (mediaSections[selectedSectionIndex].id === "hero-container") {
+    if (mediaSections[selectedSectionIndex].id === "swiper-wrapper") {
       scrollToTop(); // Scroll to the top for the hero section
     } else {
       const newTiles = newRow.querySelectorAll(".video-tile");
       if (newTiles.length > 0) {
         newTiles[selectedItemIndex].classList.add("selected");
-        scrollToSection(newRow);
+        updateHeroSection(newTiles[selectedItemIndex]);
+        // scrollToSection(newRow);
         updateArrowVisibility(newRow, newTiles);
       }
     }
@@ -170,10 +183,73 @@ function initializeMediaNavigation() {
       selectedItemIndex =
         (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
       currentTiles[selectedItemIndex].classList.add("selected");
-
+      updateHeroSection(currentTiles[selectedItemIndex]);
       scrollToTile(currentRow, currentTiles[selectedItemIndex]);
       updateArrowVisibility(currentRow, currentTiles);
     }
+  }
+
+  function updateHeroSection(selectedTile) {
+    const sliderList = document.querySelector(".swiper-wrapper");
+
+    // Clear existing slides in the swiper wrapper
+    sliderList.innerHTML = "";
+
+    // Create a new slide
+    const slideItem = document.createElement("div");
+    slideItem.className = "swiper-slide";
+
+    slideItem.innerHTML = `
+      <div class="overlay"></div>
+      <div class="overlay"></div>
+      <img 
+        class="imgCarousal" 
+        src="${selectedTile.getAttribute("data-poster")}" 
+        alt="${selectedTile.getAttribute("data-title") || "Video Thumbnail"}"
+      />
+      <div class="slider-info">
+        <h1 class="slider-title">${
+          selectedTile.getAttribute("data-title") || "Videos"
+        }</h1>
+        <p class="slider-description">${
+          selectedTile.getAttribute("data-description")?.length > 400
+            ? selectedTile.getAttribute("data-description").substring(0, 400) +
+              "..."
+            : selectedTile.getAttribute("data-description") ||
+              "Discover and watch videos from around the world."
+        }</p>
+        <button 
+          class="slider-button" 
+          id="slider-button" 
+          data-url="${selectedTile.getAttribute("data-url")}" 
+          data-type="${selectedTile.getAttribute("data-type")}" 
+          data-title="${selectedTile.getAttribute("data-title")}" 
+          data-description="${selectedTile.getAttribute("data-description")}" 
+          data-thumbnail="${selectedTile.getAttribute("data-thumbnail")}">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 24 24" 
+            width="22" 
+            height="22" 
+            fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <h3>Watch Now</h3>
+        </button>
+      </div>
+    `;
+
+    // Append the updated slide
+    sliderList.appendChild(slideItem);
+
+    // Add event listener to the new button (optional based on your needs)
+    const sliderButton = slideItem.querySelector(".slider-button");
+    sliderButton.addEventListener("click", () => {
+      document.querySelectorAll(".slider-button.selected").forEach((button) => {
+        button.classList.remove("selected");
+      });
+      sliderButton.classList.add("selected");
+    });
   }
 
   function playSelectedVideo() {
