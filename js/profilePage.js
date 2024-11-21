@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   displayPlaceholders("songs-row");
   displayPlaceholders("radio-row");
   displayPlaceholders("podcast-row");
+  displayPlaceholders("ppv-row");
   // displayPlaceholders("album-row");
 
   if (userID) {
@@ -37,6 +38,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const podcasts = userProfileData?.favorite_podcasts;
       replacePlaceholdersWithPodcastData("podcast-row", podcasts, "podcast");
+
+      const ppvs = userProfileData?.favorite_ppv_events;
+      replacePlaceholdersWithPpvData("ppv-row", ppvs, "ppv");
 
       // const albums = userProfileData?.albums;
       // replacePlaceholdersWithData("album-row", albums);
@@ -94,6 +98,11 @@ function initializeMediaNavigation() {
       leftArrow: "left-arrow-podcast",
       rightArrow: "right-arrow-podcast",
     },
+    {
+      id: "ppv-row",
+      leftArrow: "left-arrow-ppv",
+      rightArrow: "right-arrow-ppv",
+    },
   ];
 
   document.addEventListener("keydown", (e) => {
@@ -125,7 +134,7 @@ function initializeMediaNavigation() {
     );
 
     const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .music-tile, .radio-tile, .podcast-tile"
+      ".video-tile, .music-tile, .radio-tile, .podcast-tile, .ppv-tile"
     );
 
     if (currentTiles.length > 0) {
@@ -157,7 +166,7 @@ function initializeMediaNavigation() {
     } else {
       // Apply .selected to the first video-tile in the new section
       const newTiles = newRow.querySelectorAll(
-        ".video-tile, .music-tile, .radio-tile, .podcast-tile"
+        ".video-tile, .music-tile, .radio-tile, .podcast-tile, .ppv-tile"
       );
       if (newTiles.length > 0) {
         newTiles[selectedItemIndex].classList.add("selected");
@@ -172,7 +181,7 @@ function initializeMediaNavigation() {
       mediaSections[selectedSectionIndex].id
     );
     const currentTiles = currentRow.querySelectorAll(
-      ".video-tile, .music-tile, .radio-tile, .podcast-tile"
+      ".video-tile, .music-tile, .radio-tile, .podcast-tile, .ppv-tile"
     );
 
     if (currentTiles.length > 0) {
@@ -209,6 +218,7 @@ function initializeMediaNavigation() {
     const songId = selectedTile.getAttribute("song-id");
     const radio_slug = selectedTile.getAttribute("data-slug");
     const podcastId = selectedTile.getAttribute("id");
+    const ppv_slug = selectedTile.getAttribute("data-slug");
 
     console.log(type);
 
@@ -230,6 +240,11 @@ function initializeMediaNavigation() {
       )}`;
       return;
     } else if (type === "podcast") {
+      window.location.href = `podcastPlayerForEpisode.html?id=${encodeURIComponent(
+        podcastId
+      )}`;
+      return;
+    } else if (type === "ppv") {
       window.location.href = `podcastPlayerForEpisode.html?id=${encodeURIComponent(
         podcastId
       )}`;
@@ -474,6 +489,44 @@ function replacePlaceholdersWithPodcastData(rowId, mediaItems, type) {
         tile.setAttribute("id", item.id);
       }
       tile.classList.add("podcast-tile");
+      tile.setAttribute("data-index", index);
+      tile.setAttribute("data-title", item.title);
+      tile.setAttribute("data-artwork", item.artwork_url);
+      tile.setAttribute("data-slug", item.slug);
+      tile.innerHTML = `
+              <div class="overlay">
+                <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+                <img src="${item.artwork_url}" alt="${item.title}">
+                <div class="title">${
+                  (item.title || item.name).length > 25
+                    ? (item.title || item.name).substring(0, 25) + "..."
+                    : item.title || item.name
+                }</div>
+            `;
+      row.appendChild(tile);
+    });
+  } else {
+    console.error("Expected an array but received:", musicItems);
+  }
+}
+
+function replacePlaceholdersWithPpvData(rowId, mediaItems, type) {
+  const row = document.getElementById(rowId);
+  row.innerHTML = "";
+
+  console.log(mediaItems);
+
+  if (Array.isArray(mediaItems)) {
+    mediaItems.forEach((item, index) => {
+      const tile = document.createElement("div");
+      if (rowId === "ppv-row") {
+        tile.setAttribute("type", "ppv");
+        tile.setAttribute("id", item.id);
+      }
+      tile.classList.add("ppv-tile");
       tile.setAttribute("data-index", index);
       tile.setAttribute("data-title", item.title);
       tile.setAttribute("data-artwork", item.artwork_url);
