@@ -67,12 +67,14 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
         </svg>
       </div>
       <img src="${item.thumbnail}" alt="${item.title}">
-      <div class="title">${
-        (item.title || item.name).length > 25
-          ? (item.title || item.name).substring(0, 25) + "..."
-          : item.title || item.name
-      }</div>
     `;
+
+    // <div class="title">${
+    //   (item.title || item.name).length > 25
+    //     ? (item.title || item.name).substring(0, 25) + "..."
+    //     : item.title || item.name
+    // }</div>
+
     tile.addEventListener("click", () => {
       playSelectedVideo();
     });
@@ -218,38 +220,40 @@ function initializeMediaNavigation() {
             : selectedTile.getAttribute("data-description") ||
               "Discover and watch videos from around the world."
         }</p>
-        <button 
-          class="slider-button" 
-          id="slider-button" 
-          data-url="${selectedTile.getAttribute("data-url")}" 
-          data-type="${selectedTile.getAttribute("data-type")}" 
-          data-title="${selectedTile.getAttribute("data-title")}" 
-          data-description="${selectedTile.getAttribute("data-description")}" 
-          data-thumbnail="${selectedTile.getAttribute("data-thumbnail")}">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            width="22" 
-            height="22" 
-            fill="currentColor">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <h3>Watch Now</h3>
-        </button>
+        
       </div>
     `;
+
+    // <button
+    //       class="slider-button"
+    //       id="slider-button"
+    //       data-url="${selectedTile.getAttribute("data-url")}"
+    //       data-type="${selectedTile.getAttribute("data-type")}"
+    //       data-title="${selectedTile.getAttribute("data-title")}"
+    //       data-description="${selectedTile.getAttribute("data-description")}"
+    //       data-thumbnail="${selectedTile.getAttribute("data-thumbnail")}">
+    //       <svg
+    //         xmlns="http://www.w3.org/2000/svg"
+    //         viewBox="0 0 24 24"
+    //         width="22"
+    //         height="22"
+    //         fill="currentColor">
+    //         <path d="M8 5v14l11-7z"/>
+    //       </svg>
+    //       <h3>Watch Now</h3>
+    //     </button>
 
     // Append the updated slide
     sliderList.appendChild(slideItem);
 
     // Add event listener to the new button (optional based on your needs)
-    const sliderButton = slideItem.querySelector(".slider-button");
-    sliderButton.addEventListener("click", () => {
-      document.querySelectorAll(".slider-button.selected").forEach((button) => {
-        button.classList.remove("selected");
-      });
-      sliderButton.classList.add("selected");
-    });
+    // const sliderButton = slideItem.querySelector(".slider-button");
+    // sliderButton.addEventListener("click", () => {
+    //   document.querySelectorAll(".slider-button.selected").forEach((button) => {
+    //     button.classList.remove("selected");
+    //   });
+    //   sliderButton.classList.add("selected");
+    // });
   }
 
   function playSelectedVideo() {
