@@ -10,15 +10,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const allPayperview = await fetchAllPayperview();
 
       // Get the current date and time
-      const now = new Date();
+      // const now = new Date();
 
       // Separate upcoming and past events based on end date
 
+      // const upcomingEvents = allPayperview.filter(
+      //   (event) => new Date(event.end_date_time) > now
+      // );
       const upcomingEvents = allPayperview.filter(
-        (event) => new Date(event.end_date_time) > now
+        (event) => event.event_status === "streaming"
       );
       const pastEvents = allPayperview.filter(
-        (event) => new Date(event.end_date_time) <= now
+        (event) => event.event_status === "ended"
       );
 
       // Check if there are any upcoming events
@@ -111,12 +114,12 @@ function initializeMediaNavigation() {
       rightArrow: null,
     },
     {
-      id: "past-payperview-row",
+      id: "upcoming-payperview-row",
       leftArrow: "left-arrow-payperview",
       rightArrow: "right-arrow-payperview",
     },
     {
-      id: "upcoming-payperview-row",
+      id: "past-payperview-row",
       leftArrow: "left-arrow-payperview",
       rightArrow: "right-arrow-payperview",
     },
