@@ -145,11 +145,11 @@ function initializeMediaNavigation() {
       case "Enter":
         handleEnterKey();
         break;
-        case "Escape":
-          if(mediaSections[selectedSectionIndex].id !== "header-placeholder" || !isModalOpen){
-            goBack();
-          }
-          break;
+      case "Escape":
+        if(mediaSections[selectedSectionIndex].id !== "header-placeholder" || !isModalOpen){
+          goBack();
+        }
+        break;
     }
   });
 
