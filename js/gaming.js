@@ -1,8 +1,30 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const gameCards = document.querySelectorAll(".game-card");
   let currentIndex = 0;
+  let selectedSectionIndex = 1;
+  const mediaSections = [
+    {
+      id: "header-placeholder",
+      leftArrow: null,
+      rightArrow: null,
+    },
+    {
+      id: "hero-container",
+      leftArrow: null,
+      rightArrow: null,
+    },
+    {
+      id: "grid2-container",
+      leftArrow: null,
+      rightArrow: null,
+    }
+  ];
 
   document.addEventListener("keydown", (e) => {
+    if (isModalOpen) {
+      return; // Skip further processing if the modal is open
+    }
+
     switch (e.key) {
       case "ArrowRight":
         navigate(1);
@@ -17,49 +39,105 @@ document.addEventListener("DOMContentLoaded", async () => {
         navigateRow(-1);
         break;
       case "Enter":
-        openSelectedGame();
+        handleEnterKey();
         break;
       case "Escape":
-        goBack();
+        if(mediaSections[selectedSectionIndex].id !== "header-placeholder" || !isModalOpen){
+          goBack();
+        }
         break;
     }
   });
 
+  function handleEnterKey(){
+    // handle login navigation
+    if(mediaSections[selectedSectionIndex].id === "header-placeholder"){
+      if (
+        document.getElementById("profile-button").classList.contains("selected")
+      ) {
+        openLoginModal();
+      } else if (document.getElementById("settings-button").classList.contains("selected")) {
+        redirect("settings.html");
+      }
+    }
+    else{
+      openSelectedGame();
+    }
+  }
+
   function navigate(step) {
-    if (gameCards.length > 0) {
-      gameCards[currentIndex].classList.remove("selected");
-      currentIndex =
-        (currentIndex + step + gameCards.length) % gameCards.length;
-      gameCards[currentIndex].classList.add("selected");
-      gameCards[currentIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-      updateTitle(gameCards[currentIndex]);
+    if(mediaSections[selectedSectionIndex].id === "header-placeholder"){
+      handleSettingsProfileNavigation(step===1 ? "ArrowRight" : "ArrowLeft");
+    } else{
+      selectedSectionIndex = 2;
+      if (gameCards.length > 0) {
+        gameCards[currentIndex].classList.remove("selected");
+        currentIndex =
+          (currentIndex + step + gameCards.length) % gameCards.length;
+        gameCards[currentIndex].classList.add("selected");
+        gameCards[currentIndex].scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        updateTitle(gameCards[currentIndex]);
+      }
     }
   }
 
   function navigateRow(step) {
-    const cols = getNumberOfColumns();
-    if (gameCards.length > 0 && cols > 0) {
+    const currentRow = document.getElementById(
+      mediaSections[selectedSectionIndex].id
+    );
+
+    selectedSectionIndex =
+      (selectedSectionIndex + step + mediaSections.length) %
+      mediaSections.length;
+
       gameCards[currentIndex].classList.remove("selected");
-      const newIndex = currentIndex + step * cols;
-      if (newIndex >= 0 && newIndex < gameCards.length) {
-        currentIndex = newIndex;
-      } else {
-        // Wrap around if at the edge of the grid
-        currentIndex =
-          step > 0
-            ? Math.min(gameCards.length - 1, currentIndex + cols)
-            : Math.max(0, currentIndex - cols);
-      }
+
+      currentIndex = 0;
+
+    const newRow = document.getElementById(
+      mediaSections[selectedSectionIndex].id
+    );  
+
+    deselectProfileButton();
+    deselectSettingsButton();
+
+    console.warn(mediaSections[selectedSectionIndex].id);
+
+    if (mediaSections[selectedSectionIndex].id === "header-placeholder") {
+      scrollToTop(); // Scroll to the top for the hero section
+      selectSettingsButton();
+    } else if (mediaSections[selectedSectionIndex].id === "grid2-container"){
       gameCards[currentIndex].classList.add("selected");
-      gameCards[currentIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-      updateTitle(gameCards[currentIndex]);
     }
+
+    // const cols = getNumberOfColumns();
+    // if (gameCards.length > 0 && cols > 0) {
+    //   gameCards[currentIndex].classList.remove("selected");
+    //   const newIndex = currentIndex + step * cols;
+    //   if (newIndex >= 0 && newIndex < gameCards.length) {
+    //     currentIndex = newIndex;
+    //   } else {
+    //     // Wrap around if at the edge of the grid
+    //     currentIndex =
+    //       step > 0
+    //         ? Math.min(gameCards.length - 1, currentIndex + cols)
+    //         : Math.max(0, currentIndex - cols);
+    //   }
+    //   gameCards[currentIndex].classList.add("selected");
+    //   gameCards[currentIndex].scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //   });
+    //   updateTitle(gameCards[currentIndex]);
+    // }
+  }
+
+  function scrollToTop() {
+    // Scroll the entire page up to the top for hero section
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function updateTitle(card) {
