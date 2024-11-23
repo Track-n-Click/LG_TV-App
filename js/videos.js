@@ -87,6 +87,11 @@ function initializeMediaNavigation() {
   let selectedItemIndex = 0;
   const mediaSections = [
     {
+      id: "header-placeholder",
+      leftArrow: null,
+      rightArrow: null,
+    },
+    {
       id: "swiper-wrapper",
       leftArrow: null,
       rightArrow: null,
@@ -120,6 +125,10 @@ function initializeMediaNavigation() {
   }
 
   document.addEventListener("keydown", (e) => {
+    if (isModalOpen) {
+      return; // Skip further processing if the modal is open
+    }
+
     switch (e.key) {
       case "ArrowUp":
         navigateSections(-1);
@@ -134,13 +143,31 @@ function initializeMediaNavigation() {
         navigateItems(1);
         break;
       case "Enter":
-        playSelectedVideo();
+        handleEnterKey();
         break;
-      case "Escape":
-        goBack();
-        break;
+        case "Escape":
+          if(mediaSections[selectedSectionIndex].id !== "header-placeholder" || !isModalOpen){
+            goBack();
+          }
+          break;
     }
   });
+
+  function handleEnterKey(){
+    // handle login navigation
+    if(mediaSections[selectedSectionIndex].id === "header-placeholder"){
+      if (
+        document.getElementById("profile-button").classList.contains("selected")
+      ) {
+        openLoginModal();
+      } else if (document.getElementById("settings-button").classList.contains("selected")) {
+        redirect("settings.html");
+      }
+    }
+    else{
+      playSelectedVideo();
+    }
+  }
 
   function navigateSections(step) {
     const currentRow = document.getElementById(
@@ -161,8 +188,12 @@ function initializeMediaNavigation() {
       mediaSections[selectedSectionIndex].id
     );
 
-    if (mediaSections[selectedSectionIndex].id === "swiper-wrapper") {
+    deselectProfileButton();
+    deselectSettingsButton();
+
+    if (mediaSections[selectedSectionIndex].id === "header-placeholder") {
       scrollToTop(); // Scroll to the top for the hero section
+      selectSettingsButton();
     } else {
       const newTiles = newRow.querySelectorAll(".video-tile");
       if (newTiles.length > 0) {
@@ -175,19 +206,24 @@ function initializeMediaNavigation() {
   }
 
   function navigateItems(step) {
-    const currentRow = document.getElementById(
-      mediaSections[selectedSectionIndex].id
-    );
-    const currentTiles = currentRow.querySelectorAll(".video-tile");
-
-    if (currentTiles.length > 0) {
-      currentTiles[selectedItemIndex].classList.remove("selected");
-      selectedItemIndex =
-        (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
-      currentTiles[selectedItemIndex].classList.add("selected");
-      updateHeroSection(currentTiles[selectedItemIndex]);
-      scrollToTile(currentRow, currentTiles[selectedItemIndex]);
-      updateArrowVisibility(currentRow, currentTiles);
+    if(mediaSections[selectedSectionIndex].id==="header-placeholder"){
+      // handle login navigation
+      handleSettingsProfileNavigation(step===1 ? "ArrowRight" : "ArrowLeft");
+    }else{
+      const currentRow = document.getElementById(
+        mediaSections[selectedSectionIndex].id
+      );
+      const currentTiles = currentRow.querySelectorAll(".video-tile");
+  
+      if (currentTiles.length > 0) {
+        currentTiles[selectedItemIndex].classList.remove("selected");
+        selectedItemIndex =
+          (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
+        currentTiles[selectedItemIndex].classList.add("selected");
+        updateHeroSection(currentTiles[selectedItemIndex]);
+        scrollToTile(currentRow, currentTiles[selectedItemIndex]);
+        updateArrowVisibility(currentRow, currentTiles);
+      }
     }
   }
 
