@@ -138,7 +138,7 @@ function initializeMusicNavigation() {
         handleEnterKey();
         break;
       case "Escape":
-        if(musicSections[selectedSectionIndex].id !== "header-placeholder"){
+        if(musicSections[selectedSectionIndex].id !== "header-placeholder" || !isModalOpen){
           goBack();
         }
         break;
