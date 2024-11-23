@@ -12,9 +12,14 @@
     <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
 
     <link rel="stylesheet" href="../css/multiviewer.css" />
+    <link rel="stylesheet" href="../css/header.css" />
   </head>
 
   <body>
+    <!-- Placeholder for the dynamic header -->
+    <div id="header-placeholder"></div>
+
+
     <div id="hero-container">
       <div id="hero">
         <div id="overlay"></div>
@@ -197,5 +202,26 @@
     <script src="../js/multiviewer.js" defer></script>
     <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
     <script type="text/javascript"></script>
+
+    <script type="module" src="../js/header.js"></script>
+    <!-- Dynamically Load Header Script -->
+    <script>
+      // Load the header dynamically
+      fetch("../header.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("header-placeholder").innerHTML = data;
+
+          // Load header.js after inserting header HTML
+          const script = document.createElement("script");
+          script.src = "../js/header.js";
+          script.onload = () => {
+            console.log("Header script loaded");
+            initializeHeader();
+          };
+          document.body.appendChild(script);
+        })
+        .catch((error) => console.error("Error loading header:", error));
+    </script>
   </body>
 </html>
