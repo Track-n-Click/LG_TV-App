@@ -186,9 +186,7 @@ function initializeMusicNavigation() {
     if (musicSections[selectedSectionIndex].id === "header-placeholder") {
       scrollToTop();
       selectSettingsButton();
-    } else if (musicSections[selectedSectionIndex].id === "hero-container") {
-      // scrollToTop(); // Scroll to the top for the hero section
-    }else {
+    } else {
       const newTiles = newRow.querySelectorAll(".radio-tile");
 
       if (newTiles.length > 0) {
@@ -199,9 +197,6 @@ function initializeMusicNavigation() {
     }
   }
 
-  
-
-  
 
   function navigateItems(step) {
     if(musicSections[selectedSectionIndex].id==="header-placeholder"){
