@@ -183,13 +183,12 @@ function initializeMusicNavigation() {
     deselectProfileButton();
     deselectSettingsButton();
 
-    if (musicSections[selectedSectionIndex].id === "hero-container") {
-      scrollToTop(); // Scroll to the top for the hero section
-    } else if (musicSections[selectedSectionIndex].id === "header-placeholder") {
+    if (musicSections[selectedSectionIndex].id === "header-placeholder") {
+      scrollToTop();
       selectSettingsButton();
-      // deselectProfileButton();
-    }
-    else {
+    } else if (musicSections[selectedSectionIndex].id === "hero-container") {
+      // scrollToTop(); // Scroll to the top for the hero section
+    }else {
       const newTiles = newRow.querySelectorAll(".radio-tile");
 
       if (newTiles.length > 0) {
