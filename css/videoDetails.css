@@ -410,11 +410,7 @@ h2 {
   top: 0;
   width: 100%;
   height: 600px;
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.955),
-    rgba(0, 0, 0, 0.403)
-  );
+  background: linear-gradient(to right, rgb(0, 0, 0), rgba(0, 0, 0, 0.641));
   z-index: 0; /* Place the overlay above the image */
   transition: all 1s ease-in-out;
 }

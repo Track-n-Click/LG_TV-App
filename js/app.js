@@ -10,9 +10,7 @@ window.addEventListener("load", initializeSenza);
 
 function initializeContent() {
   setTimeout(async () => {
-    const sliders = await fetchSliders();
-    createSliders(sliders);
-    initializeSwiperHero();
+    console.log("Fetching sliders...");
   }, 1000);
 }
 
@@ -35,102 +33,6 @@ async function initializeSenza() {
   } catch (error) {
     console.error("Error initializing:", error);
   }
-}
-
-// Initialize Swiper for hero section
-function initializeSwiperHero() {
-  if (swiper) {
-    swiper.destroy(true, true);
-  }
-  swiper = new Swiper(".swiper-container-hero", {
-    effect: "coverflow",
-    grabCursor: false,
-    centeredSlides: true,
-    slidesPerView: 2,
-    coverflowEffect: {
-      rotate: 0,
-      stretch: 8,
-      depth: 80,
-      modifier: 5,
-      slideShadows: true,
-    },
-    loop: true,
-    pagination: {
-      el: ".swiper-pagination",
-    },
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: true,
-    },
-  });
-}
-
-// Create sliders from fetched data
-function createSliders(sliders) {
-  const sliderList = document.querySelector(".swiper-wrapper");
-  sliders.forEach((slide, index) => {
-    const slideItem = createSliderElement(slide, index);
-    sliderList.appendChild(slideItem);
-  });
-}
-
-function createSliderElement(slide, index) {
-  // Create the main slider item container
-  const slideItem = document.createElement("div");
-  slideItem.className = "swiper-slide";
-
-  // Truncate the description text to 100 characters with ellipsis
-  const truncatedDescription =
-    slide.description.length > 150
-      ? slide.description.slice(0, 150) + "..."
-      : slide.description;
-
-  // Set the inner HTML for the slide item
-  slideItem.innerHTML = `
-    <img class="imgCarousal" src="${slide.banner}" alt="${slide.title}" />
-    <div class="slider-info">
-      <h1 class="slider-title">${slide.title}</h1>
-      <p class="slider-description">${truncatedDescription}</p>
-      <button class="slider-button" data-index="${index}">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-        <div><h3>${slide.cta || "Watch Now"}</h3></div>
-      </button>
-    </div>
-  `;
-
-  // Set up the redirect URL based on the slide type
-  slideItem.querySelector(".slider-button").addEventListener("click", () => {
-    let redirectUrl;
-
-    // Determine the redirection URL based on slide type
-    switch (slide.type) {
-      case "Live TV":
-        redirectUrl = "pages/media.html";
-        break;
-      case "Movie":
-      case "TV Series":
-        redirectUrl = "pages/videos.html";
-        break;
-      case "Podcast":
-        redirectUrl = "pages/radio.html";
-        break;
-      case "Radio":
-        redirectUrl = "pages/podcast.html";
-        break;
-      case "Other":
-        redirectUrl = "pages/music.html";
-        break;
-      default:
-        redirectUrl = "index.html";
-    }
-
-    // Redirect the user to the determined URL
-    window.location.href = redirectUrl;
-  });
-
-  return slideItem;
 }
 
 // Initialize grid items (tiles) and their navigation

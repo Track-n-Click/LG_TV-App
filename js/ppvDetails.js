@@ -1,5 +1,7 @@
-import { fetchPPVDetailsBySlug } from "./payperviewService.js";
-import { fetchPurchasedEvent } from "./payperviewService.js";
+import {
+  fetchPPVDetailsBySlug,
+  fetchPurchasedEvent,
+} from "./payperviewService.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -20,12 +22,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       details = await fetchPPVDetailsBySlug(ppvSlug);
       console.log("ppv", details);
       //   setupDetailsSection(details);
-
       createSliders(details);
-
       //puchase Button Changed
+      const playContainer = document.querySelector(".play-container");
       const sliderButton = document.querySelector(".slider-button");
-      updatePurchaseButton(user, details, sliderButton);
+
+      console.log(playContainer);
+      updatePurchaseButton(user, details, sliderButton, playContainer);
       initializeMediaNavigation();
     } else {
       console.log("No valid slug found in the URL.");
@@ -49,7 +52,6 @@ function createSliders(details) {
     details.title
   }"/>
         <div class="slider-info">
-          
           <h1 class="slider-title">${details.title}</h1>
           <p class="category">${details?.category}</p>
           <p class="duration">Duration :
@@ -58,7 +60,7 @@ function createSliders(details) {
                 ? formatDuration(details?.duration)
                 : "Duration not available"
             }
-        </p>
+          </p>
           <p class="slider-description" >${(details.description.length > 350
             ? details.description.substring(0, 350) + "..."
             : details.description
@@ -68,7 +70,8 @@ function createSliders(details) {
             .replace(/&ldquo;/g, '"')
             .replace(/&rdquo;/g, '"')
             .replace(/&nbsp;/g, "")
-            .replace(/\n/g, "<br/>")}</p>
+            .replace(/\n/g, "<br/>")
+            .replace("<br>", "")}</p>
 
           <div class="countdown-timer">
           <div class="days">00</div>
@@ -76,6 +79,7 @@ function createSliders(details) {
           <div class="minutes">00</div>
           <div class="seconds">00</div>
         </div>
+        <div class="play-container">
           <button class="slider-button" id="slider-button" data-url="${
             details.stream_url
           }" data-type="${type}">
@@ -92,6 +96,9 @@ function createSliders(details) {
           <h3>Reserve Now $${details.price}</h3>
           </button>
         </div>
+          <div id="qrcode-container"></div>
+          <p class="slider-description">Don't have a ticket yet? Grab yours now and secure your spot!</p>
+        
       `;
   sliderList.appendChild(slideItem);
 
@@ -107,51 +114,143 @@ function createSliders(details) {
   // Initialize the countdown timer for this specific slide
   const countdownElements = slideItem.querySelector(".countdown-timer");
   initializeCountdownTimer(
-    details.end_date_time,
+    details.start_date_time,
     countdownElements,
     details.streaming_status,
     sliderButton
   );
+  // Select the container where the QR code will appear
+  const qrCodeContainer = document.getElementById("qrcode-container");
+
+  // Define the text or URL for the QR code
+  const qrCodeText = `https://dofe.ayozat.co.uk/ppv/details/${details.slug}`;
+
+  // Generate the QR code
+  var qrcode = new QRCode(qrCodeContainer, {
+    text: qrCodeText,
+    width: 75,
+    height: 75,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+  console.log(qrcode);
 }
 
-async function updatePurchaseButton(user, event, sliderButton) {
-  console.log(sliderButton);
-  if (user && event) {
-    // Fetch purchased events and update button
-    await fetchPurchasedEvent(user?.id)
-      .then((purchasedEvents) => {
-        const isPurchased = purchasedEvents.some(
-          (purchasedEvent) => purchasedEvent.id === event.id
-        );
-
-        if (isPurchased) {
-          sliderButton.innerHTML = `
-            <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-            <h3>Watch Now</h3>
-          `;
-        } else {
-          sliderButton.innerHTML = `
-          <svg class="shop-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="store" fill="currentColor">
-            <path fill={currentColor} d="M32 20.1H7.162a1.5 1.5 0 0 1-1.3-2.245L11.833 7.4a1.5 1.5 0 0 1 1.3-.755H32a1.5 1.5 0 0 1 0 3H14.006L9.747 17.1H32a1.5 1.5 0 0 1 0 3Z"></path>
-            <path fill={currentColor} d="M56.838 20.1H32a1.5 1.5 0 0 1 0-3h22.253l-4.259-7.455H32a1.5 1.5 0 0 1 0-3h18.864a1.5 1.5 0 0 1 1.3.755l5.976 10.454a1.5 1.5 0 0 1-1.3 2.245zM13.372 31.267a7.719 7.719 0 0 1-7.71-7.71V18.6a1.5 1.5 0 0 1 3 0v4.958a4.71 4.71 0 1 0 9.419 0V18.6a1.5 1.5 0 0 1 3 0v4.958a7.718 7.718 0 0 1-7.709 7.709z"></path>
-            <path fill={currentColor} d="M25.791 31.267a7.719 7.719 0 0 1-7.71-7.71V18.6a1.5 1.5 0 0 1 3 0v4.958a4.71 4.71 0 1 0 9.419 0V18.6a1.5 1.5 0 0 1 3 0v4.958a7.718 7.718 0 0 1-7.709 7.709Z"></path>
-            <path fill={currentColor} d="M38.209 31.267a7.718 7.718 0 0 1-7.709-7.71V18.6a1.5 1.5 0 0 1 3 0v4.958a4.71 4.71 0 1 0 9.419 0V18.6a1.5 1.5 0 0 1 3 0v4.958a7.719 7.719 0 0 1-7.71 7.709Z"></path>
-            <path fill={currentColor} d="M50.628 31.267a7.718 7.718 0 0 1-7.709-7.71V18.6a1.5 1.5 0 0 1 3 0v4.958a4.71 4.71 0 1 0 9.419 0V18.6a1.5 1.5 0 1 1 3 0v4.958a7.719 7.719 0 0 1-7.71 7.709Z"></path>
-            <path fill={currentColor} d="M44.418 20.1a1.5 1.5 0 0 1-1.436-1.068L39.838 8.577a1.5 1.5 0 0 1 2.873-.865l3.144 10.455a1.5 1.5 0 0 1-1 1.868 1.475 1.475 0 0 1-.437.065zm-24.836 0a1.475 1.475 0 0 1-.433-.064 1.5 1.5 0 0 1-1-1.868l3.14-10.456a1.5 1.5 0 0 1 2.873.865l-3.144 10.454a1.5 1.5 0 0 1-1.436 1.069zM32 20.1a1.5 1.5 0 0 1-1.5-1.5V8.145a1.5 1.5 0 1 1 3 0V18.6a1.5 1.5 0 0 1-1.5 1.5zm0 37.255H9.684a1.5 1.5 0 0 1-1.5-1.5v-27.31a1.5 1.5 0 0 1 3 0v25.81H32a1.5 1.5 0 0 1 0 3z"></path>
-            <path fill={currentColor} d="M54.316 57.355H32a1.5 1.5 0 1 1 0-3h20.816v-25.81a1.5 1.5 0 0 1 3 0v27.31a1.5 1.5 0 0 1-1.5 1.5Z"></path>
-            <path fill={currentColor} d="M43.881 56.98a1.5 1.5 0 0 1-1.5-1.5V39.615H21.619v15.757a1.5 1.5 0 0 1-3 0V38.115a1.5 1.5 0 0 1 1.5-1.5h23.762a1.5 1.5 0 0 1 1.5 1.5V55.48a1.5 1.5 0 0 1-1.5 1.5Z"></path>
-          </svg>
-          <h3>Reserve Now $${event.price}</h3>
-          `;
-        }
-        return isPurchased;
-      })
-      .catch((error) => {
-        console.error("Error fetching purchased events:", error);
-      });
+async function updatePurchaseButton(user, event, sliderButton, playContainer) {
+  if (!user || !event) {
+    console.error("User or event data is missing.");
+    return;
   }
+  try {
+    // Fetch purchased events
+    const purchasedEvents = await fetchPurchasedEvent(user.id);
+    const isPurchased = purchasedEvents.some(
+      (purchasedEvent) => purchasedEvent.id === event.id
+    );
+
+    console.log("isPurchased:", isPurchased);
+
+    // Render content
+    renderPlayContainer(isPurchased, event, playContainer, sliderButton);
+
+    // Add event listeners for ticket verification
+    attachTicketVerification(playContainer, sliderButton);
+  } catch (error) {
+    console.error("Error fetching purchased events:", error);
+  }
+}
+
+// Render the play container content
+function renderPlayContainer(isPurchased, event, playContainer, sliderButton) {
+  playContainer.innerHTML = `
+    <div class="field-and-buttons">
+      <div class="verification-container">
+        <input type="text" id="ticketNumberInput" class="ticket-input" placeholder="Enter ticket number" />
+        
+      </div>
+      <div class="button-container">
+        ${
+          isPurchased
+            ? createWatchNowButton(event.stream_url, sliderButton)
+            : createReserveNowButton(
+                event.price,
+                event.stream_url,
+                sliderButton
+              )
+        }
+      </div>
+    </div>
+    <p id="errorMessage" class="error-message" style="display:none;">Invalid Ticket Number</p>
+  `;
+}
+
+// Create the "Watch Now" button HTML
+function createWatchNowButton(streamUrl, sliderButton) {
+  return `
+    <button class="slider-button" id="slider-button" data-url="${streamUrl}" data-type="video">
+      <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+      <h3>Watch Now</h3>
+    </button>
+  `;
+}
+
+// Create the "Reserve Now" button HTML
+function createReserveNowButton(price, streamUrl, sliderButton) {
+  return `
+    <button class="slider-button" id="slider-button" data-url="${streamUrl}" data-type="purchase">
+      <svg class="shop-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor">
+        <!-- SVG Path Content -->
+      </svg>
+      <h3>Reserve Now $${price}</h3>
+    </button>
+  `;
+}
+
+// Attach ticket verification events
+function attachTicketVerification(playContainer, sliderButton) {
+  const ticketInput = playContainer.querySelector("#ticketNumberInput");
+  const verifyButton = playContainer.querySelector("#verifyTicketButton");
+  const errorMessage = playContainer.querySelector("#errorMessage");
+
+  const handleVerification = async () => {
+    const ticketNumber = ticketInput.value.trim();
+    if (!ticketNumber) {
+      showError(errorMessage, "Please enter a ticket number.");
+      return;
+    }
+
+    try {
+      // Simulate an API call to verify the ticket
+      const response = await verifyTicket(ticketNumber); // Replace with your actual API function
+      if (response.isValid) {
+        sliderButton.innerHTML = `
+          <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <h3>Watch Now</h3>
+        `;
+        errorMessage.style.display = "none";
+      } else {
+        throw new Error("Invalid ticket");
+      }
+    } catch (error) {
+      showError(errorMessage, "Invalid Ticket Number");
+    }
+  };
+
+  verifyButton.addEventListener("click", handleVerification);
+  ticketInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") handleVerification();
+  });
+}
+
+// Display error messages
+function showError(errorMessageElement, message) {
+  errorMessageElement.textContent = message;
+  errorMessageElement.style.display = "block";
 }
 
 function formatDuration(duration) {
@@ -184,8 +283,18 @@ function initializeCountdownTimer(
       // Event has ended, stop the countdown
       clearInterval(countdownInterval);
       sliderButton.style.display = "none";
+      countdownElements.style.padding = "0";
+      countdownElements.style.border = "none";
       countdownElements.innerHTML =
-        "<div class='expired'><h3>Event Ended</h3> <p class='expired-text'>The live streaming for this event has concluded. Stay tuned for future events and updates. If you missed the live broadcast, check back later for on-demand content.</p></div>";
+        "<div class='expired'><h3>Event Ended</h3> </div>";
+      return;
+    } else if ((remainingTime <= 0) & (streaming_status == "streaming")) {
+      // Event has started,
+      clearInterval(countdownInterval);
+      countdownElements.style.padding = "0";
+      countdownElements.style.border = "none";
+      countdownElements.innerHTML =
+        "<div class='expired'><h3>Event Streaming</h3> </div>";
       return;
     }
 
@@ -198,18 +307,23 @@ function initializeCountdownTimer(
     );
     const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
-    countdownElements.querySelector(".days").textContent = days
-      .toString()
-      .padStart(2, "0");
-    countdownElements.querySelector(".hours").textContent = hours
-      .toString()
-      .padStart(2, "0");
-    countdownElements.querySelector(".minutes").textContent = minutes
-      .toString()
-      .padStart(2, "0");
-    countdownElements.querySelector(".seconds").textContent = seconds
-      .toString()
-      .padStart(2, "0");
+    if (remainingTime <= 0) {
+      countdownElements.querySelector(".days").textContent = days
+        .toString()
+        .padStart(2, "0");
+      countdownElements.querySelector(".hours").textContent = hours
+        .toString()
+        .padStart(2, "0");
+      countdownElements.querySelector(".minutes").textContent = minutes
+        .toString()
+        .padStart(2, "0");
+      countdownElements.querySelector(".seconds").textContent = seconds
+        .toString()
+        .padStart(2, "0");
+    } else if (streaming_status == "ended") {
+      const countdownElements = document.querySelector(".countdown-timer");
+      countdownElements.style.display = "none";
+    }
   }
 
   // Start the countdown timer and update every second
