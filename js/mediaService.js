@@ -1,4 +1,4 @@
-import axios from "https://cdn.skypack.dev/axios";
+import axios from "https://cdn.skypack.dev/axios@1.7.7";
 
 // Define the base API URL to make it easier to maintain
 // const API_BASE_URL = "https://c-1y15z120-t12c.ayozat.com/api";
@@ -14,7 +14,6 @@ const config = {
   SERIES_DETAILS_BY_STREAM_KEY_API_URL: `${API_BASE_URL}/tv-series/episodes`,
   VIDEO_SLIDERS_API_URL: `${API_BASE_URL}/video/slider`,
 };
-
 
 export async function fetchSliders() {
   try {
