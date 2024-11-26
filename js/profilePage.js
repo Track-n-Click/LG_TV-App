@@ -245,8 +245,8 @@ function initializeMediaNavigation() {
       )}`;
       return;
     } else if (type === "ppv") {
-      window.location.href = `podcastPlayerForEpisode.html?id=${encodeURIComponent(
-        podcastId
+      window.location.href = `payperview/ppvDetailsPage.html?ppv-slug=${encodeURIComponent(
+        slug
       )}`;
       return;
     }
@@ -529,7 +529,7 @@ function replacePlaceholdersWithPpvData(rowId, mediaItems, type) {
       tile.classList.add("ppv-tile");
       tile.setAttribute("data-index", index);
       tile.setAttribute("data-title", item.title);
-      tile.setAttribute("data-artwork", item.artwork_url);
+      tile.setAttribute("data-artwork", item.thumbnail_url);
       tile.setAttribute("data-slug", item.slug);
       tile.innerHTML = `
               <div class="overlay">
@@ -537,7 +537,7 @@ function replacePlaceholdersWithPpvData(rowId, mediaItems, type) {
                   <path d="M8 5v14l11-7z"/>
                 </svg>
               </div>
-                <img src="${item.artwork_url}" alt="${item.title}">
+                <img src="${item.thumbnail_url}" alt="${item.title}">
                 <div class="title">${
                   (item.title || item.name).length > 25
                     ? (item.title || item.name).substring(0, 25) + "..."
