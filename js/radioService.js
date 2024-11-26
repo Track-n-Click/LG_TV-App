@@ -1,4 +1,4 @@
-import axios from "https://cdn.skypack.dev/axios";
+import axios from "https://cdn.skypack.dev/axios@1.7.7";
 
 // config.js
 // const API_BASE_URL = "https://c-1y15z120-t12c.ayozat.com/api";
@@ -19,7 +19,7 @@ export async function fetchRandomStations() {
         "Content-Type": "application/json; charset=utf-8",
       },
     });
-    console.log(response.data.randomRadioStations)
+    console.log(response.data.randomRadioStations);
     return response.data.randomRadioStations;
   } catch (error) {
     console.error("Failed to fetch albums:", error);
@@ -36,7 +36,7 @@ export async function fetchMostTunedStations() {
         "Content-Type": "application/json; charset=utf-8",
       },
     });
-    console.log(response.data.mostTunedRadioStations)
+    console.log(response.data.mostTunedRadioStations);
     return response.data.mostTunedRadioStations;
   } catch (error) {
     console.error("Failed to fetch latest songs:", error);
