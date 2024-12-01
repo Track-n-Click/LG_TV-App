@@ -84,6 +84,11 @@ function initializeMusicNavigation() {
     // "radio-you-might-like-row",
     // "most-played-songs-row",
     {
+      id: "header-placeholder",
+      leftArrow: null,
+      rightArrow: null,
+    },
+    {
       id: "hero-container",
       leftArrow: null,
       rightArrow: null,
@@ -110,6 +115,12 @@ function initializeMusicNavigation() {
   }
 
   document.addEventListener("keydown", (e) => {
+    console.warn("selected section: ", musicSections[selectedSectionIndex].id)
+    // Check if the modal is open
+    if (isModalOpen) {
+      return; // Skip further processing if the modal is open
+    }
+
     switch (e.key) {
       case "ArrowUp":
         navigateSections(-1);
@@ -117,20 +128,38 @@ function initializeMusicNavigation() {
       case "ArrowDown":
         navigateSections(1);
         break;
-      case "ArrowLeft":
-        navigateItems(-1);
+      case "ArrowLeft": 
+      navigateItems(-1);        
         break;
       case "ArrowRight":
         navigateItems(1);
         break;
       case "Enter":
-        playSelectedMusic();
+        handleEnterKey();
         break;
       case "Escape":
-        goBack();
+        if(musicSections[selectedSectionIndex].id !== "header-placeholder" || !isModalOpen){
+          goBack();
+        }
         break;
     }
-  });
+  })
+
+  function handleEnterKey(){
+    // handle login navigation
+    if(musicSections[selectedSectionIndex].id === "header-placeholder"){
+      if (
+        document.getElementById("profile-button").classList.contains("selected")
+      ) {
+        openLoginModal();
+      } else if (document.getElementById("settings-button").classList.contains("selected")) {
+        redirect("settings.html");
+      }
+    }
+    else{
+      playSelectedMusic();
+    }
+  }
 
   function navigateSections(step) {
     const currentRow = document.getElementById(
@@ -151,8 +180,12 @@ function initializeMusicNavigation() {
       musicSections[selectedSectionIndex].id
     );
 
-    if (musicSections[selectedSectionIndex].id === "hero-container") {
-      scrollToTop(); // Scroll to the top for the hero section
+    deselectProfileButton();
+    deselectSettingsButton();
+
+    if (musicSections[selectedSectionIndex].id === "header-placeholder") {
+      scrollToTop();
+      selectSettingsButton();
     } else {
       const newTiles = newRow.querySelectorAll(".radio-tile");
 
@@ -164,20 +197,27 @@ function initializeMusicNavigation() {
     }
   }
 
+
   function navigateItems(step) {
-    const currentRow = document.getElementById(
-      musicSections[selectedSectionIndex].id
-    );
-    const currentTiles = currentRow.querySelectorAll(".radio-tile");
-
-    if (currentTiles.length > 0) {
-      currentTiles[selectedItemIndex].classList.remove("selected");
-      selectedItemIndex =
-        (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
-      currentTiles[selectedItemIndex].classList.add("selected");
-
-      scrollToTile(currentRow, currentTiles[selectedItemIndex]);
-      updateArrowVisibility(currentRow, currentTiles); // Updated here
+    if(musicSections[selectedSectionIndex].id==="header-placeholder"){
+      // handle login navigation
+      handleSettingsProfileNavigation(step===1 ? "ArrowRight" : "ArrowLeft");
+    }
+    else{
+      const currentRow = document.getElementById(
+        musicSections[selectedSectionIndex].id
+      );
+      const currentTiles = currentRow.querySelectorAll(".radio-tile");
+  
+      if (currentTiles.length > 0) {
+        currentTiles[selectedItemIndex].classList.remove("selected");
+        selectedItemIndex =
+          (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
+        currentTiles[selectedItemIndex].classList.add("selected");
+  
+        scrollToTile(currentRow, currentTiles[selectedItemIndex]);
+        updateArrowVisibility(currentRow, currentTiles); // Updated here
+      }
     }
   }
 

@@ -72,7 +72,7 @@ function initializeMediaNavigation() {
   let selectedSectionIndex = 0;
   let selectedItemIndex = 0;
 
-  const mediaSections = [{ id: "channels-row" }]; // Define sections (e.g., TV channels)
+  const mediaSections = [{ id: "header-placeholder" },{ id: "channels-row" }]; // Define sections (e.g., TV channels)
 
   // Initialize the first row and item as selected
   if (mediaSections.length > 0) {
@@ -85,10 +85,16 @@ function initializeMediaNavigation() {
   }
 
   document.addEventListener("keydown", (e) => {
+    if (isModalOpen) {
+      return; 
+    }
     switch (e.key) {
       case "ArrowUp":
         if (selectedSectionIndex > 0) {
-          selectedSectionIndex--;
+          if(!isModalOpen){
+            selectedSectionIndex--;
+          }
+          // selectedSectionIndex--;
           selectedItemIndex = 0; // Reset to first item when moving to a new section
           updateSelectedSection();
         } else {
@@ -98,7 +104,9 @@ function initializeMediaNavigation() {
         break;
       case "ArrowDown":
         if (selectedSectionIndex < mediaSections.length - 1) {
-          selectedSectionIndex++;
+          if(!isModalOpen){
+            selectedSectionIndex++;
+          }
           selectedItemIndex = 0; // Reset to first item when moving to a new section
           updateSelectedSection();
         } else {
@@ -113,48 +121,92 @@ function initializeMediaNavigation() {
         navigateGrid(1);
         break;
       case "Enter":
-        playSelectedVideo();
+        handleEnter();
         break;
       case "Escape":
-        goBack();
+        if(mediaSections[selectedSectionIndex].id !== "header-placeholder" || !isModalOpen){
+          goBack();
+        }
+        break;
         break;
     }
   });
 
+  function handleEnter(){
+    if(mediaSections[selectedSectionIndex].id==="header-placeholder" || isModalOpen){
+      if (document.getElementById("profile-button").classList.contains("selected")) {
+        openLoginModal();
+      } else if (document.getElementById("settings-button").classList.contains("selected")) {
+        redirect("settings.html");
+      }
+    }
+    else{
+      playSelectedVideo();
+    }
+  }
+
   function updateSelectedSection() {
-    // Clear the selected class from the current section and item
-    const prevSection = document.querySelector(".video-tile.selected");
-    if (prevSection) prevSection.classList.remove("selected");
+    deselectProfileButton();
+    deselectSettingsButton();
+    if(mediaSections[selectedSectionIndex].id==="header-placeholder" && !isModalOpen){
+      console.warn("test");
+      const prevSection = document.querySelector(".video-tile.selected");
+      if (prevSection) prevSection.classList.remove("selected");
+      selectSettingsButton();
+      scrollToTile(document.getElementById(mediaSections[selectedSectionIndex].id));
+    }
+    else{
+      // Clear the selected class from the current section and item
+      const prevSection = document.querySelector(".video-tile.selected");
+      if (prevSection) prevSection.classList.remove("selected");
 
-    // Select the new section and first item
-    const currentRow = document.getElementById(
-      mediaSections[selectedSectionIndex].id
-    );
-    const currentTiles = currentRow.querySelectorAll(".video-tile");
+      // Select the new section and first item
+      const currentRow = document.getElementById(
+        mediaSections[selectedSectionIndex].id
+      );
+      const currentTiles = currentRow.querySelectorAll(".video-tile");
 
-    if (currentTiles.length > 0) {
-      currentTiles[selectedItemIndex].classList.add("selected");
-      scrollToTile(currentRow, currentTiles[selectedItemIndex]);
+      if (currentTiles.length > 0) {
+        currentTiles[selectedItemIndex].classList.add("selected");
+        scrollToTile(currentTiles[selectedItemIndex]);
+      }
     }
   }
 
   function navigateGrid(step) {
-    const currentRow = document.getElementById(
-      mediaSections[selectedSectionIndex].id
-    );
-    const currentTiles = currentRow.querySelectorAll(".video-tile");
+    if(mediaSections[selectedSectionIndex].id === "header-placeholder" && !isModalOpen){
+      handleSettingsProfileNavigation(step===1 ? "ArrowRight" : "ArrowLeft");
+    }
+    else{
+      const currentRow = document.getElementById(
+        mediaSections[selectedSectionIndex].id
+      );
+      const currentTiles = currentRow.querySelectorAll(".video-tile");
 
-    if (currentTiles.length > 0) {
-      currentTiles[selectedItemIndex].classList.remove("selected");
-      selectedItemIndex =
-        (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
-      currentTiles[selectedItemIndex].classList.add("selected");
+      
+  
+      if (currentTiles.length > 0) {
+        currentTiles[selectedItemIndex].classList.remove("selected");
+        selectedItemIndex =
+          (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
+        currentTiles[selectedItemIndex].classList.add("selected");
+        // console.warn(currentTiles[selectedItemIndex])
 
-      scrollToTile(currentRow, currentTiles[selectedItemIndex]);
+        const imgTag = currentTiles[selectedItemIndex].querySelector("img");
+
+        if (imgTag) {
+          const imgSrc = imgTag.src;
+          const heroContainer = document.getElementById("hero-container");
+          heroContainer.style.backgroundImage = `url('${imgSrc}')`;
+          // console.warn("Image Source:", imgSrc); 
+        }
+  
+        scrollToTile(currentTiles[selectedItemIndex]);
+      }
     }
   }
 
-  function scrollToTile(row, tile) {
+  function scrollToTile(tile) {
     tile.scrollIntoView({
       behavior: "smooth",
       block: "center",

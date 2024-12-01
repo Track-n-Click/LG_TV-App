@@ -289,11 +289,11 @@ function setupLoginModalNavigation() {
         selectedPinField = pinFields[pinFieldIndex];
 
         if (selectedPinField.id === "pin") {
-          console.warn(selectedPinField.id);
+          // console.warn(selectedPinField.id);
           selectedPinField?.classList.remove("modal-login-button-selected");
           selectedPinField.focus();
         } else {
-          console.warn(selectedPinField.id);
+          // console.warn(selectedPinField.id);
           selectedPinField?.classList.add("modal-login-button-selected");
         }
         break;
@@ -871,3 +871,10 @@ function displayUserProfile() {
 document.addEventListener("DOMContentLoaded", function () {
   displayUserProfile();
 });
+
+// Redirect to a specified page
+function redirect(page) {
+  if (page) {
+    window.location.href = page; // Redirect to the specified page
+  }
+}
