@@ -214,6 +214,15 @@ function initializeMusicNavigation() {
         selectedItemIndex =
           (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
         currentTiles[selectedItemIndex].classList.add("selected");
+
+        const imgTag = currentTiles[selectedItemIndex].querySelector("img");
+
+        if (imgTag) {
+          const imgSrc = imgTag.src;
+          const heroContainer = document.getElementById("hero-container");
+          heroContainer.style.backgroundImage = `url('${imgSrc}')`;
+          // console.warn("Image Source:", imgSrc); 
+        }
   
         scrollToTile(currentRow, currentTiles[selectedItemIndex]);
         updateArrowVisibility(currentRow, currentTiles); // Updated here
