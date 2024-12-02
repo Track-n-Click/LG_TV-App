@@ -51,7 +51,7 @@ function replacePlaceholdersWithData(rowId, podcast) {
       const tile = document.createElement("div");
       tile.setAttribute("type", "podcast");
       tile.setAttribute("podcast-id", item.id);
-      tile.classList.add("music-tile");
+      tile.classList.add("podcast-tile");
       tile.setAttribute("data-index", index);
       tile.setAttribute("data-title", item.title);
       tile.setAttribute("data-url", item.stream_url || item.url);
@@ -79,13 +79,18 @@ function replacePlaceholdersWithData(rowId, podcast) {
 }
 
 function initializeMusicNavigation() {
-  let selectedSectionIndex = 0;
+  let selectedSectionIndex = 1;
   let selectedItemIndex = 0;
   const musicSections = [
     // "hero-container",
     // "latest-radio-channels-row",
     // "radio-you-might-like-row",
     // "most-played-songs-row",
+    {
+      id: "header-placeholder",
+      leftArrow: null,
+      rightArrow: null,
+    },
     {
       id: "header-placeholder",
       leftArrow: null,
@@ -112,8 +117,14 @@ function initializeMusicNavigation() {
     const firstRow = document.getElementById(
       musicSections[selectedSectionIndex]
     );
-    if (firstRow && firstRow.children.length > 0) {
-      firstRow.children[selectedItemIndex].classList.add("selected");
+
+    if (firstRow) {
+      const firstTile = firstRow.querySelector(".podcast-tile");
+
+      if (firstTile) {
+        firstTile.classList.add("selected");
+        updateHeroSection(firstTile); // Update hero section with the first tile's data
+      }
     }
   }
 
@@ -166,7 +177,7 @@ function initializeMusicNavigation() {
     const currentRow = document.getElementById(
       musicSections[selectedSectionIndex].id
     );
-    const currentTiles = currentRow.querySelectorAll(".music-tile");
+    const currentTiles = currentRow.querySelectorAll(".podcast-tile");
 
     if (currentTiles.length > 0) {
       currentTiles[selectedItemIndex].classList.remove("selected");
@@ -181,6 +192,7 @@ function initializeMusicNavigation() {
       musicSections[selectedSectionIndex].id
     );
 
+    if (musicSections[selectedSectionIndex].id === "swiper-wrapper") {
     deselectProfileButton();
     deselectSettingsButton();
 
@@ -188,40 +200,73 @@ function initializeMusicNavigation() {
       scrollToTop(); // Scroll to the top for the hero section
       selectSettingsButton();
     } else {
-      const newTiles = newRow.querySelectorAll(".music-tile");
+      const newTiles = newRow.querySelectorAll(".podcast-tile");
 
       if (newTiles.length > 0) {
         newTiles[selectedItemIndex].classList.add("selected");
-        scrollToSection(newRow);
+        updateHeroSection(currentTiles[selectedItemIndex]);
+        // scrollToSection(newRow);
         updateArrowVisibility(newRow, newTiles);
       }
     }
   }
 
   function navigateItems(step) {
-    if(musicSections[selectedSectionIndex].id==="header-placeholder"){
-      // handle login navigation
-      handleSettingsProfileNavigation(step===1 ? "ArrowRight" : "ArrowLeft");
-    }else{
-      const currentRow = document.getElementById(
-        musicSections[selectedSectionIndex].id
-      );
-      const currentTiles = currentRow.querySelectorAll(".music-tile");
-  
-      if (currentTiles.length > 0) {
-        currentTiles[selectedItemIndex].classList.remove("selected");
-        selectedItemIndex =
-          (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
-        currentTiles[selectedItemIndex].classList.add("selected");
-  
-        scrollToTile(currentRow, currentTiles[selectedItemIndex]);
-        updateArrowVisibility(currentRow, currentTiles); // Updated here
-      }
+    const currentRow = document.getElementById(
+      musicSections[selectedSectionIndex].id
+    );
+    const currentTiles = currentRow.querySelectorAll(".podcast-tile");
+
+    if (currentTiles.length > 0) {
+      currentTiles[selectedItemIndex].classList.remove("selected");
+      selectedItemIndex =
+        (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
+      currentTiles[selectedItemIndex].classList.add("selected");
+      updateHeroSection(currentTiles[selectedItemIndex]);
+      scrollToTile(currentRow, currentTiles[selectedItemIndex]);
+      updateArrowVisibility(currentRow, currentTiles); // Updated here
     }
   }
 
+  function updateHeroSection(selectedTile) {
+    const sliderList = document.querySelector(".swiper-wrapper");
+
+    // Clear existing slides in the swiper wrapper
+    sliderList.innerHTML = "";
+
+    // Create a new slide
+    const slideItem = document.createElement("div");
+    slideItem.className = "swiper-slide";
+
+    slideItem.innerHTML = `
+      <div class="overlay"></div>
+      <div class="overlay"></div>
+      <img 
+        class="imgCarousal" 
+        src="${selectedTile.getAttribute("data-artwork")}" 
+        alt="${selectedTile.getAttribute("data-title") || "Podcast Thumbnail"}"
+      />
+      <div class="slider-info">
+        <h1 class="slider-title">${
+          selectedTile.getAttribute("data-title") || "Podcast"
+        }</h1>
+        <p class="slider-description">${
+          selectedTile.getAttribute("data-description")?.length > 400
+            ? selectedTile.getAttribute("data-description").substring(0, 400) +
+              "..."
+            : selectedTile.getAttribute("data-description") ||
+              "Discover and watch Podcast from around the world."
+        }</p>
+        
+      </div>
+    `;
+
+    // Append the updated slide
+    sliderList.appendChild(slideItem);
+  }
+
   function playSelectedMusic() {
-    const selectedTile = document.querySelector(".music-tile.selected");
+    const selectedTile = document.querySelector(".podcast-tile.selected");
     const musicUrl = selectedTile.getAttribute("data-url");
     const musicTitle = selectedTile.getAttribute("data-title");
     const musicArtist = selectedTile.getAttribute("data-artist");

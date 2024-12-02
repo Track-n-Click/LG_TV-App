@@ -95,6 +95,135 @@ body {
   gap: 50px; /* Space between sections */
 }
 
+.swiper-main {
+  width: 100%;
+  /* margin: auto; */
+}
+
+.swiper {
+  width: 100%;
+  height: 70vh !important;
+}
+
+.swiper-slide {
+  height: 70vh;
+}
+
+.swiper-container {
+  width: 100%;
+  height: 70vh !important;
+  margin: auto;
+}
+
+.swiper-wrapper {
+  height: 70vh !important;
+}
+
+.swiper-hero {
+  height: 70vh !important;
+}
+
+.imgCarousal {
+  width: 100%;
+  object-fit: cover;
+  height: 70vh;
+  border-radius: 10px;
+  border: var(--border-color-gray) solid 1px;
+}
+
+.slider-info {
+  position: absolute;
+  top: 10%;
+  width: 50%;
+  left: 5%;
+  right: 0;
+  padding: 10px;
+  z-index: 10;
+  color: white !important;
+  text-align: left;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.slider-info h1 {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+.slider-info p {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.swiper-slide-active .slider-info {
+  opacity: 1; /* Make it visible when the slide is active */
+}
+
+.slider-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  gap: 8px; /* Space between icon and text */
+  background-color: var(--primary-color);
+  border: none;
+  color: var(--text-white);
+  padding: 5px 8px; /* Adjust as needed */
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50px;
+  margin-top: 30px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease,
+    border 0.3s ease;
+}
+
+.slider-button svg {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  margin-right: 5px !important;
+  color: var(--primary-color);
+  background-color: var(--text-white);
+  border-radius: 50%;
+}
+
+.slider-button h3 {
+  font-size: 1.2em; /* Scale up the text size */
+  padding-right: 20px; /* Add left padding */
+  text-transform: uppercase;
+}
+
+.slider-button.selected {
+  transform: scale(1.05);
+  border: 2px solid white;
+}
+
+.id {
+  color: #fff;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 71vh;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.955),
+    rgba(0, 0, 0, 0.172)
+  );
+  z-index: 2 !important;
+  transition: all 1s ease-in-out;
+}
+
+.media-content {
+  position: absolute;
+  top: 30%;
+  left: 5%;
+  z-index: 100;
+}
+
 .podcast-section {
   display: flex;
   flex-direction: column;
@@ -161,7 +290,7 @@ h2 {
   background: linear-gradient(to left, black, transparent);
 }
 
-.music-tile {
+.podcast-tile {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -179,13 +308,13 @@ h2 {
   transition: all 1s ease;
 }
 
-.music-tile.selected {
+.podcast-tile.selected {
   transform: scale(1.1);
   border: 2px solid #b4b4b45a;
   z-index: 10;
 }
 
-.music-tile img {
+.podcast-tile img {
   width: 100%;
   height: 200px;
   object-fit: cover;
@@ -194,12 +323,12 @@ h2 {
   transition: opacity 2s ease;
 }
 
-.music-tile.selected img {
+.podcast-tile.selected img {
   opacity: 1;
   transform: scale(1.05);
 }
 
-.music-tile .title {
+.podcast-tile .title {
   font-size: 15pt;
   font-weight: bold;
   color: #ffffff98;
@@ -207,12 +336,12 @@ h2 {
   transition: color 0.4s ease, transform 0.4s ease;
 }
 
-.music-tile.selected .title {
+.podcast-tile.selected .title {
   color: #ff0051;
 }
 
 /* Overlay styles */
-.music-tile .overlay {
+.podcast-tile .overlay {
   display: none;
   position: absolute;
   top: 0;
@@ -244,7 +373,7 @@ h2 {
   transition: all 1s ease-in-out !important;
 }
 
-.music-tile.selected .play-icon {
+.podcast-tile.selected .play-icon {
   opacity: 1 !important;
   margin-top: 0 !important;
 }
