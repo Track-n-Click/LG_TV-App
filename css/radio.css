@@ -95,6 +95,141 @@ body {
   gap: 50px; /* Space between sections */
 }
 
+.swiper-main {
+  width: 100%;
+  /* margin: auto; */
+}
+
+.swiper {
+  width: 100%;
+  height: 70vh !important;
+}
+
+.swiper-slide {
+  height: 70vh;
+}
+
+.swiper-container {
+  width: 100%;
+  height: 70vh !important;
+  margin: auto;
+}
+
+.swiper-wrapper {
+  height: 70vh !important;
+}
+
+.swiper-hero {
+  height: 70vh !important;
+}
+
+.swiper-back-dot {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%; /* Adjust size as needed */
+  height: 70%; /* Adjust size as needed */
+  background: radial-gradient(circle, var(--text-white) 0%, transparent 40%);
+  opacity: 0.3; /* Adjust transparency as needed */
+  border-radius: 100%;
+  z-index: -1; /* Position it behind the swiper */
+}
+
+.imgCarousal {
+  width: 100%;
+  object-fit: cover;
+  height: 70vh;
+  border-radius: 10px;
+  border: var(--border-color-gray) solid 1px;
+}
+
+.slider-info {
+  position: absolute;
+  top: 10%;
+  width: 50%;
+  left: 5%;
+  right: 0;
+  padding: 10px;
+  z-index: 10;
+  color: white !important;
+  text-align: left;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.slider-info h1 {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+.slider-info p {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.swiper-slide-active .slider-info {
+  opacity: 1; /* Make it visible when the slide is active */
+}
+
+.slider-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  gap: 8px; /* Space between icon and text */
+  background-color: var(--primary-color);
+  border: none;
+  color: var(--text-white);
+  padding: 5px 8px; /* Adjust as needed */
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50px;
+  margin-top: 30px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease,
+    border 0.3s ease;
+}
+
+.slider-button svg {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  margin-right: 5px !important;
+  color: var(--primary-color);
+  background-color: var(--text-white);
+  border-radius: 50%;
+}
+
+.slider-button h3 {
+  font-size: 1.2em; /* Scale up the text size */
+  padding-right: 20px; /* Add left padding */
+  text-transform: uppercase;
+}
+
+.slider-button.selected {
+  transform: scale(1.05);
+  border: 2px solid white;
+}
+
+.id {
+  color: #fff;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 71vh;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.955),
+    rgba(0, 0, 0, 0.172)
+  );
+  z-index: 2 !important;
+  transition: all 1s ease-in-out;
+}
+
 .radio-section {
   display: flex;
   flex-direction: column;
