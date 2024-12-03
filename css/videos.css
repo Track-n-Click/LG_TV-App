@@ -276,7 +276,7 @@ body {
   align-items: center;
 }
 
-h2 {
+.media-section h2 {
   font-size: 25pt;
   color: #ffffff;
   text-align: left;

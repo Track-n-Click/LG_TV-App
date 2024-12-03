@@ -110,7 +110,7 @@ body::-webkit-scrollbar {
 .modal {
   display: none; /* Hidden by default */
   position: fixed;
-  z-index: 100;
+  z-index: 150;
   left: 0;
   top: 0;
   width: 100%;
@@ -122,10 +122,10 @@ body::-webkit-scrollbar {
 
 .modal-content {
   background-color: var(--modal-color);
-  margin: 9% auto;
+  margin: 10% auto;
   padding: 20px 20px;
   border: 1px solid var(--border-color-gray);
-  width: 30%;
+  width: 40%;
   border-radius: 10px;
   color: var(--text-white);
   overflow: hidden;
@@ -188,14 +188,14 @@ body::-webkit-scrollbar {
 }
 
 .modal-form input {
-  width: 100%;
+  width: 96%;
   padding: 15px;
   margin: 15px auto;
   border: 1px solid var(--border-color-gray);
   border-radius: 5px;
   color: #ccc;
   background-color: transparent;
-  text-align: center;
+  /* text-align: center; */
   font-size: 16px;
   outline: none;
   transition: border 0.3s ease, background-color 0.3s ease; /* Smooth transition */
