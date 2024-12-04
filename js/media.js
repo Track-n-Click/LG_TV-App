@@ -52,6 +52,7 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
     tile.setAttribute("data-slug", item.slug);
     tile.setAttribute("data-type", type);
     tile.setAttribute("data-title", item.title || item.name);
+    tile.setAttribute("data-poster", item.poster || item.thumbnail);
     tile.innerHTML = `
       <div class="overlay">
         <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
@@ -69,29 +70,35 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
 }
 
 function initializeMediaNavigation() {
-  let selectedSectionIndex = 0;
+  let selectedSectionIndex = 1;
   let selectedItemIndex = 0;
 
-  const mediaSections = [{ id: "header-placeholder" },{ id: "channels-row" }]; // Define sections (e.g., TV channels)
+  const mediaSections = [{ id: "header-placeholder" }, { id: "channels-row" }]; // Define sections (e.g., TV channels)
 
   // Initialize the first row and item as selected
   if (mediaSections.length > 0) {
     const firstRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
-    if (firstRow && firstRow.children.length > 0) {
-      firstRow.children[selectedItemIndex].classList.add("selected");
+
+    if (firstRow) {
+      const firstTile = firstRow.querySelector(".video-tile");
+
+      if (firstTile) {
+        firstTile.classList.add("selected");
+        updateHeroSection(firstTile); // Update hero section with the first tile's data
+      }
     }
   }
 
   document.addEventListener("keydown", (e) => {
     if (isModalOpen) {
-      return; 
+      return;
     }
     switch (e.key) {
       case "ArrowUp":
         if (selectedSectionIndex > 0) {
-          if(!isModalOpen){
+          if (!isModalOpen) {
             selectedSectionIndex--;
           }
           // selectedSectionIndex--;
@@ -104,7 +111,7 @@ function initializeMediaNavigation() {
         break;
       case "ArrowDown":
         if (selectedSectionIndex < mediaSections.length - 1) {
-          if(!isModalOpen){
+          if (!isModalOpen) {
             selectedSectionIndex++;
           }
           selectedItemIndex = 0; // Reset to first item when moving to a new section
@@ -124,7 +131,10 @@ function initializeMediaNavigation() {
         handleEnter();
         break;
       case "Escape":
-        if(mediaSections[selectedSectionIndex].id !== "header-placeholder" || !isModalOpen){
+        if (
+          mediaSections[selectedSectionIndex].id !== "header-placeholder" ||
+          !isModalOpen
+        ) {
           goBack();
         }
         break;
@@ -132,15 +142,23 @@ function initializeMediaNavigation() {
     }
   });
 
-  function handleEnter(){
-    if(mediaSections[selectedSectionIndex].id==="header-placeholder" || isModalOpen){
-      if (document.getElementById("profile-button").classList.contains("selected")) {
+  function handleEnter() {
+    if (
+      mediaSections[selectedSectionIndex].id === "header-placeholder" ||
+      isModalOpen
+    ) {
+      if (
+        document.getElementById("profile-button").classList.contains("selected")
+      ) {
         openLoginModal();
-      } else if (document.getElementById("settings-button").classList.contains("selected")) {
+      } else if (
+        document
+          .getElementById("settings-button")
+          .classList.contains("selected")
+      ) {
         redirect("settings.html");
       }
-    }
-    else{
+    } else {
       playSelectedVideo();
     }
   }
@@ -148,14 +166,18 @@ function initializeMediaNavigation() {
   function updateSelectedSection() {
     deselectProfileButton();
     deselectSettingsButton();
-    if(mediaSections[selectedSectionIndex].id==="header-placeholder" && !isModalOpen){
+    if (
+      mediaSections[selectedSectionIndex].id === "header-placeholder" &&
+      !isModalOpen
+    ) {
       console.warn("test");
       const prevSection = document.querySelector(".video-tile.selected");
       if (prevSection) prevSection.classList.remove("selected");
       selectSettingsButton();
-      scrollToTile(document.getElementById(mediaSections[selectedSectionIndex].id));
-    }
-    else{
+      scrollToTile(
+        document.getElementById(mediaSections[selectedSectionIndex].id)
+      );
+    } else {
       // Clear the selected class from the current section and item
       const prevSection = document.querySelector(".video-tile.selected");
       if (prevSection) prevSection.classList.remove("selected");
@@ -174,36 +196,65 @@ function initializeMediaNavigation() {
   }
 
   function navigateGrid(step) {
-    if(mediaSections[selectedSectionIndex].id === "header-placeholder" && !isModalOpen){
-      handleSettingsProfileNavigation(step===1 ? "ArrowRight" : "ArrowLeft");
-    }
-    else{
+    if (
+      mediaSections[selectedSectionIndex].id === "header-placeholder" &&
+      !isModalOpen
+    ) {
+      handleSettingsProfileNavigation(step === 1 ? "ArrowRight" : "ArrowLeft");
+    } else {
       const currentRow = document.getElementById(
         mediaSections[selectedSectionIndex].id
       );
       const currentTiles = currentRow.querySelectorAll(".video-tile");
 
-      
-  
       if (currentTiles.length > 0) {
         currentTiles[selectedItemIndex].classList.remove("selected");
         selectedItemIndex =
-          (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
+          (selectedItemIndex + step + currentTiles.length) %
+          currentTiles.length;
         currentTiles[selectedItemIndex].classList.add("selected");
-        // console.warn(currentTiles[selectedItemIndex])
 
-        const imgTag = currentTiles[selectedItemIndex].querySelector("img");
+        updateHeroSection(currentTiles[selectedItemIndex]);
 
-        if (imgTag) {
-          const imgSrc = imgTag.src;
-          const heroContainer = document.getElementById("hero-container");
-          heroContainer.style.backgroundImage = `url('${imgSrc}')`;
-          // console.warn("Image Source:", imgSrc); 
-        }
-  
-        scrollToTile(currentTiles[selectedItemIndex]);
+        // scrollToTile(currentTiles[selectedItemIndex]);
       }
     }
+  }
+
+  function updateHeroSection(selectedTile) {
+    const sliderList = document.querySelector(".swiper-wrapper");
+
+    // Clear existing slides in the swiper wrapper
+    sliderList.innerHTML = "";
+
+    // Create a new slide
+    const slideItem = document.createElement("div");
+    slideItem.className = "swiper-slide";
+
+    slideItem.innerHTML = `
+      <div class="overlay"></div>
+      <div class="overlay"></div>
+      <img 
+        class="imgCarousal" 
+        src="${selectedTile.getAttribute("data-poster")}" 
+        alt="${selectedTile.getAttribute("data-title") || "Video Thumbnail"}"
+      />
+      <div class="slider-info">
+        <h1 class="slider-title">${
+          selectedTile.getAttribute("data-title") || "Videos"
+        }</h1>
+        <p class="slider-description">${
+          selectedTile.getAttribute("data-description")?.length > 400
+            ? selectedTile.getAttribute("data-description").substring(0, 400) +
+              "..."
+            : selectedTile.getAttribute("data-description") ||
+              "Discover and watch videos from around the world."
+        }</p>
+        
+      </div>
+    `;
+    // Append the updated slide
+    sliderList.appendChild(slideItem);
   }
 
   function scrollToTile(tile) {
@@ -236,14 +287,15 @@ function initializeMediaNavigation() {
 
     const videoUrl = selectedTile.getAttribute("data-url");
     const title = selectedTile.getAttribute("data-title");
-    const vastTagUrl = "https://ayotising.com/fc.php?script=rmVideo&zoneid=59&format=vast3";
+    const vastTagUrl =
+      "https://ayotising.com/fc.php?script=rmVideo&zoneid=59&format=vast3";
     console.log("VAST Tag URL:", vastTagUrl);
 
     const queryString = `title=${encodeURIComponent(
       title
-    )}&src=${encodeURIComponent(
-      videoUrl
-    )}&vast-tag=${encodeURIComponent(vastTagUrl)}`;
+    )}&src=${encodeURIComponent(videoUrl)}&vast-tag=${encodeURIComponent(
+      vastTagUrl
+    )}`;
 
     const encodedQueryString = btoa(queryString);
     window.location.href = `player.html?data=${encodedQueryString}`;

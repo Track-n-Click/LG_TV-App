@@ -51,6 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function displayPlaceholders(rowId) {
   const row = document.getElementById(rowId);
+  if (!row) {
+    console.error(`Element with ID '${rowId}' not found.`);
+    return;
+  }
   row.innerHTML = "";
 
   // Get the window's inner width
@@ -83,6 +87,7 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
     tile.setAttribute("data-url", item.stream_url);
     tile.setAttribute("data-slug", item.slug);
     tile.setAttribute("data-type", type);
+    tile.setAttribute("data-banner", item.banner);
     tile.setAttribute("data-title", item.title || item.name);
     tile.innerHTML = `
       <div class="overlay">
@@ -105,16 +110,11 @@ function replacePlaceholdersWithData(rowId, mediaItems, type) {
 }
 
 function initializeMediaNavigation() {
-  let selectedSectionIndex = 0;
+  let selectedSectionIndex = 1;
   let selectedItemIndex = 0;
   const mediaSections = [
     {
       id: "header-placeholder",
-      leftArrow: null,
-      rightArrow: null,
-    },
-    {
-      id: "hero-container",
       leftArrow: null,
       rightArrow: null,
     },
@@ -135,8 +135,14 @@ function initializeMediaNavigation() {
       mediaSections[selectedSectionIndex].id
     );
     console.log(firstRow);
-    if (firstRow && firstRow.children.length > 0) {
-      firstRow.children[selectedItemIndex].classList.add("selected");
+
+    if (firstRow) {
+      const firstTile = firstRow.querySelector(".ppv-tile");
+
+      if (firstTile) {
+        firstTile.classList.add("selected");
+        updateHeroSection(firstTile);
+      }
     }
   }
 
@@ -162,25 +168,31 @@ function initializeMediaNavigation() {
         handleEnterKey();
         break;
       case "Escape":
-        if(mediaSections[selectedSectionIndex].id !== "header-placeholder" || !isModalOpen){
+        if (
+          mediaSections[selectedSectionIndex].id !== "header-placeholder" ||
+          !isModalOpen
+        ) {
           goBack();
         }
         break;
     }
   });
 
-  function handleEnterKey(){
+  function handleEnterKey() {
     // handle login navigation
-    if(mediaSections[selectedSectionIndex].id === "header-placeholder"){
+    if (mediaSections[selectedSectionIndex].id === "header-placeholder") {
       if (
         document.getElementById("profile-button").classList.contains("selected")
       ) {
         openLoginModal();
-      } else if (document.getElementById("settings-button").classList.contains("selected")) {
+      } else if (
+        document
+          .getElementById("settings-button")
+          .classList.contains("selected")
+      ) {
         redirect("settings.html");
       }
-    }
-    else{
+    } else {
       playSelectedVideo();
     }
   }
@@ -214,33 +226,70 @@ function initializeMediaNavigation() {
       const newTiles = newRow.querySelectorAll(".ppv-tile");
       if (newTiles.length > 0) {
         newTiles[selectedItemIndex].classList.add("selected");
-        scrollToSection(newRow);
+        // scrollToSection(newRow);
+        updateHeroSection(newTiles[selectedItemIndex]);
         updateArrowVisibility(newRow, newTiles);
       }
     }
   }
 
   function navigateItems(step) {
-    if(mediaSections[selectedSectionIndex].id==="header-placeholder"){
+    if (mediaSections[selectedSectionIndex].id === "header-placeholder") {
       // handle login navigation
-      handleSettingsProfileNavigation(step===1 ? "ArrowRight" : "ArrowLeft");
-    } else{
+      handleSettingsProfileNavigation(step === 1 ? "ArrowRight" : "ArrowLeft");
+    } else {
       const currentRow = document.getElementById(
         mediaSections[selectedSectionIndex].id
       );
       const currentTiles = currentRow.querySelectorAll(".ppv-tile");
-  
+
       if (currentTiles.length > 0) {
         currentTiles[selectedItemIndex].classList.remove("selected");
         selectedItemIndex =
-          (selectedItemIndex + step + currentTiles.length) % currentTiles.length;
+          (selectedItemIndex + step + currentTiles.length) %
+          currentTiles.length;
         currentTiles[selectedItemIndex].classList.add("selected");
-  
+        updateHeroSection(currentTiles[selectedItemIndex]);
         scrollToTile(currentRow, currentTiles[selectedItemIndex]);
         updateArrowVisibility(currentRow, currentTiles);
       }
     }
-    
+  }
+
+  function updateHeroSection(selectedTile) {
+    const sliderList = document.querySelector(".swiper-wrapper");
+
+    // Clear existing slides in the swiper wrapper
+    sliderList.innerHTML = "";
+
+    // Create a new slide
+    const slideItem = document.createElement("div");
+    slideItem.className = "swiper-slide";
+
+    slideItem.innerHTML = `
+      <div class="overlay"></div>
+      <div class="overlay"></div>
+      <img 
+        class="imgCarousal" 
+        src="${selectedTile.getAttribute("data-banner")}" 
+        alt="${selectedTile.getAttribute("data-title") || "Video Thumbnail"}"
+      />
+      <div class="slider-info">
+        <h1 class="slider-title">${
+          selectedTile.getAttribute("data-title") || "Videos"
+        }</h1>
+        <p class="slider-description">${
+          selectedTile.getAttribute("data-description")?.length > 400
+            ? selectedTile.getAttribute("data-description").substring(0, 400) +
+              "..."
+            : selectedTile.getAttribute("data-description") ||
+              "Discover and watch videos from around the world."
+        }</p>
+        
+      </div>
+    `;
+    // Append the updated slide
+    sliderList.appendChild(slideItem);
   }
 
   function playSelectedVideo() {

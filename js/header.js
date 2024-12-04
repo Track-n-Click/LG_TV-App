@@ -702,6 +702,7 @@ document
     document.getElementById("login-options").style.display = "none";
     document.getElementById("credentials-login-form").style.display = "block";
     // generateKeyboard();
+    toggleModalSize();
   });
 
 // Function to go back to the login options
@@ -710,6 +711,7 @@ function goBack() {
   document.getElementById("credentials-login-form").style.display = "none";
   document.getElementById("login-options").style.display = "flex";
   closeKeyboard(); // Close the keyboard if modal is closed
+  toggleModalSize();
 }
 
 // Function to submit PIN login using fetch
