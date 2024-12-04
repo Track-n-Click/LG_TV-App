@@ -262,6 +262,13 @@ body {
   transition: all 1s ease-in-out;
 }
 
+.media-content {
+  position: absolute;
+  top: 30%;
+  left: 5%;
+  z-index: 100;
+}
+
 .payperview-section {
   display: flex;
   flex-direction: column;

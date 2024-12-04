@@ -230,11 +230,18 @@ body {
   transition: all 1s ease-in-out;
 }
 
-.radio-section {
+.radio-content {
+  position: absolute;
+  top: 30%;
+  left: 5%;
+  z-index: 100;
+}
+
+/* .radio-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
 h2 {
   font-size: 25pt;
