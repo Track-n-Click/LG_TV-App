@@ -101,6 +101,7 @@ function handleEscapeKey(event) {
     event.key === "Escape" &&
     document.getElementById("login-modal").style.display === "block"
   ) {
+    alert();
     closeLoginModal();
   }
 }
@@ -125,6 +126,9 @@ async function openLoginModal() {
 
 function closeLoginModal() {
   document.getElementById("login-modal").style.display = "none";
+  document.getElementById("pin-login-form").style.display = "none";
+  document.getElementById("credentials-login-form").style.display = "none";
+  document.getElementById("login-options").style.display = "flex";
   document.body.classList.remove("no-scroll");
   document.removeEventListener("keydown", handleEscapeKey);
   removeModalNavigation();
@@ -194,6 +198,11 @@ function setupLoginModalNavigation() {
         if (isKeyboardVisible) {
           closeKeyboard();
         } else {
+          selectedLoginMethod?.classList.remove("modal-login-option-selected");
+          selectedPinField?.classList.remove("modal-login-button-selected");
+          selectedCredentialsField?.classList.remove(
+            "modal-login-button-selected"
+          );
           closeLoginModal();
         }
       } else {
