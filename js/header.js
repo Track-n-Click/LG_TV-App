@@ -101,7 +101,6 @@ function handleEscapeKey(event) {
     event.key === "Escape" &&
     document.getElementById("login-modal").style.display === "block"
   ) {
-    alert();
     closeLoginModal();
   }
 }
