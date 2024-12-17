@@ -1,4 +1,10 @@
 import {
+  closeKeyboard,
+  isKeyboardVisible,
+  navigateKeyboard,
+  openKeyboard,
+} from "./keyboard.js";
+import {
   fetchPPVDetailsBySlug,
   fetchPurchasedEvent,
 } from "./payperviewService.js";
@@ -339,6 +345,7 @@ function initializeMediaNavigation(seasons) {
 
     // { id: "details-section", leftArrow: "", rightArrow: "" },
     { id: "swiper-wrapper", leftArrow: "", rightArrow: "" },
+    { id: "ticketNumberInput", leftArrow: "", rightArrow: "" },
   ];
 
   function updateMediaSections(mediaSections, seasons) {
@@ -365,32 +372,50 @@ function initializeMediaNavigation(seasons) {
   }
 
   document.addEventListener("keydown", (e) => {
-    switch (e.key) {
-      case "ArrowUp":
-        navigateSections(-1);
-        break;
-      case "ArrowDown":
-        navigateSections(1);
-        break;
-      case "ArrowLeft":
-        navigateItems(-1);
-        break;
-      case "ArrowRight":
-        navigateItems(1);
-        break;
-      case "Enter":
-        playSelectedVideo();
-        break;
-      case "Escape":
-        goBack();
-        break;
+    if (isKeyboardVisible) {
+      if (e.key === "Escape") {
+        closeKeyboard();
+      } else {
+        const selectedInputField = document.getElementById("ticketNumberInput");
+        navigateKeyboard(e, selectedInputField);
+      }
+    } else {
+      switch (e.key) {
+        case "ArrowUp":
+          navigateSections(-1);
+          break;
+        case "ArrowDown":
+          navigateSections(1);
+          break;
+        case "ArrowLeft":
+          navigateItems(-1);
+          break;
+        case "ArrowRight":
+          navigateItems(1);
+          break;
+        case "Enter":
+          handleEnter();
+          break;
+        case "Escape":
+          goBack();
+          break;
+      }
     }
   });
+
+  function handleEnter() {
+    if (mediaSections[selectedSectionIndex].id === "ticketNumberInput") {
+      openKeyboard();
+    } else {
+      playSelectedVideo();
+    }
+  }
 
   function navigateSections(step) {
     const currentRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
+
     const currentTiles = currentRow.querySelectorAll(".slider-button ");
 
     if (currentTiles.length > 0) {
@@ -405,12 +430,18 @@ function initializeMediaNavigation(seasons) {
     const newRow = document.getElementById(
       mediaSections[selectedSectionIndex].id
     );
-    const newTiles = newRow.querySelectorAll(".slider-button ");
 
-    if (newTiles.length > 0) {
-      newTiles[selectedItemIndex].classList.add("selected");
-      scrollToSection(newRow);
-      updateArrowVisibility(newRow, newTiles);
+    if (mediaSections[selectedSectionIndex].id === "ticketNumberInput") {
+      document.getElementById("ticketNumberInput").focus();
+    } else {
+      document.getElementById("ticketNumberInput").blur();
+      const newTiles = newRow.querySelectorAll(".slider-button ");
+
+      if (newTiles.length > 0) {
+        newTiles[selectedItemIndex].classList.add("selected");
+        scrollToSection(newRow);
+        updateArrowVisibility(newRow, newTiles);
+      }
     }
   }
 
