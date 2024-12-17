@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PPV Details Page</title>
     <link rel="stylesheet" href="../../css/ppvDetails.css" />
+    <link rel="stylesheet" href="../../css/header.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -43,12 +44,21 @@
           <i class="fa-solid fa-chevron-right"></i>
         </div>
       </div>
-      
+    </div>
+
+    <!-- Add the on-screen keyboard here -->
+    <div id="on-screen-keyboard" class="keyboard">
+      <div id="keyboard-row-0" class="keyboard-row"></div>
+      <div id="keyboard-row-1" class="keyboard-row"></div>
+      <div id="keyboard-row-2" class="keyboard-row"></div>
+      <div id="keyboard-row-3" class="keyboard-row"></div>
+      <div id="keyboard-row-4" class="keyboard-row"></div>
     </div>
 
     <script type="module" src="../../js/payperviewService.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script type="module" src="../../js/ppvDetails.js"></script>
+    <script type="module" src="../../js/keyboard.js"></script>
     <script src="https://senza-sdk.streaming.synamedia.com/latest/bundle.js"></script>
   </body>
 </html>
